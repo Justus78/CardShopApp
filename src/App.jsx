@@ -9,12 +9,13 @@ import Home from './Pages/Home/Home';
 
 function App() {
   const {loading, isAuthenticated, setIsAuthenticated} = useContext(DataContext);
+  console.log(isAuthenticated);
 
   return (
   <>
   <Routes>
 
-    <Route path='/' element={<Home />} />
+    <Route path='/' element={isAuthenticated ? <Home /> : <Login />} />
     <Route path='/login' element={<Login />} />
   </Routes>
    
