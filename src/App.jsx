@@ -4,6 +4,7 @@ import './App.css'
 import { DataContext } from './Context/DataContext'
 import Login from './Pages/Login/Login';
 import Home from './Pages/Home/Home';
+import AdminHome from './Pages/Admin/AdminHome/AdminHome';
 
 
 
@@ -15,6 +16,8 @@ function App() {
   <Routes>
     <Route path='/' element={isAuthenticated ? <Home /> : <Login />} />
     <Route path='/login' element={<Login />} />
+
+    <Route path='/adminHome' element={<AdminHome />} />
   </Routes>
    
   </>
