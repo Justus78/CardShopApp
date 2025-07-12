@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import AuthForm from '../../Components/AuthForm';
-import Navbar from '../../Components/Navbar';
-import Footer from '../../Components/Footer';
+import AuthForm from '../../Components/User/AuthForm';
+import Navbar from '../../Components/User/Navbar';
+import Footer from '../../Components/User/Footer';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(false);

@@ -5,6 +5,7 @@ import { DataContext } from './Context/DataContext'
 import Login from './Pages/Login/Login';
 import Home from './Pages/Home/Home';
 import AdminHome from './Pages/Admin/AdminHome/AdminHome';
+import ViewProducts from './Pages/Admin/Products/ViewProducts';
 
 
 
@@ -14,10 +15,14 @@ function App() {
   return (
   <>
   <Routes>
+    {/** user routes */}
     <Route path='/' element={isAuthenticated ? <Home /> : <Login />} />
     <Route path='/login' element={<Login />} />
 
-    <Route path='/adminHome' element={<AdminHome />} />
+
+    {/* routes for admin */}
+    <Route path='/admin/adminHome' element={<AdminHome />} />
+    <Route path='/admin/viewProducts' element={<ViewProducts />} />
   </Routes>
    
   </>

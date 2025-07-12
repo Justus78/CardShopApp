@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
-import { postToApi } from "../Services/LoginService";
-import { DataContext } from "../Context/DataContext";
+import { postToApi } from "../../Services/LoginService";
+import { DataContext } from "../../Context/DataContext";
 import { toast } from "react-toastify";
 
 const AuthForm = () => {

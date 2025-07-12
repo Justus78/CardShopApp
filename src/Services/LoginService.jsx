@@ -52,7 +52,7 @@ export async function getFromApi(endpoint) {
 
     return { data: result };
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("API Error:", error.error);
     return { error: "Network error. Please try again." };
   }
 }
