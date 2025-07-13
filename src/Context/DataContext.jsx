@@ -4,24 +4,28 @@ import { getFromApi } from "../Services/LoginService";
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // ✅ initially true
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await getFromApi("status");
-      if(data){
+
+      if (data) {
         setUser(data);
-        console.log(user);
-      }
-      else {
+        setIsAuthenticated(true); //  set auth
+        console.log(data); //  log fresh data
+      } else {
         setUser(null);
+        setIsAuthenticated(false); //  not authenticated
       }
-      setLoading(false);
+
+      setLoading(false); //  done loading
     };
+
     fetchUser();
-  },[]);
+  }, []);
 
   const value = {
     loading,
@@ -29,7 +33,7 @@ export const DataProvider = ({ children }) => {
     isAuthenticated,
     setIsAuthenticated,
     user,
-    setUser
+    setUser,
   };
 
   return (

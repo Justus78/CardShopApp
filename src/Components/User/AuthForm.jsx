@@ -1,7 +1,8 @@
 import { useState, useContext } from "react";
-import { postToApi } from "../../Services/LoginService";
+import { postToApi, getFromApi } from "../../Services/LoginService";
 import { DataContext } from "../../Context/DataContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -11,7 +12,9 @@ const AuthForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(DataContext);
+  const navigate = useNavigate();
+
+  const { setIsAuthenticated, setUser } = useContext(DataContext);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -24,20 +27,41 @@ const AuthForm = () => {
         Password: password,
       };
 
-      const { error } = await postToApi("login", loginData);
+      const { error: loginError } = await postToApi("login", loginData);
 
-      if (error) {
+      if (loginError) {
         setError("Incorrect Username or Password");
         toast.error("Incorrect Username or Password");
         return;
-      } else {
-        toast.success("Login Successful");
       }
 
+      // Get user info after login
+      const { data: userData, error: statusError } = await getFromApi("status");
+
+      if (statusError || !userData) {
+        setError("Failed to retrieve user info");
+        console.log(statusError)
+        toast.error("Login failed");
+        return;
+      }
+
+      setUser(userData);
       setIsAuthenticated(true);
+      toast.success("Login Successful");
+
+      const userRole = userData.roles?.[0];
+      console.log(userRole)
+
+      // Navigate based on role
+      if (userRole === "admin") {
+        navigate("/admin/adminHome");
+      } else {
+        navigate("/");
+      }
+
     } catch (err) {
-      setError(err.message);
-      toast.error(err.message);
+      setError("Unexpected error during login");
+      toast.error("Unexpected error");
     } finally {
       setLoading(false);
     }
@@ -61,13 +85,14 @@ const AuthForm = () => {
         setError(error);
         toast.error(error);
         return;
-      } else {
-        toast.success("User registered successfully.");
       }
-      setIsAuthenticated(true);
+
+      toast.success("User registered successfully.");
+      // Optionally switch to login form or log in automatically
+      setIsRegister(false);
     } catch (err) {
-      setError(err.message);
-      toast.error(err.message);
+      setError("Registration failed");
+      toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
