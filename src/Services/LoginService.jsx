@@ -42,6 +42,9 @@ export async function getFromApi(endpoint) {
     const response = await fetch(`${apiUrl}/${endpoint}`, {
       method: "GET",
       credentials: "include", // Sends the cookie
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     const result = await response.json();
@@ -52,7 +55,19 @@ export async function getFromApi(endpoint) {
 
     return { data: result };
   } catch (error) {
-    console.error("API Error:", error.error);
+    console.error("API Error:", error);
     return { error: "Network error. Please try again." };
   }
 }
+
+export async function logoutUser() {
+  try {
+    await fetch("https://localhost:7286/api/account/logout", {
+      method: "POST",
+      credentials: "include", // Important to send the cookie
+    });
+  } catch (err) {
+    console.error("Logout failed", err);
+  }
+}
+

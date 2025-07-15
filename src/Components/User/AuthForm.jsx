@@ -14,7 +14,7 @@ const AuthForm = () => {
 
   const navigate = useNavigate();
 
-  const { setIsAuthenticated, setUser } = useContext(DataContext);
+  const { setIsAuthenticated, setUser, } = useContext(DataContext);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ const AuthForm = () => {
       console.log(userRole)
 
       // Navigate based on role
-      if (userRole === "admin") {
+      if (userRole === "Admin") {
         navigate("/admin/adminHome");
       } else {
         navigate("/");

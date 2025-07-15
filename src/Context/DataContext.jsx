@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getFromApi } from "../Services/LoginService";
+import { getFromApi, logoutUser } from "../Services/LoginService";
 
 export const DataContext = createContext();
 
@@ -15,10 +15,11 @@ export const DataProvider = ({ children }) => {
       if (data) {
         setUser(data);
         setIsAuthenticated(true); //  set auth
-        console.log(data); //  log fresh data
+        console.log("get from api call returned:" + data); //  log fresh data
       } else {
         setUser(null);
         setIsAuthenticated(false); //  not authenticated
+        console.log(error)
       }
 
       setLoading(false); //  done loading
@@ -26,6 +27,13 @@ export const DataProvider = ({ children }) => {
 
     fetchUser();
   }, []);
+  
+  const handleLogout = async () => {
+    await logoutUser();
+    setIsAuthenticated(false);
+    setUser(null);
+    navigate("/login");
+  };
 
   const value = {
     loading,
@@ -34,6 +42,7 @@ export const DataProvider = ({ children }) => {
     setIsAuthenticated,
     user,
     setUser,
+    handleLogout
   };
 
   return (

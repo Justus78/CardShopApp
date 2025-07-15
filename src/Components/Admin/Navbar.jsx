@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Menu, X } from "lucide-react"; // Optional: replace with Heroicons or SVGs
+import { DataContext } from "../../Context/DataContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { handleLogout } = useContext(DataContext);
 
   return (
     <nav className="bg-white shadow px-6 py-4 flex items-center justify-between">
@@ -22,6 +25,10 @@ const Navbar = () => {
         <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl hover:bg-blue-200 transition">
           Admin
         </button>
+        <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-xl hover:bg-blue-200 transition" onClick={handleLogout}>
+          Logout
+        </button>
+
       </div>
 
       {/* Mobile Menu Toggle */}
