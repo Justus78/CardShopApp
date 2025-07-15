@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from '../../../Components/Admin/Navbar'
+import { Link } from 'react-router-dom'
 
 const ViewProducts = () => {
   return (
@@ -16,6 +17,12 @@ const ViewProducts = () => {
          *    comp to be used for each individual product
          *    
          */}
+         <Link
+          to="/admin/AddProduct"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+        >
+          Add Product
+        </Link>
     </div>
   )
 }

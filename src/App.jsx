@@ -5,6 +5,7 @@ import Login from "./Pages/Login/Login";
 import Home from "./Pages/Home/Home";
 import AdminHome from "./Pages/Admin/AdminHome/AdminHome";
 import ViewProducts from "./Pages/Admin/Products/ViewProducts";
+import AddProduct from "./Pages/Admin/Products/AddProduct"
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
         element={
           <ProtectedRoute requiredRole="Admin">
             <ViewProducts />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/AddProduct"
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <AddProduct />
           </ProtectedRoute>
         }
       />
