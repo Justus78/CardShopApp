@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:7286/api/product"; // Change as needed
+const API_URL = "https://localhost:7286/api/product"; // Change as needed
 
 // Helper to handle fetch errors
 const handleResponse = async (res) => {
