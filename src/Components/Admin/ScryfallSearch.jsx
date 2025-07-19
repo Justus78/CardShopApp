@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createProduct } from "../../services/productService";
+import { toast } from "react-toastify";
 import {
   ProductCategory,
   CardCondition,
@@ -140,11 +141,11 @@ const ScryfallSearch = () => {
       if (selectedType) formData.append("CardType", selectedType);
 
       await createProduct(formData);
-      alert("Product added successfully!");
+      toast.success("Product added successfully!");
       setSelectedCard(null);
     } catch (err) {
       console.error(err);
-      alert("Failed to add product.");
+      toast.error("Failed to add product.");
     }
   };
 
@@ -231,6 +232,7 @@ const ScryfallSearch = () => {
                     <p className="text-sm text-gray-600">Mana Cost: {card.mana_cost}</p>
                   )}
                   <p className="text-sm capitalize">Rarity: {card.rarity}</p>
+                  <p className="text-sm capitalize">Foil: {card.foil.toString()}</p>
                   <p className="text-sm capitalize">${card.prices.usd || card.prices[0]}</p>
                   <button
                     onClick={(e) => {
@@ -279,6 +281,7 @@ const ScryfallSearch = () => {
         </div>
       )}
 
+      {/** pop up menu for when adding selected card to inventory */}
       {selectedCard && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-full mx-4">

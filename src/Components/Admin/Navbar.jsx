@@ -14,10 +14,10 @@ const Navbar = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex space-x-6 text-gray-700 font-medium">
-        <a href="#" className="hover:text-blue-600 transition">Dashboard</a>
-        <a href="#" className="hover:text-blue-600 transition">Products</a>
-        <a href="#" className="hover:text-blue-600 transition">Orders</a>
-        <a href="#" className="hover:text-blue-600 transition">Customers</a>
+        <a href="/admin/adminHome" className="hover:text-blue-600 transition">Dashboard</a>
+        <a href="/admin/ViewProducts" className="hover:text-blue-600 transition">Products</a>
+        <a href="/admin/ViewOrders" className="hover:text-blue-600 transition">Orders</a>
+        <a href="/admin/ViewUsers" className="hover:text-blue-600 transition">Customers</a>
       </div>
 
       {/* Profile Placeholder */}

@@ -6,6 +6,8 @@ import Home from "./Pages/Home/Home";
 import AdminHome from "./Pages/Admin/AdminHome/AdminHome";
 import ViewProducts from "./Pages/Admin/Products/ViewProducts";
 import AddProduct from "./Pages/Admin/Products/AddProduct"
+import Orders from "./Pages/Admin/Orders/Orders"
+import Users from "./Pages/Admin/Users/Users";
 
 function App() {
   return (
@@ -45,6 +47,24 @@ function App() {
         element={
           <ProtectedRoute requiredRole="Admin">
             <AddProduct />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/ViewOrders"
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <Orders />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/ViewUsers"
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <Users />
           </ProtectedRoute>
         }
       />
