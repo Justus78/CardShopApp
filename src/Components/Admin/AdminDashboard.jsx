@@ -27,13 +27,13 @@ const AdminDashboard = () => {
               </div>
             </Link>
 
-            <Link to="/admin/orders" className="block">
+            <Link to="/admin/ViewOrders" className="block">
               <div className="bg-white p-6 rounded-2xl shadow hover:bg-gray-50 transition cursor-pointer">
                 <p className="text-lg font-semibold text-gray-700">Orders</p>
               </div>
             </Link>
 
-            <Link to="/admin/customers" className="block">
+            <Link to="/admin/ViewUsers" className="block">
               <div className="bg-white p-6 rounded-2xl shadow hover:bg-gray-50 transition cursor-pointer">
                 <p className="text-lg font-semibold text-gray-700">Customers</p>
               </div>
