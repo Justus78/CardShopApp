@@ -1,10 +1,11 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "./Components/ProtectedRoute";
 
-import Login from "./Pages/Login/Login";
-import Home from "./Pages/Home/Home";
+import Login from "./Pages/User/Login/Login";
+import Home from "./Pages/User/Home/Home";
+import ViewProducts from "./Pages/User/Products/ViewProducts";
 import AdminHome from "./Pages/Admin/AdminHome/AdminHome";
-import ViewProducts from "./Pages/Admin/Products/ViewProducts";
+import ViewProductsAdmin from "./Pages/Admin/Products/ViewProducts";
 import AddProduct from "./Pages/Admin/Products/AddProduct"
 import Orders from "./Pages/Admin/Orders/Orders"
 import Users from "./Pages/Admin/Users/Users";
@@ -45,6 +46,17 @@ function App() {
         }
       />
 
+      <Route
+        path="/User/viewProducts"
+        element={
+          <ProtectedRoute requiredRole="User">            
+            <ViewProducts />
+          </ProtectedRoute>
+        }
+      />
+
+
+
       {/* Admin-only routes */}
       <Route
         path="/admin/adminHome"
@@ -58,7 +70,7 @@ function App() {
         path="/admin/viewProducts"
         element={
           <ProtectedRoute requiredRole="Admin">
-            <ViewProducts />
+            <ViewProductsAdmin />
           </ProtectedRoute>
         }
       />
