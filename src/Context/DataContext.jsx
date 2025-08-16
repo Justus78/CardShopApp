@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { getFromApi, logoutUser } from "../Services/LoginService";
 
+//create the context
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
