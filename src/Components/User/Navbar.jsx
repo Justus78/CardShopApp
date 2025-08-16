@@ -4,6 +4,7 @@ import { DataContext } from "../../Context/DataContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [mtgOpen, setMtgOpen] = useState(false);
   const { handleLogout } = useContext(DataContext);
 
   return (
@@ -43,41 +44,30 @@ const Navbar = () => {
         {/* Desktop Links */}
       <div className="hidden md:flex space-x-6 text-gray-700 font-medium relative">
         {/* Magic the Gathering with dropdown */}
-        <div className="relative group">
+        <div className="relative">
           <a
             href="/User/viewProducts"
             className="text-white transition text-2xl"
+            onMouseEnter={() => setMtgOpen(true)}
+            onMouseLeave={() => setMtgOpen(false)}
           >
-            Magic: The Gathering
+            MAGIC: THE GATHERING
           </a>
-          {/* Dropdown menu */}
-          <div className="absolute left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transform translate-y-2 transition-all duration-200 z-50">
-            <a
-              href="#"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+
+          {mtgOpen && (
+            <div
+              className="absolute left-0  w-56 bg-white shadow-lg rounded-lg z-50"
+              onMouseEnter={() => setMtgOpen(true)} // keep open if hovering menu
+              onMouseLeave={() => setMtgOpen(false)} // close when leaving menu
             >
-              Singles
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Boosters
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Decks
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Accessories
-            </a>
-          </div>
+              <a href="#" className="block px-4 mt-2 py-2 hover:bg-gray-100">Singles</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100">Boosters</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100">Decks</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100">Accessories</a>
+            </div>
+          )}
         </div>
+
 
   {/* Other Links */}
   <a href="#" className="text-white transition text-2xl">

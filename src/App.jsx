@@ -39,19 +39,15 @@ function App() {
       {/* User-only route */}
       <Route
         path="/"
-        element={
-          <ProtectedRoute requiredRole="User">            
+        element={              
             <Home />
-          </ProtectedRoute>
         }
       />
 
       <Route
         path="/User/viewProducts"
-        element={
-          <ProtectedRoute requiredRole="User">            
+        element={                     
             <ViewProducts />
-          </ProtectedRoute>
         }
       />
 
