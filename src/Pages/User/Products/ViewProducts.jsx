@@ -105,7 +105,7 @@ const ViewProducts = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 p-6">
           {/* Left: Filters */}
-          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-6 self-start">
+          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-32 self-start">
             <h2 className="font-semibold mb-4">Filters</h2>
 
             {/* Search input */}
