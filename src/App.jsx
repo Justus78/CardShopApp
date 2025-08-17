@@ -6,52 +6,33 @@ import Home from "./Pages/User/Home/Home";
 import ViewProducts from "./Pages/User/Products/ViewProducts";
 import AdminHome from "./Pages/Admin/AdminHome/AdminHome";
 import ViewProductsAdmin from "./Pages/Admin/Products/ViewProducts";
-import AddProduct from "./Pages/Admin/Products/AddProduct"
-import Orders from "./Pages/Admin/Orders/Orders"
+import AddProduct from "./Pages/Admin/Products/AddProduct";
+import Orders from "./Pages/Admin/Orders/Orders";
 import Users from "./Pages/Admin/Users/Users";
+
 import { useContext, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 
 function App() {
-
   const { isAuthenticated, user, loading } = useContext(DataContext);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    console.log(user?.roles[0])
     if (!loading && isAuthenticated) {
-      // If we're at the root path and already authenticated, send to appropriate dashboard
-      if (location.pathname === "/") {
-        if (user?.roles[0] === "Admin") {
-          navigate("/admin/adminHome");
-        }
+      // If logged in as Admin, redirect root ("/") → Admin Dashboard
+      if (location.pathname === "/" && user?.roles?.includes("Admin")) {
+        navigate("/admin/adminHome", { replace: true });
       }
     }
   }, [loading, isAuthenticated, user, location.pathname, navigate]);
 
-
   return (
     <Routes>
-      {/* Public */}
+      {/* Public routes */}
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-
-      {/* User-only route */}
-      <Route
-        path="/"
-        element={              
-            <Home />
-        }
-      />
-
-      <Route
-        path="/User/viewProducts"
-        element={                     
-            <ViewProducts />
-        }
-      />
-
-
+      <Route path="/user/viewProducts" element={<ViewProducts />} />
 
       {/* Admin-only routes */}
       <Route
@@ -71,25 +52,23 @@ function App() {
         }
       />
       <Route
-        path="/admin/AddProduct"
+        path="/admin/addProduct"
         element={
           <ProtectedRoute requiredRole="Admin">
             <AddProduct />
           </ProtectedRoute>
         }
       />
-
       <Route
-        path="/admin/ViewOrders"
+        path="/admin/viewOrders"
         element={
           <ProtectedRoute requiredRole="Admin">
             <Orders />
           </ProtectedRoute>
         }
       />
-
       <Route
-        path="/admin/ViewUsers"
+        path="/admin/viewUsers"
         element={
           <ProtectedRoute requiredRole="Admin">
             <Users />

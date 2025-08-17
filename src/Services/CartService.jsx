@@ -18,14 +18,14 @@ export const getCartItemsForUser = async () => {
 };
 
 // POST: add a new cart item
-export const createCartItem = async (item) => {
+export const createCartItem = async (newItem) => {
   const res = await fetch(API_URL, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(item), // item should match AddCartItemDto
+    body: JSON.stringify(newItem), // item should match AddCartItemDto
   });
   return handleResponse(res);
 };

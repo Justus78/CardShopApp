@@ -8,7 +8,7 @@ import {
 } from "../Services/CartService";
 
 // Create the context
-const CartContext = createContext();
+export const CartContext = createContext();
 
 // Custom hook to use cart
 export const useCart = () => useContext(CartContext);
@@ -33,8 +33,9 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   // Add item
-  const addItem = async (item) => {
-    const added = await createCartItem(item);
+  const addItem = async (newItem) => {
+    console.log("item in the add item method is: ", newItem)
+    const added = await createCartItem(newItem);
     setCart((prev) => [...prev, added]);
   };
 
