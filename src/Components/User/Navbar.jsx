@@ -25,7 +25,8 @@ const Navbar = () => {
 
           {/* Login button placeholder */}
           <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
-            Login
+            <a href="/login">Login</a>
+            
           </button>
 
           {/* Cart icon */}
