@@ -17,9 +17,11 @@ const ViewProducts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [foilOnly, setFoilOnly] = useState(false);
   const [nonFoilOnly, setNonFoilOnly] = useState(false);
+  const [sortOption, setSortOption] = useState("relevant");
 
   // Contexts
-  const { cart, addItem, updateItem, removeItem, clear } = useContext(CartContext);
+  const { cart, addItem, updateItem, removeItem, clear } =
+    useContext(CartContext);
   const { isAuthenticated } = useContext(DataContext);
 
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ const ViewProducts = () => {
     fetchProducts();
   }, []);
 
-  // Apply filters whenever products or filter state changes
+  // Apply filters + sorting whenever dependencies change
   useEffect(() => {
     let filtered = products;
 
@@ -50,12 +52,28 @@ const ViewProducts = () => {
       );
     }
 
-    // Foil/non-foil filters (mutually exclusive)
+    // Foil/non-foil filters
     if (foilOnly) filtered = filtered.filter((p) => p.isFoil === true);
     else if (nonFoilOnly) filtered = filtered.filter((p) => p.isFoil === false);
 
+    // Sorting
+    if (sortOption === "priceLowHigh") {
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
+    } else if (sortOption === "priceHighLow") {
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
+    } else if (sortOption === "nameAZ") {
+      filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === "nameZA") {
+      filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortOption === "stockHighLow") {
+      filtered = [...filtered].sort((a, b) => b.stockQuantity - a.stockQuantity);
+    } else if (sortOption === "stockLowHigh") {
+      filtered = [...filtered].sort((a, b) => a.stockQuantity - b.stockQuantity);
+    }
+    // "relevant" leaves as is
+
     setFilteredProducts(filtered);
-  }, [searchTerm, foilOnly, nonFoilOnly, products]);
+  }, [searchTerm, foilOnly, nonFoilOnly, sortOption, products]);
 
   // Handlers for mutually exclusive checkboxes
   const handleFoilChange = (checked) => {
@@ -75,9 +93,16 @@ const ViewProducts = () => {
       return;
     }
 
+    if (product.stockQuantity < 1) {
+      toast.error("This item is out of stock.");
+      return;
+    }
+
     const newItem = {
-      ProductId: product.id,
-      Quantity: 1
+      id: product.id,
+      productName: product.name,
+      stockQuantity: product.stockQuantity,
+      quantity: 1,
     };
 
     addItem(newItem);
@@ -91,7 +116,7 @@ const ViewProducts = () => {
     // Prevent going below 1 or above stock
     if (newQuantity < 1 || newQuantity > item.stockQuantity) return;
 
-    updateItem({ ...item, Quantity: newQuantity });
+    updateItem({ ...item, quantity: newQuantity });
   };
 
   return (
@@ -142,6 +167,23 @@ const ViewProducts = () => {
 
           {/* Middle: Product list */}
           <div className="lg:col-span-4">
+            {/* Sorting Dropdown */}
+            <div className="flex justify-end mb-4">
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                <option value="relevant">Most Relevant</option>
+                <option value="priceLowHigh">Price: Low to High</option>
+                <option value="priceHighLow">Price: High to Low</option>
+                <option value="nameAZ">Name: A → Z</option>
+                <option value="nameZA">Name: Z → A</option>
+                <option value="stockHighLow">Stock: High to Low</option>
+                <option value="stockLowHigh">Stock: Low to High</option>
+              </select>
+            </div>
+
             {filteredProducts.length === 0 ? (
               <p>No products found.</p>
             ) : (
@@ -162,14 +204,23 @@ const ViewProducts = () => {
 
                     {/* Name & Description */}
                     <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
-                      <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
+                      <h2 className="text-xl font-semibold mb-2">
+                        {product.name}
+                      </h2>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {product.setName}
+                      </h3>
                       <p className="text-gray-700">{product.description}</p>
                     </div>
 
                     {/* Price & Add to Cart */}
                     <div className="flex flex-col items-center sm:items-end justify-center min-w-[120px]">
-                      <span className="text-xl font-bold text-green-600">${product.price}</span>
-                      <span className="text-sm text-gray-500">{product.stockQuantity} in stock</span>
+                      <span className="text-xl font-bold text-green-600">
+                        ${product.price}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {product.stockQuantity} in stock
+                      </span>
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
@@ -192,7 +243,10 @@ const ViewProducts = () => {
             ) : (
               <ul className="space-y-2 text-sm">
                 {cart.map((item) => (
-                  <li key={item.id} className="flex justify-between items-center">
+                  <li
+                    key={item.id}
+                    className="flex justify-between items-center"
+                  >
                     <span>{item.productName}</span>
 
                     <div className="flex items-center gap-2">
