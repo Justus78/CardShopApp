@@ -9,6 +9,7 @@ import ViewProductsAdmin from "./Pages/Admin/Products/ViewProducts";
 import AddProduct from "./Pages/Admin/Products/AddProduct";
 import Orders from "./Pages/Admin/Orders/Orders";
 import Users from "./Pages/Admin/Users/Users";
+import Footer from "./Components/User/Footer";
 
 import { useContext, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
@@ -28,57 +29,60 @@ function App() {
   }, [loading, isAuthenticated, user, location.pathname, navigate]);
 
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/user/viewProducts" element={<ViewProducts />} />
+    <>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/user/viewProducts" element={<ViewProducts />} />
 
-      {/* Admin-only routes */}
-      <Route
-        path="/admin/adminHome"
-        element={
-          <ProtectedRoute requiredRole="Admin">
-            <AdminHome />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/viewProducts"
-        element={
-          <ProtectedRoute requiredRole="Admin">
-            <ViewProductsAdmin />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/addProduct"
-        element={
-          <ProtectedRoute requiredRole="Admin">
-            <AddProduct />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/viewOrders"
-        element={
-          <ProtectedRoute requiredRole="Admin">
-            <Orders />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/viewUsers"
-        element={
-          <ProtectedRoute requiredRole="Admin">
-            <Users />
-          </ProtectedRoute>
-        }
-      />
+        {/* Admin-only routes */}
+        <Route
+          path="/admin/adminHome"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <AdminHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/viewProducts"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <ViewProductsAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/addProduct"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <AddProduct />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/viewOrders"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/viewUsers"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <Users />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Catch-all fallback */}
-      <Route path="*" element={<div>404 - Not Found</div>} />
-    </Routes>
+        {/* Catch-all fallback */}
+        <Route path="*" element={<div>404 - Not Found</div>} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 

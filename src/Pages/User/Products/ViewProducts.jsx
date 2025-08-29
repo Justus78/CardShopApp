@@ -4,7 +4,7 @@ import { getAllProducts } from "../../../services/productService";
 import { CartContext } from "../../../Context/CartContext";
 import { DataContext } from "../../../Context/DataContext";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ViewProducts = () => {
   // Products state
@@ -20,11 +20,12 @@ const ViewProducts = () => {
   const [sortOption, setSortOption] = useState("relevant");
 
   // Contexts
-  const { cart, addItem, updateItem, removeItem, clear } =
-    useContext(CartContext);
+  const { cart, addItem, updateItem, removeItem, clear } = useContext(CartContext);
   const { isAuthenticated } = useContext(DataContext);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const setFilter = searchParams.get("set"); // <-- get the set from URL
 
   // Fetch all products on mount
   useEffect(() => {
@@ -44,6 +45,12 @@ const ViewProducts = () => {
   // Apply filters + sorting whenever dependencies change
   useEffect(() => {
     let filtered = products;
+    console.log(products)
+
+    // Filter by set if query param exists
+    if (setFilter) {
+      filtered = filtered.filter((p) => p.setName === setFilter);
+    }
 
     // Search filter
     if (searchTerm.trim() !== "") {
@@ -57,23 +64,15 @@ const ViewProducts = () => {
     else if (nonFoilOnly) filtered = filtered.filter((p) => p.isFoil === false);
 
     // Sorting
-    if (sortOption === "priceLowHigh") {
-      filtered = [...filtered].sort((a, b) => a.price - b.price);
-    } else if (sortOption === "priceHighLow") {
-      filtered = [...filtered].sort((a, b) => b.price - a.price);
-    } else if (sortOption === "nameAZ") {
-      filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortOption === "nameZA") {
-      filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
-    } else if (sortOption === "stockHighLow") {
-      filtered = [...filtered].sort((a, b) => b.stockQuantity - a.stockQuantity);
-    } else if (sortOption === "stockLowHigh") {
-      filtered = [...filtered].sort((a, b) => a.stockQuantity - b.stockQuantity);
-    }
-    // "relevant" leaves as is
+    if (sortOption === "priceLowHigh") filtered = [...filtered].sort((a, b) => a.price - b.price);
+    else if (sortOption === "priceHighLow") filtered = [...filtered].sort((a, b) => b.price - a.price);
+    else if (sortOption === "nameAZ") filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+    else if (sortOption === "nameZA") filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+    else if (sortOption === "stockHighLow") filtered = [...filtered].sort((a, b) => b.stockQuantity - a.stockQuantity);
+    else if (sortOption === "stockLowHigh") filtered = [...filtered].sort((a, b) => a.stockQuantity - b.stockQuantity);
 
     setFilteredProducts(filtered);
-  }, [searchTerm, foilOnly, nonFoilOnly, sortOption, products]);
+  }, [searchTerm, foilOnly, nonFoilOnly, sortOption, products, setFilter]);
 
   // Handlers for mutually exclusive checkboxes
   const handleFoilChange = (checked) => {
@@ -112,17 +111,13 @@ const ViewProducts = () => {
   // Increment/decrement cart quantity
   const handleQuantityChange = (item, delta) => {
     const newQuantity = item.quantity + delta;
-
-    // Prevent going below 1 or above stock
     if (newQuantity < 1 || newQuantity > item.stockQuantity) return;
-
     updateItem({ ...item, quantity: newQuantity });
   };
 
   return (
     <div>
       <Navbar />
-
       {loading ? (
         <p>Loading products...</p>
       ) : error ? (
@@ -132,8 +127,6 @@ const ViewProducts = () => {
           {/* Left: Filters */}
           <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-32 self-start">
             <h2 className="font-semibold mb-4">Filters</h2>
-
-            {/* Search input */}
             <input
               type="text"
               placeholder="Search products..."
@@ -141,8 +134,6 @@ const ViewProducts = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring focus:ring-blue-300"
             />
-
-            {/* Foil checkbox */}
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -152,8 +143,6 @@ const ViewProducts = () => {
               />
               Foil only
             </label>
-
-            {/* Non-Foil checkbox */}
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -167,7 +156,6 @@ const ViewProducts = () => {
 
           {/* Middle: Product list */}
           <div className="lg:col-span-4">
-            {/* Sorting Dropdown */}
             <div className="flex justify-end mb-4">
               <select
                 value={sortOption}
@@ -193,7 +181,6 @@ const ViewProducts = () => {
                     key={product.id}
                     className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white shadow p-4 rounded-lg gap-4"
                   >
-                    {/* Product image */}
                     <div className="flex-shrink-0 w-40 h-56">
                       <img
                         src={product.imageUrl}
@@ -201,26 +188,14 @@ const ViewProducts = () => {
                         className="w-full h-full object-cover rounded"
                       />
                     </div>
-
-                    {/* Name & Description */}
                     <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
-                      <h2 className="text-xl font-semibold mb-2">
-                        {product.name}
-                      </h2>
-                      <h3 className="text-xl font-semibold mb-2">
-                        {product.setName}
-                      </h3>
+                      <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
+                      <h3 className="text-xl font-semibold mb-2">{product.setName}</h3>
                       <p className="text-gray-700">{product.description}</p>
                     </div>
-
-                    {/* Price & Add to Cart */}
                     <div className="flex flex-col items-center sm:items-end justify-center min-w-[120px]">
-                      <span className="text-xl font-bold text-green-600">
-                        ${product.price}
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        {product.stockQuantity} in stock
-                      </span>
+                      <span className="text-xl font-bold text-green-600">${product.price}</span>
+                      <span className="text-sm text-gray-500">{product.stockQuantity} in stock</span>
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
@@ -237,20 +212,14 @@ const ViewProducts = () => {
           {/* Right: Cart */}
           <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-6 self-start">
             <h2 className="font-semibold mb-3">Your Cart</h2>
-
             {cart.length === 0 ? (
               <p className="text-sm text-gray-500">Cart is empty</p>
             ) : (
               <ul className="space-y-2 text-sm">
                 {cart.map((item) => (
-                  <li
-                    key={item.id}
-                    className="flex justify-between items-center"
-                  >
+                  <li key={item.id} className="flex justify-between items-center">
                     <span>{item.productName}</span>
-
                     <div className="flex items-center gap-2">
-                      {/* Decrement quantity */}
                       <button
                         onClick={() => handleQuantityChange(item, -1)}
                         className="px-2 py-0.5 bg-gray-200 rounded"
@@ -258,11 +227,7 @@ const ViewProducts = () => {
                       >
                         -
                       </button>
-
-                      {/* Quantity */}
                       <span>{item.quantity}</span>
-
-                      {/* Increment quantity */}
                       <button
                         onClick={() => handleQuantityChange(item, 1)}
                         className="px-2 py-0.5 bg-gray-200 rounded"
@@ -270,8 +235,6 @@ const ViewProducts = () => {
                       >
                         +
                       </button>
-
-                      {/* Remove item */}
                       <button
                         onClick={() => removeItem(item.id)}
                         className="px-2 py-0.5 bg-red-500 text-white rounded"
@@ -283,8 +246,6 @@ const ViewProducts = () => {
                 ))}
               </ul>
             )}
-
-            {/* Clear cart button */}
             {cart.length > 0 && (
               <button
                 onClick={clear}

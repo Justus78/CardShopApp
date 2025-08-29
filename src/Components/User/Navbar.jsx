@@ -70,17 +70,17 @@ const Navbar = () => {
         </div>
 
 
-  {/* Other Links */}
-  <a href="#" className="text-white transition text-2xl">
-    Bestsellers
-  </a>
-  <a href="#" className="text-white transition text-2xl">
-    My Orders
-  </a>
-  <a href="#" className="text-white transition text-2xl">
-    About
-  </a>
-</div>
+          {/* Other Links */}
+          <a href="#" className="text-white transition text-2xl">
+            Bestsellers
+          </a>
+          <a href="#" className="text-white transition text-2xl">
+            My Orders
+          </a>
+          <a href="#" className="text-white transition text-2xl">
+            About
+          </a>
+        </div>
 
 
         {/* Desktop Logout */}
