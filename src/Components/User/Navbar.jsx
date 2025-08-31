@@ -5,7 +5,9 @@ import { DataContext } from "../../Context/DataContext";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mtgOpen, setMtgOpen] = useState(false);
-  const { handleLogout } = useContext(DataContext);
+  const { handleLogout, isAuthenticated, user } = useContext(DataContext);
+
+  console.log(isAuthenticated, user?.userName)
 
   return (
     <nav className="shadow sticky top-0 z-50">
@@ -24,10 +26,14 @@ const Navbar = () => {
           />
 
           {/* Login button placeholder */}
-          <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
-            <a href="/login">Login</a>
-            
-          </button>
+          {isAuthenticated ? <p className="text-white font-bold text-2xl">Welcome {user?.userName || "hello"}</p> :
+          <button 
+          className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
+            <a
+              href="/login">
+              Login
+            </a>            
+          </button>}
 
           {/* Cart icon */}
           <a href="/cart" className="relative">

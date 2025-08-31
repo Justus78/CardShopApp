@@ -9,13 +9,13 @@ import { ToastContainer } from 'react-toastify'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <DataProvider>
-      <CartProvider>
-        <BrowserRouter>
-            <App />
-            <ToastContainer />
-        </BrowserRouter>   
-      </CartProvider> 
-    </DataProvider>
+    <BrowserRouter>
+      <DataProvider>
+        <CartProvider>        
+          <App />
+          <ToastContainer />         
+        </CartProvider> 
+      </DataProvider>
+     </BrowserRouter> 
   </StrictMode>,
 )

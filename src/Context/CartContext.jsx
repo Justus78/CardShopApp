@@ -7,6 +7,7 @@ import {
   clearCart,
 } from "../Services/CartService";
 
+
 // Create the context
 export const CartContext = createContext();
 
@@ -17,18 +18,21 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load cart on first render
+  // Load cart on first render and when useAuthenticated value changes
   useEffect(() => {
     const loadCart = async () => {
-      try {
-        const items = await getCartItemsForUser();
-        setCart(items);
-      } catch (err) {
-        console.error("Failed to load cart:", err);
-      } finally {
-        setLoading(false);
-      }
+      
+        try {
+          const items = await getCartItemsForUser();
+          setCart(items);
+        } catch (err) {
+          console.error("Failed to load cart:", err);
+        } finally {
+          setLoading(false);
+        }
+      
     };
+    
     loadCart();
   }, []);
 
