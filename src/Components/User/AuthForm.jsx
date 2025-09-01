@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { postToApi, getFromApi } from "../../Services/LoginService";
 import { DataContext } from "../../Context/DataContext";
+import { CartContext } from "../../Context/CartContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 

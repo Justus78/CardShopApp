@@ -13,6 +13,7 @@ import Footer from "./Components/User/Footer";
 
 import { useContext, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
+import CartPage from "./Pages/User/Cart/CartPage";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -35,6 +36,18 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user/viewProducts" element={<ViewProducts />} />
+
+        {/** User Routes */}
+        <Route
+          path="/userCart"
+          element={
+          <ProtectedRoute requiredRole="User">
+            <CartPage />
+          </ProtectedRoute>
+        }
+        />
+
+       
 
         {/* Admin-only routes */}
         <Route

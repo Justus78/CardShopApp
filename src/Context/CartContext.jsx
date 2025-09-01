@@ -18,10 +18,9 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load cart on first render and when useAuthenticated value changes
+  // Load cart on first render 
   useEffect(() => {
-    const loadCart = async () => {
-      
+    const loadCart = async () => {      
         try {
           const items = await getCartItemsForUser();
           setCart(items);
@@ -29,12 +28,14 @@ export const CartProvider = ({ children }) => {
           console.error("Failed to load cart:", err);
         } finally {
           setLoading(false);
-        }
-      
+        }      
     };
     
     loadCart();
   }, []);
+
+  // loadcart set here so it can be exported
+  
 
   // Add item
   const addItem = async (newItem) => {

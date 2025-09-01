@@ -22,6 +22,7 @@ const ViewProducts = () => {
   // Contexts
   const { cart, addItem, updateItem, removeItem, clear } = useContext(CartContext);
   const { isAuthenticated } = useContext(DataContext);
+  console.log("on products: ", isAuthenticated)
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
