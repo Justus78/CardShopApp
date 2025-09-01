@@ -35,17 +35,23 @@ const Home = () => {
     <>
       <Navbar />
 
-      <button className="m-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-        <a href="/User/viewProducts">Products</a>
-      </button>
-
-      <div className='border h-200 mb-8'>
+      <div className='relative border h-200 mb-8'>
         <img 
-          src={assets.EOTPic} 
-          alt="Edge of Eternities picture." 
+          src={assets.PlaceholderImage} 
+          alt="Picture art of Atraxa, Praetor's Voice" 
           className='object-fill w-full h-full'
         />
-      </div>      
+      
+
+        {/* Overlay button */}
+        <button 
+          className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2
+           bg-blue-900 text-white font-bold px-10 text-3xl py-2 rounded-full 
+           shadow-md hover:bg-blue-700 transition"
+        >
+          Shop Now
+        </button>
+      </div>  
 
       {/** for new or bestsellers */}
       <div className="flex flex-col bg-blue-900">
@@ -53,11 +59,11 @@ const Home = () => {
 
         <div className="h-100 flex gap-20 justify-center items-center flex-wrap p-6">
           {[
-            { title: "Edge of Eternities", image: assets.EOTPic, setCode: "Edge of Eternities" },
-            { title: "Tarkir: Dragonstorm", image: assets.EOTPic, setCode: "Tarkir: Dragonstorm" },
-            { title: "Third Release", image: assets.EOTPic, setCode: "TR" },
-            { title: "Fourth One", image: assets.EOTPic, setCode: "FO" },
-            { title: "Fifth One", image: assets.EOTPic, setCode: "FI" }
+            { title: "Edge of Eternities", image: "https://svgs.scryfall.io/sets/eoe.svg?1755489600", setCode: "Edge of Eternities" },
+            { title: "Tarkir: Dragonstorm", image: "https://svgs.scryfall.io/sets/fin.svg?1755489600", setCode: "Tarkir: Dragonstorm" },
+            { title: "Third Release", image: "https://svgs.scryfall.io/sets/tdm.svg?1755489600", setCode: "TR" },
+            { title: "Fourth One", image: "https://svgs.scryfall.io/sets/dft.svg?1755489600", setCode: "FO" },
+            { title: "Fifth One", image: "https://svgs.scryfall.io/sets/inr.svg?1755489600", setCode: "FI" }
           ].map((release, idx) => (
             <Link
               key={idx}

@@ -50,9 +50,14 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500">
+      <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500 space-y-1">
         <p>&copy; {new Date().getFullYear()} CardVault. All rights reserved.</p>
-        <p className="mt-1">Not affiliated with Wizards of the Coast or Hasbro.</p>
+        <p>
+          Magic: The Gathering and its respective properties are © Wizards of the Coast LLC. 
+          This website is unofficial fan content permitted under the Wizards Fan Content Policy. 
+          Not approved/endorsed by Wizards.
+        </p>
+        <p>Card images courtesy of <a href="https://scryfall.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400">Scryfall</a>.</p>
       </div>
     </footer>
   );
