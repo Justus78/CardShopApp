@@ -99,9 +99,7 @@ const ViewProducts = () => {
     }
 
     const newItem = {
-      id: product.id,
-      productName: product.name,
-      stockQuantity: product.stockQuantity,
+      productId: product.id,
       quantity: 1,
     };
 
