@@ -12,8 +12,7 @@ export const DataProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if(isAuthenticated){ // only check for user status if logged in
+    const fetchUser = async () => {      
         const { data, error } = await getFromApi("status");
 
         if (data) {
@@ -25,9 +24,7 @@ export const DataProvider = ({ children }) => {
           setIsAuthenticated(false); //  not authenticated
           console.log(error)
         }
-
-        setLoading(false); //  done loading
-      }
+        setLoading(false); //  done loading      
     };
 
     fetchUser();
