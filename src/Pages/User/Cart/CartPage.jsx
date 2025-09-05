@@ -56,20 +56,21 @@ const CartPage = () => {
             >
               {/* Product Info */}
               <div className="flex items-center space-x-4">
-                <img
+                {/* <img
                   src={item.imageUrl}
                   alt={item.productName}
                   className="w-20 h-28 object-cover rounded-md shadow"
-                />
+                /> */}
                 <div>
                   <h2 className="font-semibold text-lg">{item.productName}</h2>
-                  <p className="text-gray-500">Set: {item.setName}</p>
-                  <p className="text-gray-600 font-medium">${item.price}</p>
+                  <p className="text-gray-500 font-semibold text-lg">{item.set}</p>
+                  
                 </div>
               </div>
 
               {/* Quantity Controls */}
               <div className="flex items-center space-x-4">
+                <p className="font-medium text-lg">$<span className="text-green-500"> {item.price}</span></p>
                 <input
                   type="number"
                   min="1"
@@ -85,6 +86,7 @@ const CartPage = () => {
                 >
                   Remove
                 </button>
+                
               </div>
             </div>
           ))}
