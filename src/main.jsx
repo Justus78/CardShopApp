@@ -7,6 +7,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { CartProvider } from './Context/CartContext.jsx'
 import { ToastContainer } from 'react-toastify'
 
+// Stripe imports
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

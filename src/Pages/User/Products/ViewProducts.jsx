@@ -178,7 +178,7 @@ const ViewProducts = () => {
                 {filteredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white shadow p-4 rounded-lg gap-4"
+                    className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white/50 shadow p-4 rounded-lg gap-4"
                   >
                     <div className="flex-shrink-0 w-40 h-56">
                       <img
@@ -190,11 +190,11 @@ const ViewProducts = () => {
                     <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
                       <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                       <h3 className="text-xl font-semibold mb-2">{product.setName}</h3>
-                      <p className="text-gray-700">{product.description}</p>
+                      <p className="font-semibold">{product.description}</p>
                     </div>
                     <div className="flex flex-col items-center sm:items-end justify-center min-w-[120px]">
-                      <span className="text-xl font-bold text-green-600">${product.price}</span>
-                      <span className="text-sm text-gray-500">{product.stockQuantity} in stock</span>
+                      <span className="text-xl font-bold text-green-800">${product.price}</span>
+                      <span className="text-sm">{product.stockQuantity} in stock</span>
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"

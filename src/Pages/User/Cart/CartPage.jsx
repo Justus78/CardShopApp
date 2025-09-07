@@ -19,6 +19,51 @@ const CartPage = () => {
     )
   }
 
+  
+
+  // handle checkout for stripe
+  const handleCheckout = async () => {
+  try {
+    const token = localStorage.getItem("access_token"); // JWT from login
+
+    // Build CreateOrderDto to match backend
+  const orderDto = {
+    items: cart.map(item => ({
+      productId: item.id,           // matches OrderItemDto.ProductId
+      productName: item.productName, // optional, but you have it
+      imageUrl: item.imageUrl ?? null, // if you store it in cart
+      quantity: item.quantity,
+      unitPrice: item.price         // this is your per-unit price
+    })),
+    paymentProvider: "Stripe", // required by your DTO
+    transactionId: null        // backend fills after payment
+  };
+
+  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/checkout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify(orderDto)
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to create payment");
+  }
+
+  const data = await res.json(); 
+  // should be StripePaymentResultDto -> contains clientSecret + maybe orderId
+
+  navigate("/checkout", { state: { clientSecret: data.clientSecret, orderId: data.orderId } });
+  } catch (err) {
+      console.error(err);
+      alert("Checkout failed: " + err.message);
+    }
+  };
+
+
+
   if (!cart || cart.length === 0) {
     return (
       <>
@@ -45,7 +90,7 @@ const CartPage = () => {
   return (
     <>
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 py-10 border border-white mt-3 bg-white/60">
         <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
 
         <div className="space-y-6">
@@ -63,14 +108,14 @@ const CartPage = () => {
                 /> */}
                 <div>
                   <h2 className="font-semibold text-lg">{item.productName}</h2>
-                  <p className="text-gray-500 font-semibold text-lg">{item.set}</p>
+                  <p className="font-semibold text-lg">{item.set}</p>
                   
                 </div>
               </div>
 
               {/* Quantity Controls */}
               <div className="flex items-center space-x-4">
-                <p className="font-medium text-lg">$<span className="text-green-500"> {item.price}</span></p>
+                <p className="font-bold text-xl">$<span className="text-green-800"> {item.price}</span></p>
                 <input
                   type="number"
                   min="1"
@@ -94,9 +139,9 @@ const CartPage = () => {
 
         {/* Cart Summary */}
         <div className="mt-10 border-t pt-6 flex justify-between items-center">
-          <h2 className="text-xl font-bold">Total: ${calculateTotal()}</h2>
+          <h2 className="text-xl font-bold ">Total: $<span className="text-green-800">{calculateTotal()}</span></h2>
           <button
-            onClick={() => navigate("/checkout")} // later replace with Stripe checkout
+            onClick={handleCheckout}
             className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
           >
             Checkout
