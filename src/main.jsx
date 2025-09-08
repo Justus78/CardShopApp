@@ -11,13 +11,18 @@ import { ToastContainer } from 'react-toastify'
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
+// Load publishable key from env
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <DataProvider>
-        <CartProvider>        
-          <App />
-          <ToastContainer />         
+        <CartProvider>     
+          <Elements stripe={stripePromise}>
+            <App />
+            <ToastContainer />
+          </Elements>   
         </CartProvider> 
       </DataProvider>
      </BrowserRouter> 

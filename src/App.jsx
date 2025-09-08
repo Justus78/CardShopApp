@@ -14,6 +14,8 @@ import Footer from "./Components/User/Footer";
 import { useContext, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import CartPage from "./Pages/User/Cart/CartPage";
+import OrderSuccess from "./Components/User/OrderSuccess";
+import ViewOrders from "./Pages/User/Orders/ViewOrders";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -46,6 +48,26 @@ function App() {
           </ProtectedRoute>
         }
         />
+
+        <Route
+          path="/order-success/:id"
+          element={
+            <ProtectedRoute requiredRole="User">
+              <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user/viewOrders"
+          element={
+            <ProtectedRoute requiredRole="User">
+              <ViewOrders />
+            </ProtectedRoute>
+          }
+        />
+
+
 
        
 

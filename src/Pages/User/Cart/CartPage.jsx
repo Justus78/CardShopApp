@@ -1,73 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
-import Navbar from '../../../Components/User/Navbar'
+import Navbar from "../../../Components/User/Navbar";
+import CheckoutForm from "../../../Components/User/CheckoutForm";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CartPage = () => {
   const { cart, loading, removeItem, updateItem, clear } = useCart();
   const navigate = useNavigate();
 
-  console.log(cart)
+  const [clientSecret, setClientSecret] = useState(null);
+  const [paymentIntentId, setPaymentIntentId] = useState(null);
 
-
-  if (loading) {
-    return (
-    <>
-      <Navbar />
-        <div className="text-center py-10">Loading your cart...</div>
-    </>
-    )
-  }
-
-  
-
-  // handle checkout for stripe
-  const handleCheckout = async () => {
-  try {
-    const token = localStorage.getItem("access_token"); // JWT from login
-
-    // Build CreateOrderDto to match backend
-  const orderDto = {
-    items: cart.map(item => ({
-      productId: item.id,           // matches OrderItemDto.ProductId
-      productName: item.productName, // optional, but you have it
-      imageUrl: item.imageUrl ?? null, // if you store it in cart
-      quantity: item.quantity,
-      unitPrice: item.price         // this is your per-unit price
-    })),
-    paymentProvider: "Stripe", // required by your DTO
-    transactionId: null        // backend fills after payment
+  const calculateTotal = () => {
+    return cart
+      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
-  const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/checkout/checkout`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
-    },
-    body: JSON.stringify(orderDto)
-  });
+  // console.log("Cart contents:", cart);
 
-  if (!res.ok) {
-    throw new Error("Failed to create payment");
-  }
+  const handleCheckout = async () => {
+    try {
+      // 📝 Log what’s being sent to backend
+      console.log("=== Checkout Verification ===");
+      cart.forEach((item) => {
+        console.log(
+          `Product ID: ${item.id}, Name: ${item.productName}, Quantity: ${item.quantity}, Price: ${item.price}`
+        );
+      });
+      console.log("=============================");
 
-  const data = await res.json(); 
-  // should be StripePaymentResultDto -> contains clientSecret + maybe orderId
+      // 🔹 Step 1: Request PaymentIntent from backend
+      const response = await fetch(
+        "https://localhost:7286/api/checkout/create-payment-intent",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            items: cart.map((item) => ({
+              productId: item.id, // 👈 use correct ID
+              quantity: item.quantity,
+              unitPrice: item.price,
+              productName: item.productName,
+            })),
+          }),
+        }
+      );
 
-  navigate("/checkout", { state: { clientSecret: data.clientSecret, orderId: data.orderId } });
-  } catch (err) {
-      console.error(err);
-      alert("Checkout failed: " + err.message);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("PaymentIntent response:", data);
+
+      setClientSecret(data.clientSecret);
+      setPaymentIntentId(data.paymentIntentId);
+    } catch (err) {
+      console.error("Checkout error:", err);
     }
   };
 
-
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="text-center py-10">Loading your cart...</div>
+      </>
+    );
+  }
 
   if (!cart || cart.length === 0) {
     return (
       <>
-      <Navbar />
+        <Navbar />
         <div className="text-center py-10">
           <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
           <button
@@ -81,41 +92,29 @@ const CartPage = () => {
     );
   }
 
-  const calculateTotal = () => {
-    return cart
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2);
-  };
-
   return (
     <>
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 py-10 border border-white mt-3 bg-white/60">
         <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
 
+        {/* Cart items */}
         <div className="space-y-6">
           {cart.map((item) => (
             <div
               key={item.id}
               className="flex items-center justify-between border-b pb-4"
             >
-              {/* Product Info */}
               <div className="flex items-center space-x-4">
-                {/* <img
-                  src={item.imageUrl}
-                  alt={item.productName}
-                  className="w-20 h-28 object-cover rounded-md shadow"
-                /> */}
                 <div>
                   <h2 className="font-semibold text-lg">{item.productName}</h2>
                   <p className="font-semibold text-lg">{item.set}</p>
-                  
                 </div>
               </div>
-
-              {/* Quantity Controls */}
               <div className="flex items-center space-x-4">
-                <p className="font-bold text-xl">$<span className="text-green-800"> {item.price}</span></p>
+                <p className="font-bold text-xl">
+                  $<span className="text-green-800">{item.price}</span>
+                </p>
                 <input
                   type="number"
                   min="1"
@@ -131,7 +130,6 @@ const CartPage = () => {
                 >
                   Remove
                 </button>
-                
               </div>
             </div>
           ))}
@@ -139,14 +137,31 @@ const CartPage = () => {
 
         {/* Cart Summary */}
         <div className="mt-10 border-t pt-6 flex justify-between items-center">
-          <h2 className="text-xl font-bold ">Total: $<span className="text-green-800">{calculateTotal()}</span></h2>
-          <button
-            onClick={handleCheckout}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
-          >
-            Checkout
-          </button>
+          <h2 className="text-xl font-bold">
+            Total: $<span className="text-green-800">{calculateTotal()}</span>
+          </h2>
+          {!clientSecret ? (
+            <button
+              onClick={handleCheckout}
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+            >
+              Checkout
+            </button>
+          ) : null}
         </div>
+
+        {/* Stripe Form */}
+        {clientSecret && (
+          <div className="mt-10">
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckoutForm
+                clientSecret={clientSecret}
+                paymentIntentId={paymentIntentId}
+                cart={cart}
+              />
+            </Elements>
+          </div>
+        )}
 
         <div className="mt-4 text-right">
           <button

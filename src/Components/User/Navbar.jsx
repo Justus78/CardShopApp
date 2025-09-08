@@ -7,7 +7,7 @@ const Navbar = () => {
   const [mtgOpen, setMtgOpen] = useState(false);
   const { handleLogout, isAuthenticated, user } = useContext(DataContext);
 
-  console.log(isAuthenticated, user?.userName)
+  // console.log(isAuthenticated, user?.userName)
 
   return (
     <nav className="shadow sticky top-0 z-50">
