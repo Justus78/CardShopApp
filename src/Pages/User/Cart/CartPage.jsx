@@ -43,7 +43,7 @@ const CartPage = () => {
           credentials: "include",
           body: JSON.stringify({
             items: cart.map((item) => ({
-              productId: item.id, // 👈 use correct ID
+              productId: item.id, // use correct ID
               quantity: item.quantity,
               unitPrice: item.price,
               productName: item.productName,
