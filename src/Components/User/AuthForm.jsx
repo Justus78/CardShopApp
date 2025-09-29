@@ -108,7 +108,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">
           {isRegister ? "Create an Account" : "Login to Your Account"}

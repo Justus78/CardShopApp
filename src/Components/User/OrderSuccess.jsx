@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../../Components/User/Navbar";
+import { useParams, Link } from "react-router-dom";
 
-const OrderSuccess = () => {
-  const { id } = useParams(); // orderId from URL
+const OrderSuccessPage = () => {
+  const { id } = useParams(); // order id or paymentIntent id
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await fetch(`/api/orders/${id}`, {
+        const response = await fetch(`https://localhost:7286/api/orders/${id}`, {
           credentials: "include",
         });
-        if (!res.ok) throw new Error("Failed to fetch order");
-        const data = await res.json();
+        if (!response.ok) throw new Error("Failed to load order");
+        const data = await response.json();
         setOrder(data);
-      } catch (err) {
-        console.error("Order fetch error:", err);
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -29,73 +27,84 @@ const OrderSuccess = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
-        <div className="text-center py-10">Loading order details...</div>
-      </>
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-lg font-semibold text-gray-600">Loading your order...</p>
+      </div>
     );
   }
 
   if (!order) {
     return (
-      <>
-        <Navbar />
-        <div className="text-center py-10">
-          <h2 className="text-2xl font-semibold mb-4">Order not found</h2>
-          <button
-            onClick={() => navigate("/")}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg"
-          >
-            Back Home
-          </button>
-        </div>
-      </>
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <h1 className="text-3xl font-bold text-red-600 mb-4">Order not found</h1>
+        <p className="text-gray-600 mb-6">We couldn’t find the details for this order.</p>
+        <Link
+          to="/"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+        >
+          Return Home
+        </Link>
+      </div>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="max-w-3xl mx-auto px-4 py-10 bg-white/70 shadow rounded-lg">
-        <h1 className="text-3xl font-bold text-green-700 mb-6">
-          🎉 Thank you for your purchase!
-        </h1>
-        <p className="text-lg mb-4">
-          Your order <span className="font-semibold">#{order.id}</span> has been successfully placed.
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
+      <div className="bg-white shadow-lg rounded-xl p-8 max-w-2xl w-full text-center">
+        <div className="flex justify-center mb-6">
+          <div className="bg-green-100 p-4 rounded-full">
+            <svg
+              className="w-10 h-10 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Payment Successful!</h1>
+        <p className="text-gray-600 mb-6">
+          Thank you for your order. We’ve received your payment and your items are being processed.
         </p>
 
-        <div className="border-t pt-4 space-y-4">
-          {order.items?.map((item) => (
-            <div key={item.productId} className="flex justify-between">
-              <span>
-                {item.productName} × {item.quantity}
-              </span>
-              <span>${(item.unitPrice * item.quantity).toFixed(2)}</span>
-            </div>
-          ))}
+        {/* Order summary */}
+        <div className="bg-gray-50 border rounded-lg p-6 text-left mb-6">
+          <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
+          <ul className="divide-y divide-gray-200">
+            {order.items.map((item) => (
+              <li key={item.productId} className="py-2 flex justify-between">
+                <span>{item.productName} × {item.quantity}</span>
+                <span>${(item.unitPrice * item.quantity).toFixed(2)}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex justify-between mt-4 font-bold text-gray-800">
+            <span>Total</span>
+            <span>${order.totalAmount.toFixed(2)}</span>
+          </div>
         </div>
 
-        <div className="mt-6 text-right text-xl font-bold">
-          Total: ${order.totalAmount.toFixed(2)}
-        </div>
-
-        <div className="mt-8 flex justify-end space-x-4">
-          <button
-            onClick={() => navigate("/user/viewProducts")}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg"
+        {/* Buttons */}
+        <div className="flex justify-center space-x-4">
+          <Link
+            to="/"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
           >
             Continue Shopping
-          </button>
-          <button
-            onClick={() => navigate("/user/viewOrders")}
-            className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg"
+          </Link>
+          <Link
+            to={`/orders/${order.id}`}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-semibold transition"
           >
-            View Orders
-          </button>
+            View Order
+          </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default OrderSuccess;
+export default OrderSuccessPage;

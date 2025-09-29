@@ -16,6 +16,7 @@ import { DataContext } from "./Context/DataContext";
 import CartPage from "./Pages/User/Cart/CartPage";
 import OrderSuccess from "./Components/User/OrderSuccess";
 import ViewOrders from "./Pages/User/Orders/ViewOrders";
+import CheckoutPage from "./Pages/User/Checkout/CheckoutPage";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -45,6 +46,15 @@ function App() {
           element={
           <ProtectedRoute requiredRole="User">
             <CartPage />
+          </ProtectedRoute>
+        }
+        />
+
+        <Route
+          path="/userCheckout"
+          element={
+          <ProtectedRoute requiredRole="User">
+            <CheckoutPage />
           </ProtectedRoute>
         }
         />
