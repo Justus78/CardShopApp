@@ -17,7 +17,7 @@ const CartPage = () => {
     return (
       <>
         <Navbar />
-        <div className="text-center py-10">
+        <div className="text-center py-10 min-h-screen">
           <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
           <button
             onClick={() => navigate("/shop")}

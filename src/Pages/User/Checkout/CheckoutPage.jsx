@@ -19,6 +19,7 @@ const CheckoutPage = () => {
   });
   const [clientSecret, setClientSecret] = useState(null);
   const [paymentIntentId, setPaymentIntentId] = useState(null);
+  const [orderId, setOrderId] = useState(null); // set the orderId
 
   const calculateTotal = () =>
     cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
@@ -44,8 +45,10 @@ const CheckoutPage = () => {
   });
 
   const data = await response.json();
+  console.log(data.order);
   setClientSecret(data.clientSecret);
   setPaymentIntentId(data.paymentIntentId);
+  setOrderId(data.order.id);
 };
 
 
@@ -126,6 +129,7 @@ const CheckoutPage = () => {
           <div className="mt-8">
             <Elements stripe={stripePromise} options={{ clientSecret }}>
               <CheckoutForm
+                orderId={orderId}
                 clientSecret={clientSecret}
                 paymentIntentId={paymentIntentId}
                 cart={cart}

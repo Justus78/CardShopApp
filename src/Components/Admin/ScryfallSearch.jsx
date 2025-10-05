@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { createProduct } from "../../services/productService";
 import { toast } from "react-toastify";
 import {
@@ -7,6 +7,8 @@ import {
   CardRarity,
   CardType,
 } from "../../Constants/enums";
+import { User } from "lucide-react";
+import { DataContext } from "../../Context/DataContext";
 
 const PAGE_SIZE = 20;
 
@@ -25,7 +27,10 @@ const ScryfallSearch = () => {
   const [groupBy, setGroupBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const {user} = useContext(DataContext);
+
   const handleSearch = async (e) => {
+
     e.preventDefault();
     if (!query.trim()) return;
 
@@ -64,9 +69,6 @@ const ScryfallSearch = () => {
   const filteredCards = cards
     .filter((card) =>
       selectedRarity ? card.rarity === selectedRarity.toLowerCase() : true
-    )
-    .filter((card) =>
-      selectedCondition ? card.condition === selectedCondition : true
     )
     .filter((card) =>
       selectedType ? card.type_line?.includes(selectedType) : true
@@ -143,6 +145,10 @@ const ScryfallSearch = () => {
       await createProduct(formData);
       toast.success("Product added successfully!");
       setSelectedCard(null);
+      // console.log("cards:", cards);
+      // console.log("filteredCards:", filteredCards);
+      // console.log("groupedCards:", groupedCards);
+      // console.log("paginatedGroupedCards:", paginatedGroupedCards);
     } catch (err) {
       console.error(err);
       toast.error("Failed to add product.");
@@ -232,8 +238,13 @@ const ScryfallSearch = () => {
                     <p className="text-sm text-gray-600">Mana Cost: {card.mana_cost}</p>
                   )}
                   <p className="text-sm capitalize">Rarity: {card.rarity}</p>
-                  <p className="text-sm capitalize">Foil: {card.foil.toString()}</p>
-                  <p className="text-sm capitalize">${card.prices.usd || card.prices[0]}</p>
+                  <p className="text-sm capitalize">
+                    Finishes: {card.finishes?.join(", ") || "N/A"}
+                  </p>
+                  <p className="text-sm capitalize">
+                    ${card.prices.usd || card.prices.usd_foil || "N/A"}
+                  </p>
+
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
