@@ -17,6 +17,9 @@ import CartPage from "./Pages/User/Cart/CartPage";
 import OrderSuccess from "./Components/User/OrderSuccess";
 import ViewOrders from "./Pages/User/Orders/ViewOrders";
 import CheckoutPage from "./Pages/User/Checkout/CheckoutPage";
+import ForgotPassword from './Pages/User/ForgotPassword/ForgotPassword'
+import VerifyEmail from './Pages/User/VerifyEmail/VerifyEmail'
+import ResetPassword from './Pages/User/ResetPassword/ResetPassword'
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -39,6 +42,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user/viewProducts" element={<ViewProducts />} />
+        
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+
 
         {/** User Routes */}
         <Route

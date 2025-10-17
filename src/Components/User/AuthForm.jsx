@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { postToApi, getFromApi } from "../../Services/LoginService";
+import { postToApi, getFromApi, loginUser, registerUser } from "../../Services/LoginService";
 import { DataContext } from "../../Context/DataContext";
 import { CartContext } from "../../Context/CartContext";
 import { toast } from "react-toastify";
@@ -28,7 +28,7 @@ const AuthForm = () => {
         Password: password,
       };
 
-      const { error: loginError } = await postToApi("login", loginData);
+      const { error: loginError } = await loginUser(loginData);
 
       if (loginError) {
         setError("Incorrect Username or Password");
@@ -80,7 +80,7 @@ const AuthForm = () => {
         Password: password,
       };
 
-      const { error } = await postToApi("register", registerData);
+      const { error } = await registerUser(registerData);
 
       if (error) {
         setError(error);
