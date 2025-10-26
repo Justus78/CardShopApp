@@ -38,7 +38,7 @@ const Home = () => {
       <div className='relative border h-200 mb-8'>
         <img 
           src={assets.PlaceholderImage} 
-          alt="Picture art of Atraxa, Praetor's Voice" 
+          alt="Picture" 
           className='object-fill w-full h-full'
         />
       

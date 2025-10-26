@@ -26,6 +26,14 @@ export const getAllOrdersForAdmin = async () => {
     }
 };
 
+export const getOrderById = async (id) => {
+    try {
+        const res = await fetch(`${API_URL + "/orders/"}`)
+    } catch (err){
+        throw new Error(err.message);
+    }
+};
+
 export const getAllUsersForAdmin = async () => {
     try {
         const res = await fetch(`${API_URL + "/get-users"}`, {

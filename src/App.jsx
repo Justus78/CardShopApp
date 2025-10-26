@@ -1,5 +1,7 @@
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import Login from "./Pages/User/Login/Login";
 import Home from "./Pages/User/Home/Home";
@@ -20,6 +22,7 @@ import CheckoutPage from "./Pages/User/Checkout/CheckoutPage";
 import ForgotPassword from './Pages/User/ForgotPassword/ForgotPassword'
 import VerifyEmail from './Pages/User/VerifyEmail/VerifyEmail'
 import ResetPassword from './Pages/User/ResetPassword/ResetPassword'
+import OrderDetails from "./Pages/Admin/Orders/OrderDetails";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -119,6 +122,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="Admin">
               <Orders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/orders/:id"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <OrderDetails />
             </ProtectedRoute>
           }
         />
