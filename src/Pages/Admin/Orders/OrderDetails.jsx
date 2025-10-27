@@ -31,69 +31,87 @@ const OrderDetails = () => {
 
     try {
       await updateOrderStatus(id, newStatus);
-      alert('Order status updated successfully!');
+      toast.success('Order status updated successfully!');
     } catch (error) {
-      alert('Failed to update status.');
+      toast.error('Failed to update status.');
     }
   };
 
-  if (loading) return <p className="p-4">Loading order...</p>;
-  if (!order) return <p className="p-4 text-red-500">Order not found.</p>;
+  if (loading)
+    return <p className="text-cyan-400 text-center mt-10 text-lg">Loading order...</p>;
+  if (!order)
+    return <p className="text-red-500 text-center mt-10 text-lg">Order not found.</p>;
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-b from-black via-[#0a0022] to-[#010101] text-white font-sans">
       <Navbar />
-      <div className="p-6 max-w-4xl mx-auto bg-white shadow-md rounded">
-        <h2 className="text-2xl font-semibold mb-4">Order Details</h2>
 
-        <div className="mb-4">
-          <p><strong>Order ID:</strong> {order.id}</p>
-          <p><strong>Customer:</strong> {order.user.userName || order.user.email}</p>
-          <p><strong>Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
-          <p><strong>Total:</strong> ${order.totalAmount}</p>
+      <div className="max-w-5xl mx-auto p-6 mt-10 bg-opacity-10 bg-black rounded-2xl border border-cyan-500/40 shadow-[0_0_25px_rgba(0,255,255,0.3)]">
+        <h2 className="text-3xl font-bold mb-6 text-cyan-400 text-center drop-shadow-[0_0_10px_#00ffff]">
+          Order Details
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="space-y-3">
+            <p><span className="text-purple-400 font-semibold">Order ID:</span> {order.id}</p>
+            <p><span className="text-purple-400 font-semibold">Customer:</span> {order.username || "No username found"}</p>
+            <p><span className="text-purple-400 font-semibold">Date:</span> {new Date(order.createdAt).toLocaleString()}</p>
+          </div>
+          <div className="space-y-3">
+            <p><span className="text-purple-400 font-semibold">Total:</span> ${order.totalAmount}</p>
+            <div>
+              <label className="text-purple-400 font-semibold mr-2">Status:</label>
+              <select
+                value={status}
+                onChange={handleStatusChange}
+                className="bg-black border border-cyan-500 text-cyan-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                <option value={0}>Pending</option>
+                <option value={1}>Paid</option>
+                <option value={2}>Failed</option>
+                <option value={3}>Shipped</option>
+                <option value={4}>Cancelled</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label className="font-semibold mr-2">Status:</label>
-          <select
-            value={status}
-            onChange={handleStatusChange}
-            className="border border-gray-300 rounded px-3 py-1"
-          >
-            <option value={0}>Pending</option>
-            <option value={1}>Processing</option>
-            <option value={2}>Shipped</option>
-            <option value={3}>Completed</option>
-            <option value={4}>Cancelled</option>
-          </select>
-        </div>
+        <h3 className="text-2xl text-cyan-400 mb-4 font-semibold border-b border-cyan-500/30 pb-2">
+          Items
+        </h3>
 
-        <h3 className="text-xl font-semibold mt-6 mb-2">Items</h3>
-        <table className="min-w-full bg-white border border-gray-300 mb-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="py-2 px-4 border-b text-left">Product</th>
-              <th className="py-2 px-4 border-b text-left">Qty</th>
-              <th className="py-2 px-4 border-b text-left">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.items?.map((item) => (
-              <tr key={item.productId} className="hover:bg-gray-50">
-                <td className="py-2 px-4 border-b">{item.productName}</td>
-                <td className="py-2 px-4 border-b">{item.quantity}</td>
-                <td className="py-2 px-4 border-b">${item.price}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-cyan-600/40">
+            <thead className="bg-[#0f002a] text-cyan-300">
+              <tr>
+                <th className="py-3 px-4 border-b border-cyan-600/40 text-left">Product</th>
+                <th className="py-3 px-4 border-b border-cyan-600/40 text-left">Qty</th>
+                <th className="py-3 px-4 border-b border-cyan-600/40 text-left">Price</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {order.items?.map((item) => (
+                <tr
+                  key={item.productId}
+                  className="hover:bg-[#0a0022] transition duration-300"
+                >
+                  <td className="py-3 px-4 border-b border-cyan-600/40">{item.productName}</td>
+                  <td className="py-3 px-4 border-b border-cyan-600/40">{item.quantity}</td>
+                  <td className="py-3 px-4 border-b border-cyan-600/40">${item.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-        <button
-          onClick={() => navigate('/admin/orders')}
-          className="mt-4 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
-        >
-          Back to Orders
-        </button>
+        <div className="text-center mt-8">
+          <button
+            onClick={() => navigate('/admin/viewOrders')}
+            className="px-6 py-2 rounded-md bg-cyan-500 hover:bg-cyan-600 text-black font-semibold shadow-[0_0_15px_#00ffff] transition duration-300"
+          >
+            Back to Orders
+          </button>
+        </div>
       </div>
     </div>
   );
