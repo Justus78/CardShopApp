@@ -5,3 +5,37 @@ body {
     background-position: center;
     background-attachment: fixed;
 }
+
+/* @keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+    }
+} */
+
+/* .glow-row:hover {
+    animation: pulseGlow 1.5s infinite;
+} */
+
+@keyframes cyberPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.3),
+            0 0 20px rgba(236, 72, 153, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.6),
+            0 0 40px rgba(236, 72, 153, 0.5);
+    }
+}
+
+.cyber-glow:hover {
+    animation: cyberPulse 1.5s infinite;
+}
