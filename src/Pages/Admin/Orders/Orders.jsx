@@ -72,89 +72,93 @@ const Orders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0024] via-[#10002b] to-[#001f2d] text-white relative overflow-hidden">
+    <>
       <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0024] via-[#10002b] to-[#001f2d] text-white relative overflow-hidden">
+        
 
-      {/* Neon grid background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)]"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,0,255,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(255,0,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        {/* Neon grid background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,0,255,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(255,0,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
-      {/* Page content animation */}
-      <motion.div
-        className="relative z-10 p-6"
-        variants={pageVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-cyan-400"></div>
-          </div>
-        ) : error ? (
-          <p className="text-red-400 p-4 text-center">{error}</p>
-        ) : orders.length === 0 ? (
-          <p className="p-4 text-gray-400 text-center">No orders found.</p>
-        ) : (
-          <div className="overflow-x-auto rounded-2xl shadow-[0_0_25px_rgba(0,255,255,0.2)] border border-cyan-600/40 backdrop-blur-xl bg-[#0f022c]/70">
-            <div className="p-6 flex justify-between items-center border-b border-cyan-500/30">
-              <h2 className="text-3xl font-extrabold tracking-widest bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent animate-pulse drop-shadow-[0_0_10px_#0ff]">
-                ⚡ Orders Dashboard
-              </h2>
+        {/* Page content animation */}
+        <motion.div
+          className="relative z-10 p-6"
+          variants={pageVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-cyan-400"></div>
             </div>
+          ) : error ? (
+            <p className="text-red-400 p-4 text-center">{error}</p>
+          ) : orders.length === 0 ? (
+            <p className="p-4 text-gray-400 text-center">No orders found.</p>
+          ) : (
+            <div className="overflow-x-auto rounded-2xl shadow-[0_0_25px_rgba(0,255,255,0.2)] border border-cyan-600/40 backdrop-blur-xl bg-[#0f022c]/70">
+              <div className="p-6 flex justify-between items-center border-b border-cyan-500/30">
+                <h2 className="text-3xl font-extrabold tracking-widest bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent animate-pulse drop-shadow-[0_0_10px_#0ff]">
+                  ⚡ Orders Dashboard
+                </h2>
+              </div>
 
-            <table className="min-w-full text-sm text-cyan-100">
-              <thead className="bg-gradient-to-r from-[#1a0033] to-[#002a3f] border-b border-cyan-500/40 text-cyan-300 uppercase tracking-wider text-xs">
-                <tr>
-                  <th className="py-3 px-4 text-left">Order ID</th>
-                  <th className="py-3 px-4 text-left">Customer</th>
-                  <th className="py-3 px-4 text-left">Total</th>
-                  <th className="py-3 px-4 text-left">Date</th>
-                  <th className="py-3 px-4 text-left">Status</th>
-                  <th className="py-3 px-4 text-left">Actions</th>
-                </tr>
-              </thead>
+              <table className="min-w-full text-sm text-cyan-100">
+                <thead className="bg-gradient-to-r from-[#1a0033] to-[#002a3f] border-b border-cyan-500/40 text-cyan-300 uppercase tracking-wider text-xs">
+                  <tr>
+                    <th className="py-3 px-4 text-left">Order ID</th>
+                    <th className="py-3 px-4 text-left">Customer</th>
+                    <th className="py-3 px-4 text-left">Total</th>
+                    <th className="py-3 px-4 text-left">Date</th>
+                    <th className="py-3 px-4 text-left">Status</th>
+                    <th className="py-3 px-4 text-left">Actions</th>
+                  </tr>
+                </thead>
 
-              <motion.tbody
-                variants={containerVariants}
-                initial="hidden"
-                animate="show"
-              >
-                {orders.map((order, i) => (
-                  <motion.tr
-                    key={order.id}
-                    variants={rowVariants}
-                    className={`transition-all duration-300 ${
-                      i % 2 === 0 ? 'bg-[#090022]/40' : 'bg-[#0d0130]/40'
-                    } hover:scale-[1.01] hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:bg-gradient-to-r hover:from-cyan-700/20 hover:to-fuchsia-700/20`}
-                  >
-                    <td className="py-3 px-4 font-mono text-cyan-300">{order.id}</td>
-                    <td className="py-3 px-4">{order.username || "No username"}</td>
-                    <td className="py-3 px-4 text-green-300 font-semibold">${order.totalAmount.toFixed(2)}</td>
-                    <td className="py-3 px-4 text-gray-400">{new Date(order.orderDate).toLocaleDateString()}</td>
-                    <td className="py-3 px-4">{getStatusLabel(order.status)}</td>
-                    <td className="py-3 px-4">
-                      <motion.button
-                        whileHover={{ scale: 1.1, textShadow: '0 0 8px #0ff' }}
-                        onClick={() => navigate(`/admin/orders/${order.id}`)}
-                        className="relative inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-fuchsia-400 transition-all duration-300 group"
-                      >
-                        <span className="z-10">View / Edit</span>
-                        <span className="absolute inset-0 rounded-md bg-gradient-to-r from-cyan-500 to-fuchsia-600 opacity-0 group-hover:opacity-40 blur-md transition-opacity duration-500"></span>
-                      </motion.button>
-                    </td>
-                  </motion.tr>
-                ))}
-              </motion.tbody>
-            </table>
+                <motion.tbody
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="show"
+                >
+                  {orders.map((order, i) => (
+                    <motion.tr
+                      key={order.id}
+                      variants={rowVariants}
+                      className={`transition-all duration-300 ${
+                        i % 2 === 0 ? 'bg-[#090022]/40' : 'bg-[#0d0130]/40'
+                      } hover:scale-[1.01] hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:bg-gradient-to-r hover:from-cyan-700/20 hover:to-fuchsia-700/20`}
+                    >
+                      <td className="py-3 px-4 font-mono text-cyan-300">{order.id}</td>
+                      <td className="py-3 px-4">{order.username || "No username"}</td>
+                      <td className="py-3 px-4 text-green-300 font-semibold">${order.totalAmount.toFixed(2)}</td>
+                      <td className="py-3 px-4 text-gray-400">{new Date(order.orderDate).toLocaleDateString()}</td>
+                      <td className="py-3 px-4">{getStatusLabel(order.status)}</td>
+                      <td className="py-3 px-4">
+                        <motion.button
+                          whileHover={{ scale: 1.1, textShadow: '0 0 8px #0ff' }}
+                          onClick={() => navigate(`/admin/orders/${order.id}`)}
+                          className="relative inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-fuchsia-400 transition-all duration-300 group"
+                        >
+                          <span className="z-10">View / Edit</span>
+                          <span className="absolute inset-0 rounded-md bg-gradient-to-r from-cyan-500 to-fuchsia-600 opacity-0 group-hover:opacity-40 blur-md transition-opacity duration-500"></span>
+                        </motion.button>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </motion.tbody>
+              </table>
 
-            <div className="p-3 bg-[#100030]/80 border-t border-cyan-500/30 text-cyan-400 text-xs text-right rounded-b-2xl">
-              Showing {orders.length} orders
+              <div className="p-3 bg-[#100030]/80 border-t border-cyan-500/30 text-cyan-400 text-xs text-right rounded-b-2xl">
+                Showing {orders.length} orders
+              </div>
             </div>
-          </div>
-        )}
-      </motion.div>
-    </div>
+          )}
+        </motion.div>
+      </div>
+    </>
   );
 };
+
 
 export default Orders;

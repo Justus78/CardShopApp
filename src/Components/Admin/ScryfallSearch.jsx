@@ -7,7 +7,6 @@ import {
   CardRarity,
   CardType,
 } from "../../Constants/enums";
-import { User } from "lucide-react";
 import { DataContext } from "../../Context/DataContext";
 
 const PAGE_SIZE = 20;
@@ -27,10 +26,11 @@ const ScryfallSearch = () => {
   const [groupBy, setGroupBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {user} = useContext(DataContext);
+  const { user } = useContext(DataContext);
+
+  console.log(selectedCard)
 
   const handleSearch = async (e) => {
-
     e.preventDefault();
     if (!query.trim()) return;
 
@@ -41,9 +41,7 @@ const ScryfallSearch = () => {
 
     try {
       const res = await fetch(
-        `https://api.scryfall.com/cards/search?q=${encodeURIComponent(
-          query
-        )}&unique=cards`
+        `https://api.scryfall.com/cards/search?q=${encodeURIComponent(query)}&unique=cards`
       );
       const data = await res.json();
 
@@ -65,14 +63,9 @@ const ScryfallSearch = () => {
     }
   };
 
-  // Filtering, sorting logic
   const filteredCards = cards
-    .filter((card) =>
-      selectedRarity ? card.rarity === selectedRarity.toLowerCase() : true
-    )
-    .filter((card) =>
-      selectedType ? card.type_line?.includes(selectedType) : true
-    )
+    .filter((card) => (selectedRarity ? card.rarity === selectedRarity.toLowerCase() : true))
+    .filter((card) => (selectedType ? card.type_line?.includes(selectedType) : true))
     .sort((a, b) => {
       if (sortOrder === "name") return a.name.localeCompare(b.name);
       if (sortOrder === "set_name") return a.set_name.localeCompare(b.set_name);
@@ -80,7 +73,6 @@ const ScryfallSearch = () => {
       return 0;
     });
 
-  // Group cards (if grouping enabled)
   const groupedCards = groupBy
     ? filteredCards.reduce((acc, card) => {
         const key = card[groupBy] || "Other";
@@ -90,8 +82,6 @@ const ScryfallSearch = () => {
       }, {})
     : { All: filteredCards };
 
-  // Pagination helper for grouped cards:
-  // Returns only the cards for the current page in each group
   const paginatedGroupedCards = {};
   Object.entries(groupedCards).forEach(([group, cards]) => {
     const start = (currentPage - 1) * PAGE_SIZE;
@@ -99,7 +89,6 @@ const ScryfallSearch = () => {
     paginatedGroupedCards[group] = cards.slice(start, end);
   });
 
-  // Calculate total pages across all cards (ignoring grouping for simplicity)
   const totalCardsCount = filteredCards.length;
   const totalPages = Math.ceil(totalCardsCount / PAGE_SIZE);
 
@@ -114,22 +103,18 @@ const ScryfallSearch = () => {
 
   const handleSubmit = async () => {
     if (!price || !inventory || isNaN(price) || isNaN(inventory)) {
-      alert("Please enter valid price and stock quantity.");
+      toast.error("Please enter valid price and stock quantity.");
       return;
     }
 
     try {
       const formData = new FormData();
-
       const imageUrl =
         selectedCard.image_uris?.normal ||
         selectedCard.card_faces?.[0]?.image_uris?.normal;
 
       formData.append("Name", selectedCard.name);
-      formData.append(
-        "Description",
-        selectedCard.oracle_text || "No description available"
-      );
+      formData.append("Description", selectedCard.oracle_text || "No description available");
       formData.append("Price", price);
       formData.append("StockQuantity", inventory);
       formData.append("ProductCategory", ProductCategory.Card);
@@ -145,10 +130,6 @@ const ScryfallSearch = () => {
       await createProduct(formData);
       toast.success("Product added successfully!");
       setSelectedCard(null);
-      // console.log("cards:", cards);
-      // console.log("filteredCards:", filteredCards);
-      // console.log("groupedCards:", groupedCards);
-      // console.log("paginatedGroupedCards:", paginatedGroupedCards);
     } catch (err) {
       console.error(err);
       toast.error("Failed to add product.");
@@ -156,43 +137,46 @@ const ScryfallSearch = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6">
+      <h1 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 drop-shadow-lg">
+        ✨ Scryfall Search ✨
+      </h1>
+
+      {/* Search bar */}
       <form
         onSubmit={handleSearch}
-        className="max-w-xl mx-auto mb-6 flex gap-2"
+        className="max-w-2xl mx-auto mb-8 flex items-center gap-3"
       >
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search Magic cards..."
-          className="flex-1 p-3 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="flex-1 p-3 bg-gray-900 border border-purple-500 text-white rounded-xl focus:ring-2 focus:ring-cyan-500 placeholder-gray-400 transition-all duration-300 hover:shadow-[0_0_10px_#9333ea]"
         />
         <button
           type="submit"
-          className="bg-purple-600 text-white px-6 rounded-r-lg hover:bg-purple-700 transition"
+          className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
         >
           Search
         </button>
       </form>
 
       {/* Sort & Group Controls */}
-      <div className="max-w-xl mx-auto flex gap-4 mb-6">
+      <div className="max-w-2xl mx-auto flex gap-4 mb-6">
         <select
-          className="p-2 border rounded flex-1"
+          className="flex-1 bg-gray-900 border border-purple-500 rounded-xl text-white p-2 focus:ring-2 focus:ring-cyan-500"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          aria-label="Sort cards"
         >
           <option value="name">Sort by Name</option>
           <option value="set_name">Sort by Set</option>
           <option value="rarity">Sort by Rarity</option>
         </select>
         <select
-          className="p-2 border rounded flex-1"
+          className="flex-1 bg-gray-900 border border-purple-500 rounded-xl text-white p-2 focus:ring-2 focus:ring-cyan-500"
           value={groupBy}
           onChange={(e) => setGroupBy(e.target.value)}
-          aria-label="Group cards"
         >
           <option value="">No Grouping</option>
           <option value="set_name">Group by Set</option>
@@ -200,18 +184,15 @@ const ScryfallSearch = () => {
         </select>
       </div>
 
-      {loading && (
-        <p className="text-center text-gray-600 text-lg">Loading cards...</p>
-      )}
-      {error && (
-        <p className="text-center text-red-600 font-medium mb-6">{error}</p>
-      )}
+      {/* Loading/Error */}
+      {loading && <p className="text-center text-cyan-300 text-lg">Loading cards...</p>}
+      {error && <p className="text-center text-red-400 font-medium mb-6">{error}</p>}
 
-      {/* Cards display grouped & paginated */}
+      {/* Cards */}
       {Object.entries(paginatedGroupedCards).map(([group, groupCards]) => (
-        <div key={group} className="mb-8 w-full mx-auto">
+        <div key={group} className="mb-10">
           {group !== "All" && (
-            <h2 className="text-xl font-semibold mb-4 text-center capitalize">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-purple-400">
               {group}
             </h2>
           )}
@@ -219,173 +200,153 @@ const ScryfallSearch = () => {
             {groupCards.map((card) => (
               <div
                 key={card.id}
-                className="bg-white shadow-md rounded-lg w-75 overflow-hidden cursor-pointer"
                 onClick={() => handleAddClick(card)}
+                className="relative bg-gray-900 bg-opacity-70 border border-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-[0_0_20px_#9333ea] transition-all duration-300 hover:scale-105 cursor-pointer group"
               >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 opacity-0 group-hover:opacity-20 blur-xl transition duration-500"></div>
                 <img
                   src={
                     card.image_uris?.normal ||
-                    card.card_faces?.[0]?.image_uris?.normal ||
-                    "https://via.placeholder.com/150"
+                    card.card_faces?.[0]?.image_uris?.normal
                   }
                   alt={card.name}
-                  className="w-full object-cover"
+                  className="w-full rounded mb-3"
                 />
-                <div className="p-4">
-                  <h2 className="text-lg font-semibold">{card.name}</h2>
-                  <p className="text-sm text-gray-600">Set: {card.set_name}</p>
-                  {card.mana_cost && (
-                    <p className="text-sm text-gray-600">Mana Cost: {card.mana_cost}</p>
-                  )}
-                  <p className="text-sm capitalize">Rarity: {card.rarity}</p>
-                  <p className="text-sm capitalize">
-                    Finishes: {card.finishes?.join(", ") || "N/A"}
-                  </p>
-                  <p className="text-sm capitalize">
-                    ${card.prices.usd || card.prices.usd_foil || "N/A"}
-                  </p>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddClick(card);
-                    }}
-                    className="mt-3 w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-                  >
-                    Add to Inventory
-                  </button>
-                </div>
+                <h2 className="font-semibold text-lg text-purple-300">{card.name}</h2>
+                <p className="text-sm text-gray-400">{card.set_name}</p>
+                <p className="text-cyan-400 text-sm italic capitalize">{card.rarity}</p>
+                <p className="text-sm mt-1">${card.prices.usd || card.prices.usd_foil || "N/A"}</p>
               </div>
             ))}
           </div>
         </div>
       ))}
 
-      {/* Pagination Controls */}
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="max-w-xl mx-auto flex justify-center items-center space-x-4 mt-6">
+        <div className="flex justify-center items-center gap-4 mt-8">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            className={`px-4 py-2 rounded ${
+            className={`px-4 py-2 rounded-xl ${
               currentPage === 1
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-purple-600 text-white hover:bg-purple-700"
-            }`}
+                ? "bg-gray-700 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105"
+            } transition-all`}
           >
             Previous
           </button>
-          <span className="font-medium">
+          <span className="text-gray-300">
             Page {currentPage} of {totalPages}
           </span>
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            className={`px-4 py-2 rounded ${
+            className={`px-4 py-2 rounded-xl ${
               currentPage === totalPages
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-purple-600 text-white hover:bg-purple-700"
-            }`}
+                ? "bg-gray-700 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105"
+            } transition-all`}
           >
             Next
           </button>
         </div>
       )}
 
-      {/** pop up menu for when adding selected card to inventory */}
+      {/* Add to inventory modal */}
       {selectedCard && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-full mx-4">
-            <h2 className="text-xl font-bold mb-4">Add &quot;{selectedCard.name}&quot; CM: ${ selectedCard.prices.usd || selectedCard.prices[0]}</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 text-white p-5 rounded-2xl shadow-lg border border-purple-500 w-80 sm:w-96 max-w-full max-h-[90vh] overflow-y-auto relative">
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedCard(null)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-white transition"
+            >
+              ✖
+            </button>
 
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">Price</label>
+            {/* Card Image */}
+            <img
+              src={
+                selectedCard.image_uris?.normal ||
+                selectedCard.card_faces?.[0]?.image_uris?.normal
+              }
+              alt={selectedCard.name}
+              className="w-full rounded-lg mb-4"
+            />
+
+            {/* Card Info */}
+            <h2 className="text-2xl font-bold text-center mb-3 text-cyan-300">
+              {selectedCard.name}
+            </h2>
+            <p className="text-center text-gray-400 mb-2">{selectedCard.set_name}</p>
+            <p className="text-center text-gray-400 mb-4">
+              Market Price: ${selectedCard.prices.usd}
+            </p>
+
+            {/* Form Inputs */}
+            <div className="space-y-3">
               <input
                 type="number"
                 step="0.01"
+                placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500 focus:ring-2 focus:ring-cyan-500"
               />
-            </div>
-
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Stock Quantity
-              </label>
               <input
                 type="number"
+                placeholder="Stock Quantity"
                 value={inventory}
                 onChange={(e) => setInventory(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500 focus:ring-2 focus:ring-cyan-500"
               />
-            </div>
 
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">Condition</label>
               <select
                 value={selectedCondition}
                 onChange={(e) => setSelectedCondition(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500"
               >
                 <option value="">Select Condition</option>
                 {Object.values(CardCondition).map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
+                  <option key={value} value={value}>{value}</option>
                 ))}
               </select>
-            </div>
 
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">Rarity</label>
               <select
                 value={selectedRarity}
                 onChange={(e) => setSelectedRarity(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500"
               >
                 <option value="">Select Rarity</option>
                 {Object.values(CardRarity).map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
+                  <option key={value} value={value}>{value}</option>
                 ))}
               </select>
-            </div>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Type</label>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500"
               >
                 <option value="">Select Type</option>
                 {Object.values(CardType).map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
+                  <option key={value} value={value}>{value}</option>
                 ))}
               </select>
-            </div>
 
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setSelectedCard(null)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-              >
-                Cancel
-              </button>
+              {/* Submit Button */}
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="w-full mt-4 bg-gradient-to-r from-purple-500 to-cyan-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-all duration-300"
               >
-                Submit
+                Add to Inventory
               </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
