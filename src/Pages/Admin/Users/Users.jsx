@@ -120,7 +120,14 @@ const Users = () => {
                         <td className="py-2 px-4 ">{user.orderCount}</td>
                       
                         <td className="py-2 px-4">
-                          <button className="text-blue-600 hover:underline">View</button>
+                          <motion.button
+                            whileHover={{ scale: 1.1, textShadow: '0 0 8px #0ff' }}
+                            onClick={() => navigate(`/admin/userDetails/${user.id}`)}
+                            className="relative inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-fuchsia-400 transition-all duration-300 group"
+                          >
+                            <span className="z-10">View / Edit</span>
+                            <span className="absolute inset-0 rounded-md bg-gradient-to-r from-cyan-500 to-fuchsia-600 opacity-0 group-hover:opacity-40 blur-md transition-opacity duration-500"></span>
+                          </motion.button>                        
                         </td>
                       </motion.tr>
                   ))}

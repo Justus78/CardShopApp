@@ -23,6 +23,7 @@ import ForgotPassword from './Pages/User/ForgotPassword/ForgotPassword'
 import VerifyEmail from './Pages/User/VerifyEmail/VerifyEmail'
 import ResetPassword from './Pages/User/ResetPassword/ResetPassword'
 import OrderDetails from "./Pages/Admin/Orders/OrderDetails";
+import UserDetails from "./Pages/Admin/Users/UserDetails";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -138,6 +139,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="Admin">
               <Users />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/userDetails/:id"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <UserDetails />
             </ProtectedRoute>
           }
         />
