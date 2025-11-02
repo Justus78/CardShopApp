@@ -6,18 +6,21 @@ import { toast } from 'react-toastify';
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
+  const [sortedProducts, setSortedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updatedCard, setUpdatedCard] = useState(null);
   const [price, setPrice] = useState("");
   const [inventory, setInventory] = useState("");
+  const [sortOption, setSortOption] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  console.log(updatedCard)
   useEffect(() => {
     const getProducts = async () => {
       try {
         const res = await getAllProducts();
         setProducts(res);
+        setSortedProducts(res);
       } catch {
         setError('Failed to load products');
       } finally {
@@ -26,6 +29,36 @@ const ViewProducts = () => {
     };
     getProducts();
   }, []);
+
+  const handleSortChange = (option) => {
+    setSortOption(option);
+    let sorted = [...products];
+
+    switch (option) {
+      case "priceHighLow":
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case "priceLowHigh":
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case "nameAZ":
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "nameZA":
+        sorted.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case "setAZ":
+        sorted.sort((a, b) => a.setName.localeCompare(b.setName));
+        break;
+      case "setZA":
+        sorted.sort((a, b) => b.setName.localeCompare(a.setName));
+        break;
+      default:
+        sorted = [...products];
+    }
+
+    setSortedProducts(sorted);
+  };
 
   const handleUpdateClick = (card) => {
     setUpdatedCard(card);
@@ -48,6 +81,7 @@ const ViewProducts = () => {
       setUpdatedCard(null);
       const refreshed = await getAllProducts();
       setProducts(refreshed);
+      handleSortChange(sortOption);
     } catch (err) {
       console.error(err);
       toast.error("Failed to update product.");
@@ -62,11 +96,17 @@ const ViewProducts = () => {
       toast.success("Product deleted successfully!");
       const refreshed = await getAllProducts();
       setProducts(refreshed);
+      handleSortChange(sortOption);
     } catch (err) {
       console.error(err);
       toast.error("Failed to delete product.");
     }
   };
+
+  // Filter products based on search query (case insensitive)
+  const filteredProducts = sortedProducts.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white">
@@ -76,24 +116,48 @@ const ViewProducts = () => {
           💫 View Products 💫
         </h1>
 
-        <div className="text-center mb-6">
+        {/* --- Controls Section --- */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 mb-8">
           <Link
             to="/admin/AddProduct"
             className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
           >
             ➕ Add Product
           </Link>
+
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-gray-800 border border-purple-500 text-white rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full sm:w-64"
+          />
+
+          <select
+            value={sortOption}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="bg-gray-800 border border-purple-500 text-white rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full sm:w-64"
+          >
+            <option value="">Sort by...</option>
+            <option value="priceHighLow">Price: High → Low</option>
+            <option value="priceLowHigh">Price: Low → High</option>
+            <option value="nameAZ">Name: A → Z</option>
+            <option value="nameZA">Name: Z → A</option>
+            <option value="setAZ">Set: A → Z</option>
+            <option value="setZA">Set: Z → A</option>
+          </select>
         </div>
 
+        {/* --- Products Display --- */}
         {loading ? (
           <p className="text-center text-gray-300 text-lg">Loading products...</p>
         ) : error ? (
           <p className="text-center text-red-400 text-lg">{error}</p>
-        ) : products.length === 0 ? (
+        ) : filteredProducts.length === 0 ? (
           <p className="text-center text-gray-400 text-lg">No products found.</p>
         ) : (
           <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div
                 key={product.id}
                 className="relative bg-gray-900 bg-opacity-60 border border-gray-800 rounded-2xl p-4 shadow-lg hover:shadow-[0_0_20px_#9333ea] transition-all duration-300 hover:scale-105 group"
@@ -108,9 +172,7 @@ const ViewProducts = () => {
                 <h2 className="text-sm text-gray-400">{product.isFoil ? "Foil" : "Non-Foil"}</h2>
                 <p className="text-cyan-400 font-medium">${product.price}</p>
                 <p className="text-gray-400 text-sm">
-                  {product.stockQuantity > 0
-                    ? `${product.stockQuantity} in stock`
-                    : 'Out of stock'}
+                  {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out of stock'}
                 </p>
                 <p className="text-xs text-gray-500 italic mb-3">{product.category}</p>
                 <div className="flex space-x-2">
@@ -139,20 +201,19 @@ const ViewProducts = () => {
         )}
       </div>
 
+      {/* --- Update Modal --- */}
       {updatedCard && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-gray-900 text-white p-6 rounded-2xl shadow-lg border border-purple-500 w-96 max-w-full mx-4 relative">
             <button
-              onClick={() => setSelectedCard(null)}
+              onClick={() => setUpdatedCard(null)}
               className="absolute top-3 right-3 text-gray-400 hover:text-white transition"
             >
               ✖
             </button>
 
             <img
-              src={
-                updatedCard.imageUrl
-              }
+              src={updatedCard.imageUrl}
               alt={updatedCard.name}
               className="w-full rounded-lg mb-4 mt-4"
             />
@@ -160,9 +221,9 @@ const ViewProducts = () => {
               Update "{updatedCard.name}"
             </h2>
             <p className="text-center text-gray-400 mb-4">Stock Quantity: {updatedCard.stockQuantity}</p>  
-       
             <p className="text-center text-gray-400 mb-4">{updatedCard.setName}</p>  
             <p className="text-center text-gray-400 mb-4">Market Price: ${updatedCard.price}</p>   
+
             <div className="mb-3">
               <label className="block text-sm font-medium text-gray-300">Price</label>
               <input
