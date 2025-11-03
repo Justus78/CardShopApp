@@ -26,6 +26,8 @@ const UserDetails = () => {
         fetchUser();
     }, [id]);
 
+    console.log(user)
+
     if(loading)
         return <p className="text-cyan-400 text-center mt-10 text-lg">Loading order...</p>;
     if (!user)
