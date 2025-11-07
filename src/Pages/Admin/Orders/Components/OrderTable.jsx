@@ -88,8 +88,13 @@ const OrderTable = ({ orders }) => {
                     </td>
                 </motion.tr>
                 ))}
+                
             </motion.tbody>
+            
         </table>
+        <div className="p-3 bg-[#100030]/80 border-t border-cyan-500/30 text-cyan-400 text-xs text-right rounded-b-2xl">
+          Showing {orders.length} orders
+        </div>
     </>
   )
 }

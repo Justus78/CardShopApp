@@ -39,8 +39,9 @@ const Orders = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0024] via-[#10002b] to-[#001f2d] text-white relative overflow-hidden">
-        
+
+      { /* styles for the background of the page */}
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0024] via-[#10002b] to-[#001f2d] text-white relative overflow-hidden">        
 
         {/* Neon grid background */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)]"></div>
@@ -70,10 +71,6 @@ const Orders = () => {
               </div>
 
               <OrderTable orders={orders}/>
-
-              <div className="p-3 bg-[#100030]/80 border-t border-cyan-500/30 text-cyan-400 text-xs text-right rounded-b-2xl">
-                Showing {orders.length} orders
-              </div>
             </div>
           )}
         </motion.div>
