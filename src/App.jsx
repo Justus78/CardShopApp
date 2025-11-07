@@ -154,7 +154,6 @@ function App() {
         {/* Catch-all fallback */}
         <Route path="*" element={<div>404 - Not Found</div>} />
       </Routes>
-      <Footer />
     </>
   );
 }

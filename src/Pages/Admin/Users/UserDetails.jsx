@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../../../Components/Admin/Navbar'
 import { getUserById } from '../../../Services/AdminService'
+import OrderTable from '../../../Components/Admin/OrderTable'
 
 const UserDetails = () => {
 
@@ -45,10 +46,9 @@ const UserDetails = () => {
           <div className="space-y-3">
             <p><span className="text-purple-400 font-semibold">User ID:</span> {user.id}</p>
             <p><span className="text-purple-400 font-semibold">Customer:</span> {user.username || "No username found"}</p>
-          </div>
-          
+          </div>              
         </div>
- 
+        <OrderTable orders={user.orders}/>    
     </div>
   )
 }

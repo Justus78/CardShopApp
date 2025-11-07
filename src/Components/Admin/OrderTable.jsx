@@ -1,7 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion';
 
-
 const OrderTable = ({ orders }) => {
 
     const getStatusLabel = (status) => {
@@ -68,10 +67,11 @@ const OrderTable = ({ orders }) => {
                     i % 2 === 0 ? 'bg-[#090022]/40' : 'bg-[#0d0130]/40'
                     } hover:scale-[1.01] hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:bg-gradient-to-r hover:from-cyan-700/20 hover:to-fuchsia-700/20`}
                 >
+                    {console.log(order.createdAt)}
                     <td className="py-3 px-4 font-mono text-cyan-300">{order.id}</td>
                     <td className="py-3 px-4">{order.username || "No username"}</td>
                     <td className="py-3 px-4 text-green-300 font-semibold">${order.totalAmount.toFixed(2)}</td>
-                    <td className="py-3 px-4 text-gray-400">{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td className="py-3 px-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td className="py-3 px-4">{getStatusLabel(order.status)}</td>
                     <td className="py-3 px-4">
                     <motion.button
