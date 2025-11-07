@@ -1,7 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const OrderTable = ({ orders }) => {
+
+  const navigate = useNavigate();
 
     const getStatusLabel = (status) => {
     switch (status) {
