@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../../../Components/Admin/Navbar'
 import { getUserById } from '../../../Services/AdminService'
-import OrderTable from '../../../Components/Admin/OrderTable'
+import OrderTable from '../Orders/Components/OrderTable'
 
 const UserDetails = () => {
 
