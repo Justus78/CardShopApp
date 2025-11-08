@@ -4,6 +4,7 @@ import Navbar from '../../../Components/Admin/Navbar'
 import { getUserById } from '../../../Services/AdminService'
 import OrderTable from '../../../Components/Admin/OrderTable'
 import TableHeader from '../../../Components/Admin/TableHeader'
+import { UserData } from './Components'
 
 const UserDetails = () => {
 
@@ -38,17 +39,7 @@ const UserDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-[#0a0022] to-[#010101] text-white font-sans">
         <Navbar />
-
-        <h2 className="text-3xl font-bold mb-6 text-cyan-400 text-center drop-shadow-[0_0_10px_#00ffff]">
-          User Details
-        </h2>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="space-y-3">
-            <p><span className="text-purple-400 font-semibold">User ID:</span> {user.id}</p>
-            <p><span className="text-purple-400 font-semibold">Customer:</span> {user.username || "No username found"}</p>
-          </div>              
-        </div>
+        <UserData user={user} />
         <TableHeader title={"User Orders"} />
         <OrderTable orders={user.orders}/>    
     </div>
