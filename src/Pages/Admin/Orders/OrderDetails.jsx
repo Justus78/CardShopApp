@@ -3,10 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../../Components/Admin/Navbar';
 import { getOrderById, updateOrderStatus } from '../../../Services/AdminService';
 import { toast } from 'react-toastify';
-import OrderInfo from './Components/OrderInfo';
-import OrderStatusSelect from './Components/OrderStatusSelect';
-import OrderItemsTable from './Components/OrderItemsTable';
-import BackButton from './Components/BackButton';
+import { BackButton, OrderInfo, OrderItemsTable, OrderStatusSelect} from './Components'
 
 const OrderDetailsPage = () => {
   const { id } = useParams();

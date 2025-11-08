@@ -6,7 +6,7 @@ import { getAllUsersForAdmin } from '../../../Services/AdminService';
 import {
   UserDashboardHeader,
   UserTable,
-} from './Components/Index';
+} from './Components';
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);

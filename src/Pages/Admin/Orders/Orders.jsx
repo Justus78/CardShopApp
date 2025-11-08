@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Navbar from '../../../Components/Admin/Navbar';
 import { getAllOrdersForAdmin } from '../../../Services/AdminService';
 import { useNavigate } from 'react-router-dom';
-import OrderTable from './Components/OrderTable';
+import OrderTable from '../../../Components/Admin/OrderTable';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
