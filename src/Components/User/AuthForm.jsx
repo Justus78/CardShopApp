@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from "react";
-import { postToApi, getFromApi, loginUser, registerUser } from "../../Services/LoginService";
+import { getFromApi, loginUser, registerUser } from "../../Services/LoginService";
 import { DataContext } from "../../Context/DataContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { EyeIcon, EyeOffIcon } from "lucide-react"; // 👁️ simple icon set (install via `npm i lucide-react`)
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { motion } from "framer-motion";
 
 const AuthForm = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -14,19 +14,16 @@ const AuthForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // toggle for password
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // toggle for confirm password
-  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const { setIsAuthenticated, setUser } = useContext(DataContext);
-
-  const passwordsMatch = password === confirmPassword && password.length > 0; // var to check password match
+  const passwordsMatch = password === confirmPassword && password.length > 0;
 
   useEffect(() => {
-    if (message) toast.success(message);
     if (error) toast.error(error);
-  }, [message, error]);
+  }, [error]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -37,29 +34,19 @@ const AuthForm = () => {
       const loginData = { Username: userName, Password: password };
       const { error: loginError } = await loginUser(loginData);
 
-      if (loginError) {
-        setError("Incorrect Username or Password");
-        toast.error("Incorrect Username or Password");
-        return;
-      }
+      if (loginError) return setError("Incorrect Username or Password");
 
-      const { data: userData, error: statusError } = await getFromApi("status");
-      if (statusError || !userData) {
-        setError("Failed to retrieve user info");
-        toast.error("Login failed");
-        return;
-      }
+      const { data: userData } = await getFromApi("status");
+      if (!userData) return setError("Failed to retrieve user info");
 
       setUser(userData);
       setIsAuthenticated(true);
       toast.success("Login Successful");
 
       const userRole = userData.roles?.[0];
-      if (userRole === "Admin") navigate("/admin/adminHome");
-      else navigate("/");
+      navigate(userRole === "Admin" ? "/admin/adminHome" : "/");
     } catch {
       setError("Unexpected error during login");
-      toast.error("Unexpected error");
     } finally {
       setLoading(false);
     }
@@ -72,9 +59,7 @@ const AuthForm = () => {
 
     if (!passwordsMatch) {
       setError("Passwords do not match.");
-      toast.error("Passwords do not match.");
-      setLoading(false);
-      return;
+      return setLoading(false);
     }
 
     try {
@@ -85,170 +70,104 @@ const AuthForm = () => {
       };
 
       const { error } = await registerUser(registerData);
-      if (error) {
-        setError(error);
-        toast.error(error);
-        return;
-      }
+      if (error) return setError(error);
 
-      toast.success("User registered successfully. Please check your email to verify your account.");
+      toast.success("Account created! Please verify via email.");
       setIsRegister(false);
     } catch {
       setError("Registration failed");
-      toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleMode = () => {
-    setIsRegister((prev) => !prev);
-    setUserName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setError("");
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 ">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          {isRegister ? "Create an Account" : "Login to Your Account"}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-md p-8 rounded-2xl border border-cyan-600/40 shadow-[0_0_25px_rgba(0,255,255,0.3)] bg-[#0f022c]/70 backdrop-blur-xl text-white"
+      >
+        <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent drop-shadow-[0_0_10px_#0ff]">
+          {isRegister ? "⚡ Create Account" : "🔐 Login"}
         </h2>
 
-        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+        {error && <p className="text-red-400 text-center mb-4">{error}</p>}
 
         <form
           onSubmit={isRegister ? handleRegisterSubmit : handleLoginSubmit}
-          className="space-y-4"
+          className="space-y-5"
         >
+          {/* Username */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Username</label>
+            <label className="block text-sm mb-1 text-cyan-300">Username</label>
             <input
               type="text"
-              placeholder="User Name"
+              placeholder="Enter username"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
-              className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-3 rounded-lg bg-[#0b0130]/60 border border-cyan-600/40 text-cyan-100 placeholder-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300"
             />
           </div>
 
           {isRegister && (
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm mb-1 text-cyan-300">Email</label>
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full p-3 rounded-lg bg-[#0b0130]/60 border border-cyan-600/40 text-cyan-100 placeholder-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300"
               />
             </div>
           )}
 
-          {/* Password with visibility toggle 👇 */}
+          {/* Password */}
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm mb-1 text-cyan-300">Password</label>
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className={`w-full mt-1 p-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
-                isRegister
-                  ? passwordsMatch
-                    ? "border-green-400 focus:ring-green-400"
-                    : "border-red-400 focus:ring-red-400"
-                  : "border-gray-300 focus:ring-blue-400"
-              }`}
+              className="w-full p-3 pr-10 rounded-lg bg-[#0b0130]/60 border border-cyan-600/40 text-cyan-100 placeholder-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-8 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-9 text-cyan-400 hover:text-fuchsia-400 transition"
             >
               {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
             </button>
           </div>
 
-        {/* Password Requirements (only shown on Register) */}
-        {isRegister && (
-          <div className="mt-3 text-sm text-left">
-            <p className="font-semibold text-gray-700 mb-1">Password must contain:</p>
-            <ul className="space-y-1">
-              <li
-                className={`flex items-center ${
-                  /[A-Z]/.test(password) ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {/[A-Z]/.test(password) ? "✅" : "❌"} One uppercase letter
-              </li>
-              <li
-                className={`flex items-center ${
-                  /[a-z]/.test(password) ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {/[a-z]/.test(password) ? "✅" : "❌"} One lowercase letter
-              </li>
-              <li
-                className={`flex items-center ${
-                  /[0-9]/.test(password) ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {/[0-9]/.test(password) ? "✅" : "❌"} One number
-              </li>
-              <li
-                className={`flex items-center ${
-                  /[^A-Za-z0-9]/.test(password) ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {/[^A-Za-z0-9]/.test(password) ? "✅" : "❌"} One special character
-              </li>
-              <li
-                className={`flex items-center ${
-                  password.length >= 10 ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {password.length >= 10 ? "✅" : "❌"} Minimum 10 characters
-              </li>
-            </ul>
-          </div>
-          )}
-
-          {/* Confirm Password with toggle */}
+          {/* Confirm Password */}
           {isRegister && (
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+              <label className="block text-sm mb-1 text-cyan-300">Confirm Password</label>
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm Password"
+                placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className={`w-full mt-1 p-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
-                  confirmPassword.length > 0
-                    ? passwordsMatch
-                      ? "border-green-400 focus:ring-green-400"
-                      : "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:ring-blue-400"
-                }`}
+                className="w-full p-3 pr-10 rounded-lg bg-[#0b0130]/60 border border-cyan-600/40 text-cyan-100 placeholder-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-8 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-9 text-cyan-400 hover:text-fuchsia-400 transition"
               >
                 {showConfirmPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
               </button>
-
-              {confirmPassword.length > 0 && (
+              {confirmPassword && (
                 <p
-                  className={`mt-1 text-sm font-medium ${
-                    passwordsMatch ? "text-green-600" : "text-red-600"
+                  className={`mt-1 text-sm ${
+                    passwordsMatch ? "text-green-400" : "text-red-400"
                   }`}
                 >
                   {passwordsMatch ? "✅ Passwords match" : "❌ Passwords do not match"}
@@ -257,14 +176,13 @@ const AuthForm = () => {
             </div>
           )}
 
-          <button
+          {/* Submit button */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             type="submit"
-            disabled={loading || (isRegister && !passwordsMatch)}
-            className={`w-full py-2 rounded-lg font-semibold text-white transition ${
-              loading || (isRegister && !passwordsMatch)
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            disabled={loading}
+            className="w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-cyan-500 via-fuchsia-600 to-purple-600 hover:shadow-[0_0_20px_#0ff] transition-all duration-300 disabled:opacity-50"
           >
             {loading
               ? isRegister
@@ -273,33 +191,21 @@ const AuthForm = () => {
               : isRegister
               ? "Register"
               : "Login"}
-          </button>
+          </motion.button>
         </form>
 
-        {/* Forgot Password link (only show on login) */}
-        {!isRegister && (
-          <div className="text-right mt-2">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-indigo-600 hover:underline font-medium"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-        )}
-
-        <p className="mt-4 text-sm text-center text-gray-600">
-          {isRegister ? "Already have an account?" : "Don't have an account?"}
+        {/* Toggle */}
+        <p className="mt-4 text-sm text-center text-cyan-300">
+          {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
-            type="button"
-            onClick={toggleMode}
-            className="ml-2 text-blue-600 hover:underline font-medium"
+            onClick={() => setIsRegister(!isRegister)}
+            className="text-fuchsia-400 hover:text-cyan-400 transition"
           >
             {isRegister ? "Login" : "Register"}
           </button>
         </p>
-      </div>
-    </div>
+      </motion.div>
+    
   );
 };
 

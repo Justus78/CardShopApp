@@ -9,7 +9,9 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <AuthForm />
+        <div className="flex items-center justify-center min-h-screen p-6 relative z-10">
+          <AuthForm />
+        </div>
       
     </> 
  )
