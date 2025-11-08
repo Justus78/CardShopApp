@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../Components/User/Navbar";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../../Components/User/Footer";
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -112,6 +113,7 @@ const ViewOrders = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 };

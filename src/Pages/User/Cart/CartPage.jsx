@@ -2,6 +2,7 @@ import React from "react";
 import { useCart } from "../../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../../Components/User/Navbar";
+import Footer from "../../../Components/User/Footer";
 
 const CartPage = () => {
   const { cart, removeItem, updateItem, clear } = useCart();
@@ -93,6 +94,7 @@ const CartPage = () => {
           </button>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

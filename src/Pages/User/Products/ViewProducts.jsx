@@ -5,6 +5,7 @@ import { CartContext } from "../../../Context/CartContext";
 import { DataContext } from "../../../Context/DataContext";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Footer from "../../../Components/User/Footer";
 
 const ViewProducts = () => {
   // Products state
@@ -256,7 +257,9 @@ const ViewProducts = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
+
   );
 };
 

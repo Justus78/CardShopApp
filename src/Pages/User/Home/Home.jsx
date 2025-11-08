@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../../../Components/User/Navbar'
 import { useNavigate } from 'react-router-dom'
-import {assets} from '../../../assets/assets'
+import { assets } from '../../../assets/assets'
 import { getSets } from '../../../Services/SetService'
 import Footer from '../../../Components/User/Footer'
 
@@ -11,80 +11,90 @@ const Home = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchLatestSets = async () => {
-      try {
-        // Replace with your API endpoint that returns the latest 5 sets
-        const response = await getSets();
-        
-        setLatestSets(response) // data should include { id, name, iconUrl } for each set
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching latest sets:', error)
-      }
+  const fetchLatestSets = async () => {
+    try {
+      const response = await getSets(); // full array of sets
+
+      // keywords that indicate a subset
+      const excludeKeywords = ["Eternal", "Tokens", "Promos", "Front Cards", "Special", "Fun", "Arena", 
+        "Anthology", "Alchemy", "Realm", "Universe", "Art", "Stellar", "Ages", "Commander", "Standard"];
+
+      // filter out sets that contain any of the keywords
+      const mainSets = response.filter(set => 
+        !excludeKeywords.some(keyword => set.name.includes(keyword))
+      );
+
+      // sort by release date descending
+      mainSets.sort((a, b) => new Date(b.releasedAt) - new Date(a.releasedAt));
+
+      // take only the last 5 sets
+      setLatestSets(mainSets.slice(0, 5));
+
+    } catch (error) {
+      console.error('Error fetching latest sets:', error);
     }
+  };
 
-    fetchLatestSets()
-  }, [])
+  fetchLatestSets();
+}, []);
 
-  const handleSetClick = (setId) => {
-    // Navigate to products page filtered by set
-    navigate(`/User/viewProducts?set=${setId}`)
-  }
 
   return (
     <>
       <Navbar />
 
-      <div className='relative border h-200 mb-8'>
+      {/* Hero Banner */}
+      <div className='relative h-[400px] md:h-[500px] mb-12'>
         <img 
           src={assets.PlaceholderImage} 
-          alt="Picture" 
-          className='object-fill w-full h-full'
+          alt="Banner" 
+          className='w-full h-full object-cover'
         />
-      
 
-        {/* Overlay button */}
         <button 
-          className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2
-           bg-blue-900 text-white font-bold px-10 text-3xl py-2 rounded-full 
-           shadow-md hover:bg-blue-700 transition"
+          onClick={() => navigate('/User/viewProducts')}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                     bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-purple-600 
+                     text-white font-bold px-10 py-3 rounded-full shadow-[0_0_20px_rgba(0,255,255,0.5)]
+                     hover:shadow-[0_0_30px_rgba(255,0,255,0.7)] transition-all duration-300 text-3xl"
         >
           Shop Now
         </button>
       </div>  
 
-      {/** for new or bestsellers */}
-      <div className="flex flex-col bg-blue-900">
-        <h1 className="text-white text-4xl text-center mt-5">New Releases</h1>
+      {/* New Releases / Latest Sets */}
+      <section className="bg-[#0b0130]/80 py-10">
+        <h1 className="text-white text-4xl text-center font-extrabold mb-8 drop-shadow-[0_0_10px_#0ff]">
+          New Releases
+        </h1>
 
-        <div className="h-100 flex gap-20 justify-center items-center flex-wrap p-6">
-          {[
-            { title: "Edge of Eternities", image: "https://svgs.scryfall.io/sets/eoe.svg?1755489600", setCode: "Edge of Eternities" },
-            { title: "Tarkir: Dragonstorm", image: "https://svgs.scryfall.io/sets/fin.svg?1755489600", setCode: "Tarkir: Dragonstorm" },
-            { title: "Third Release", image: "https://svgs.scryfall.io/sets/tdm.svg?1755489600", setCode: "TR" },
-            { title: "Fourth One", image: "https://svgs.scryfall.io/sets/dft.svg?1755489600", setCode: "FO" },
-            { title: "Fifth One", image: "https://svgs.scryfall.io/sets/inr.svg?1755489600", setCode: "FI" }
-          ].map((release, idx) => (
-            <Link
-              key={idx}
-              to={`/user/viewProducts?set=${release.setCode}`}
-              className="flex flex-col items-center hover:scale-105 transition-transform"
-            >
-              <div className="w-72 h-72 flex">
-                <img
-                  src={release.image}
-                  alt={release.title}
-                  className="rounded-2xl object-cover"
-                />
-              </div>
-              <h1 className="text-center mt-2 text-white font-bold text-2xl">
-                {release.title}
-              </h1>
-            </Link>
-          ))}
+        <div className="flex flex-wrap justify-center gap-10 px-6">
+          {latestSets.length > 0 ? (
+            latestSets.map((set) => (
+              <Link
+                key={set.id}
+                to={`/user/viewProducts?set=${set.code}`}
+                className="flex flex-col items-center group bg-white/70 border-r-2"
+              >
+                <div className="w-72 h-72 rounded-2xl overflow-hidden relative shadow-[0_0_25px_rgba(0,255,255,0.3)] group-hover:shadow-[0_0_35px_rgba(255,0,255,0.5)] transition-shadow duration-300">
+                  <img
+                    src={set.iconUrl}
+                    alt={set.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h2 className="text-black mt-3 text-2xl font-bold text-center drop-shadow-[0_0_5px_#0ff] group-hover:text-fuchsia-400 transition-colors duration-300">
+                  {set.name}
+                </h2>
+              </Link>
+            ))
+          ) : (
+            <p className="text-white text-lg text-center w-full">Loading latest sets...</p>
+          )}
         </div>
-      </div>   
-      
+      </section>
+
+      <Footer />
     </>
   )
 }

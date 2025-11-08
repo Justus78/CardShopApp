@@ -4,6 +4,7 @@ import Navbar from "../../../Components/User/Navbar";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../../../Components/User/CheckoutForm";
+import Footer from "../../../Components/User/Footer";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -139,6 +140,7 @@ const CheckoutPage = () => {
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 };
