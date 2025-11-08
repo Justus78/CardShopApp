@@ -7,6 +7,7 @@ import {
   UserDashboardHeader,
   UserTable,
 } from './Components';
+import TableHeader from '../../../Components/Admin/TableHeader';
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -59,7 +60,7 @@ const UsersPage = () => {
             <p className="p-4 text-gray-400">No Users Found.</p>
           ) : (
             <div className="overflow-x-auto rounded-2xl shadow-[0_0_25px_rgba(0,255,255,0.2)] border border-cyan-600/40 backdrop-blur-xl bg-[#0f022c]/70">
-              <UserDashboardHeader />
+              <TableHeader title={"User Table"} />
               <UserTable users={users} onViewUser={(id) => navigate(`/admin/userDetails/${id}`)} />
             </div>
           )}

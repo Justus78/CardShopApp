@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../../../Components/Admin/Navbar'
 import { getUserById } from '../../../Services/AdminService'
 import OrderTable from '../../../Components/Admin/OrderTable'
+import TableHeader from '../../../Components/Admin/TableHeader'
 
 const UserDetails = () => {
 
@@ -48,6 +49,7 @@ const UserDetails = () => {
             <p><span className="text-purple-400 font-semibold">Customer:</span> {user.username || "No username found"}</p>
           </div>              
         </div>
+        <TableHeader title={"User Orders"} />
         <OrderTable orders={user.orders}/>    
     </div>
   )

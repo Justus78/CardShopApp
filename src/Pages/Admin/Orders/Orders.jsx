@@ -4,6 +4,7 @@ import Navbar from '../../../Components/Admin/Navbar';
 import { getAllOrdersForAdmin } from '../../../Services/AdminService';
 import { useNavigate } from 'react-router-dom';
 import OrderTable from '../../../Components/Admin/OrderTable';
+import TableHeader from '../../../Components/Admin/TableHeader';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -63,13 +64,8 @@ const Orders = () => {
           ) : orders.length === 0 ? (
             <p className="p-4 text-gray-400 text-center">No orders found.</p>
           ) : (
-            <div className="overflow-x-auto rounded-2xl shadow-[0_0_25px_rgba(0,255,255,0.2)] border border-cyan-600/40 backdrop-blur-xl bg-[#0f022c]/70">
-              <div className="p-6 flex justify-between items-center border-b border-cyan-500/30">
-                <h2 className="text-3xl font-extrabold tracking-widest bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-600 bg-clip-text text-transparent animate-pulse drop-shadow-[0_0_10px_#0ff]">
-                  ⚡ Orders Dashboard
-                </h2>
-              </div>
-
+            <div className="overflow-x-auto rounded-2xl shadow-[0_0_25px_rgba(0,255,255,0.2)] border border-cyan-600/40 backdrop-blur-xl bg-[#0f022c]/70">              
+              <TableHeader title={"Admin Dashboard"} />
               <OrderTable orders={orders}/>
             </div>
           )}
