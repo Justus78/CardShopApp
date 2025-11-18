@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { DataContext } from "../../Context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,16 +95,23 @@ const Navbar = () => {
           </AnimatePresence>
         </div>
 
-        {/* Other Links */}
-        {["Bestsellers", "My Orders", "About"].map((link) => (
-          <a
-            key={link}
-            href="#"
-            className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all"
-          >
-            {link}
-          </a>
-        ))}
+        <Link to="" className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
+            <p>BestSellers</p>
+        </Link>
+
+        <Link to="" className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
+            <p>My Orders</p>
+        </Link>
+
+        <a href='/userTrade' className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
+            <p>Trade</p>
+        </a>
+
+        <Link to="" className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
+            <p>About</p>
+        </Link>
+
+        
 
         {/* Logout */}
         {isAuthenticated && (
