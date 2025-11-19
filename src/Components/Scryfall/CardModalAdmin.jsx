@@ -16,7 +16,8 @@ const CardModalAdmin = ({
   selectedType,
   setSelectedType
 }) => {
-  const img =
+
+    const img =
     card.image_uris?.normal ||
     card.card_faces?.[0]?.image_uris?.normal;
 

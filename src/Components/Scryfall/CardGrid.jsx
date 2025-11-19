@@ -1,10 +1,10 @@
 import React from "react";
 import CardItem from "./CardItem";
 
-const CardGrid = ({ groupedCards, onCardClick }) => {
+const CardGrid = ({ paginatedGroupedCards, handleAddClick }) => {
   return (
     <>
-      {Object.entries(groupedCards).map(([group, cards]) => (
+      {Object.entries(paginatedGroupedCards).map(([group, groupCards]) => (
         <div key={group} className="mb-10">
 
           {group !== "All" && (
@@ -14,8 +14,8 @@ const CardGrid = ({ groupedCards, onCardClick }) => {
           )}
 
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {cards.map((card) => (
-              <CardItem key={card.id} card={card} onClick={onCardClick} />
+            {groupCards.map((card) => (
+              <CardItem key={card.id} card={card} handleAddClick={handleAddClick} />
             ))}
           </div>
 

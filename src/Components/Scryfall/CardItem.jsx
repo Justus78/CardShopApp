@@ -1,13 +1,13 @@
 import React from "react";
 
-const CardItem = ({ card, onClick }) => {
+const CardItem = ({ card, handleAddClick }) => {
   const img =
     card.image_uris?.normal ||
     card.card_faces?.[0]?.image_uris?.normal;
 
   return (
     <div
-      onClick={() => onClick(card)}
+      onClick={() => handleAddClick(card)}
       className="relative bg-gray-900 bg-opacity-70 border border-gray-800 rounded-2xl 
                  p-4 shadow-lg hover:shadow-[0_0_20px_#9333ea] transition-all duration-300 
                  hover:scale-105 cursor-pointer group"
