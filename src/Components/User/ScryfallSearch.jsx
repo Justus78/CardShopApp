@@ -16,10 +16,13 @@ import {
   filterCards,
   groupCards,
   paginateGroups,
-  buildProductFormData
+  buildProductFormData,
+  buildTradeInFormData
 } from "../../Helpers/ScryfallHelper";
 
 import { DataContext } from '../../Context/DataContext';
+import CardUserModal from '../Scryfall/User/CardUserModal';
+import { createTradeIn } from '../../Services/TradeInService';
 
 const pageSize = 20;
 /*
@@ -32,13 +35,10 @@ const pageSize = 20;
       public decimal? EstimatedPrice { get; set; } // per unit from Scryfall
   }
 
-  public class TradeInDto
-  {
-      public int Id { get; set; }
-      public TradeInStatus Status { get; set; } = TradeInStatus.Submitted;
-      public decimal? EstimatedValue { get; set; }
-      public DateTime SubmittedAt { get; set; } = DateTime.Now;
-  }
+    public class TradeInCreateDto
+    {
+        public List<TradeInItemCreateDto> Items { get; set; } = [];
+    }
 */
 
 
@@ -66,8 +66,15 @@ const ScryfallSearch = () => {
   const [sortOrder, setSortOrder] = useState("name");
   const [groupBy, setGroupBy] = useState("");
 
+  const [tradeIn, setTradeIn] = useState([]);
+  const [tradeInItem, setTradeInItem] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);   
       
+  const PAGE_SIZE = 20; // set page size
+  
+  const { user } = useContext(DataContext);
+
     // 🔍 Search handler
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -98,11 +105,111 @@ const ScryfallSearch = () => {
     setSelectedType("");
   };
 
+  const handleAddClickUser = () => {
 
+  }
+
+  const handleSubmit = async () => {
+    try {
+        const formData = buildTradeInFormData(
+            selectedCard,
+            inventory,
+            selectedCondition,
+        );  
+
+        setTradeIn(...formData);
+        toast.success(`Added ${selectedCard.name} to your trade in.`)
+
+    } catch (err) {
+        console.error(err);
+        toast.error("Failed to add card to trade in.");
+    } 
+  };
+
+  const handleSubmitTradeIn = async () => {
+    try {
+        const formData = new FormData();
+
+        formData.append("Items", tradeIn);
+        await createTradeIn(formData)
+
+        toast.success("Trade In completed, check your email for more instruction.")
+    } catch (err) {
+        console.error(err);
+        toast.error("Failed to add product.");
+    }
+  }
 
   return (
     <>
-        <SearchBar />
+        <SearchBar 
+            query={query}
+            setQuery={setQuery}
+            handleSearch={handleSearch}
+        />
+
+           {/* 🔽 Sorting / Grouping */}
+        <SortingControls
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            groupBy={groupBy}
+            setGroupBy={setGroupBy}
+        />
+
+         {/* Loading & Errors */}
+        {loading && <p className="text-center text-cyan-300 text-lg">Loading cards...</p>}
+        {error && <p className="text-center text-red-400 font-medium mb-6">{error}</p>}  
+
+        {/* 🎴 Cards */}
+        <CardGrid
+            paginatedGroupedCards={paginatedGroupedCards}
+            handleAddClick={handleAddClick} // need to finish method and hook it into the cards
+            handleAddClickUser={handleAddClickUser}
+        />
+
+        {/* 🔄 Pagination */}
+        {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-8">
+            <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                className={`px-4 py-2 rounded-xl ${
+                currentPage === 1
+                    ? "bg-gray-700 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105"
+                } transition-all`}
+            >
+                Previous
+            </button>
+
+            <span className="text-gray-300">
+                Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                className={`px-4 py-2 rounded-xl ${
+                currentPage === totalPages
+                    ? "bg-gray-700 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-500 to-cyan-500 hover:scale-105"
+                } transition-all`}
+            >
+                Next
+            </button>
+            </div>
+        )}
+
+        {selectedCard && (
+            <CardUserModal 
+                card={selectedCard}
+                onClose={() => setSelectedCard(null)}
+                onSubmit={handleSubmit}
+                selectedCondition={selectedCondition}
+                setSelectedCondition={setSelectedCondition}
+            />
+        )}
+
     </>
 )
 }

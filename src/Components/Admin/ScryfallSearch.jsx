@@ -25,6 +25,8 @@ import {
 
 const PAGE_SIZE = 20;
 
+
+
 const ScryfallSearch = () => {
   const [query, setQuery] = useState("");
 

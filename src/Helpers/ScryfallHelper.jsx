@@ -1,8 +1,8 @@
 // ==========================
-// 📁 ScryfallHelper.js
+// ScryfallHelper.js
 // ==========================
 
-// 🔍 Scryfall API Search (restored: fetch all printings for all matching cards)
+// Scryfall API Search (restored: fetch all printings for all matching cards)
 export const handleScryfallSearch = async (
   query,
   { setLoading, setError, setCards, setCurrentPage }
@@ -47,7 +47,7 @@ export const handleScryfallSearch = async (
 };
 
 // ==========================
-// 🎴 FILTERING LOGIC
+// FILTERING LOGIC
 // ==========================
 export const filterCards = (cards, selectedRarity, selectedType, sortOrder) => {
   return cards
@@ -66,7 +66,7 @@ export const filterCards = (cards, selectedRarity, selectedType, sortOrder) => {
 };
 
 // ==========================
-// 📦 GROUPING LOGIC
+// GROUPING LOGIC
 // ==========================
 export const groupCards = (filteredCards, groupBy) => {
   if (!groupBy) return { All: filteredCards };
@@ -80,7 +80,7 @@ export const groupCards = (filteredCards, groupBy) => {
 };
 
 // ==========================
-// 📄 PAGINATION LOGIC
+// PAGINATION LOGIC
 // ==========================
 export const paginateGroups = (groupedCards, currentPage, pageSize) => {
   const paginated = {};
@@ -95,7 +95,7 @@ export const paginateGroups = (groupedCards, currentPage, pageSize) => {
 };
 
 // ==========================
-// 🧱 FORM DATA BUILDER
+// FORM DATA BUILDER ADMIN
 // ==========================
 export const buildProductFormData = (
   card,
@@ -124,6 +124,29 @@ export const buildProductFormData = (
   if (selectedCondition) formData.append("CardCondition", selectedCondition);
   if (selectedRarity) formData.append("CardRarity", selectedRarity);
   if (selectedType) formData.append("CardType", selectedType);
+
+  return formData;
+};
+
+
+// ==========================
+// FORM DATA BUILDER USER
+// ==========================
+export const buildTradeInFormData = (
+  card,
+  inventory,
+  selectedCondition,
+) => {
+  const formData = new FormData();
+
+  // const imageUrl =
+  //   card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal;
+
+  formData.append("CardName", card.name);
+  formData.append("SetCode", card.set_name || "");
+  formData.append("Quantity", inventory);
+
+  if (selectedCondition) formData.append("CardCondition", selectedCondition);
 
   return formData;
 };
