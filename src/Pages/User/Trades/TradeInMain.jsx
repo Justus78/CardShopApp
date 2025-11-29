@@ -3,8 +3,9 @@ import Navbar from "../../../Components/User/Navbar";
 import ScryfallSearch from "../../../Components/User/ScryfallSearch";
 import SearchBar from "../../../Components/Scryfall/SearchBar";
 import TradeInDashboard from "../../../Components/User/TradeInDashboard";
+import Footer from '../../../Components/User/Footer'
 
-const TradeIn = () => {
+const TradeInMain = () => {
   
 
   return (
@@ -13,10 +14,11 @@ const TradeIn = () => {
 
         <Navbar />
         <TradeInDashboard />
+        <Footer />
       </div>
     </>
       
   );
 };
 
-export default TradeIn;
+export default TradeInMain;

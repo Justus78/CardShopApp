@@ -24,7 +24,8 @@ import VerifyEmail from './Pages/User/VerifyEmail/VerifyEmail'
 import ResetPassword from './Pages/User/ResetPassword/ResetPassword'
 import OrderDetails from "./Pages/Admin/Orders/OrderDetails";
 import UserDetails from "./Pages/Admin/Users/UserDetails";
-import TradeIn from "./Pages/User/Trades/TradeIn";
+import TradeInMain from "./Pages/User/Trades/TradeInMain";
+import AddTradeIn from "./Pages/User/Trades/AddTradeIn";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -58,6 +59,8 @@ function App() {
 
 
         {/** User Routes */}
+
+        {/** Cart */}
         <Route
           path="/userCart"
           element={
@@ -65,16 +68,7 @@ function App() {
             <CartPage />
           </ProtectedRoute>
         }
-        />
-
-        <Route
-          path="/userTrade"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <TradeIn />
-          </ProtectedRoute>
-        }
-        />
+        />      
 
         <Route
           path="/userCheckout"
@@ -84,6 +78,27 @@ function App() {
           </ProtectedRoute>
         }
         />
+
+        {/** user trade in */}
+         <Route
+          path="/userTrade"
+          element={
+          <ProtectedRoute requiredRole="User">
+            <TradeInMain />
+          </ProtectedRoute>
+        }
+
+        />
+         <Route
+          path="/userAddTrade"
+          element={
+          <ProtectedRoute requiredRole="User">
+            <AddTradeIn />
+          </ProtectedRoute>
+        }
+        />
+
+
 
         <Route
           path="/order-success/:id"

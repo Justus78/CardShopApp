@@ -1,36 +1,53 @@
 import React, { useEffect, useState, useContext } from "react";
 import { DataContext } from "../../Context/DataContext";
 import Navbar from "../../Components/User/Navbar";
+import TableHeader from "../Admin/TableHeader";
+import { getUserTradeIns } from "../../Services/TradeInService";
 
-// Mock fetch functions (replace with your API calls)
-const fetchCurrentTradeIn = async (userId) => {
-  // Replace with real API call
-  return await fetch(`/api/tradein/current/${userId}`).then(res => res.json());
-};
-
-const fetchPastTradeIns = async (userId) => {
-  // Replace with real API call
-  return await fetch(`/api/tradein/past/${userId}`).then(res => res.json());
-};
 
 const TradeInDashboard = () => {
   const { user } = useContext(DataContext);
   const [currentTradeIn, setCurrentTradeIn] = useState(null);
   const [pastTradeIns, setPastTradeIns] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  console.log(currentTradeIn)
+  console.log(pastTradeIns)
 
   useEffect(() => {
-    if (user?.id) {
-      fetchCurrentTradeIn(user.id).then(setCurrentTradeIn);
-      fetchPastTradeIns(user.id).then(setPastTradeIns);
+  const fetchTrades = async () => {
+    try {
+      setLoading(true);
+
+      const trades = await getUserTradeIns(); 
+
+      // Find the trade with status Draft
+      const current = trades.find(t => t.status === "Draft") || null;
+
+      // Everything else becomes past trade-ins
+      const past = trades.filter(t => t.status !== "Draft");
+
+      setCurrentTradeIn(current);
+      setPastTradeIns(past);
+
+      console.log("All Trades:", trades);
+      console.log("Current Trade:", current);
+      console.log("Past Trades:", past);
+
+    } catch (err) {
+      toast.error("Failed to load trade-ins."); // lowercase .error
+    } finally {
+      setLoading(false);
     }
-  }, [user]);
+  };
+
+  fetchTrades();
+}, []);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-4xl font-bold neon-text mb-8 text-center">
-          Trade-In Dashboard
-        </h1>
+        <TableHeader title={"Trade In Dashboard"}/>
 
         {/* Current Trade-In */}
         <section className="mb-12">
@@ -45,8 +62,33 @@ const TradeInDashboard = () => {
               </p>
               <p className="text-lg mb-2">
                 <span className="font-bold">Items:</span>{" "}
-                {currentTradeIn.items.map(item => item.name).join(", ")}
-              </p>
+                {currentTradeIn?.items?.length > 0 ? (
+                <div className="space-y-3">
+                    {currentTradeIn.items.map((item) => (
+                    <div 
+                        key={item.id}
+                        className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"
+                    >
+                        <div className="flex justify-between">
+                        <div>
+                            <p className="text-cyan-300 font-bold text-lg">{item.cardName}</p>
+                            <p className="text-purple-300 text-sm">Set: {item.setCode}</p>
+                            <p className="text-pink-300 text-sm">Condition: {item.condition}</p>
+                        </div>
+
+                        <div className="text-right">
+                            <p className="text-cyan-200">Qty: {item.quantity}</p>
+                            <p className="text-green-300">
+                            Est: ${item.estimatedUnitValue?.toFixed(2)}
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+                    ))}
+                </div>
+                ) : (
+                <p className="text-gray-400">No items in trade-in yet.</p>
+                )}              </p>
               <p className="text-lg mb-2">
                 <span className="font-bold">Status:</span> {currentTradeIn.status}
               </p>
@@ -54,7 +96,7 @@ const TradeInDashboard = () => {
           ) : (
             <div className="text-center">
               <p className="mb-4">You have no active trade-ins.</p>
-              <a href="#">
+              <a href="/userAddTrade">
                 <button className="px-6 py-3 neon-button font-bold rounded-lg">
                     Start a Trade-In
                 </button>
@@ -79,10 +121,34 @@ const TradeInDashboard = () => {
                   <p className="text-lg mb-1">
                     <span className="font-bold">ID:</span> {trade.id}
                   </p>
-                  <p className="text-lg mb-1">
                     <span className="font-bold">Items:</span>{" "}
-                    {trade.items.map(item => item.name).join(", ")}
-                  </p>
+                    {trade?.items?.length > 0 ? (
+                        <div className="space-y-3">
+                            {trade.items.map((item) => (
+                            <div 
+                                key={item.id}
+                                className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"
+                            >
+                                <div className="flex justify-between">
+                                <div>
+                                    <p className="text-cyan-300 font-bold text-lg">{item.cardName}</p>
+                                    <p className="text-purple-300 text-sm">Set: {item.setCode}</p>
+                                    <p className="text-pink-300 text-sm">Condition: {item.condition}</p>
+                                </div>
+
+                                <div className="text-right">
+                                    <p className="text-cyan-200">Qty: {item.quantity}</p>
+                                    <p className="text-green-300">
+                                    Est: ${item.estimatedUnitValue?.toFixed(2)}
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                            ))}
+                        </div>
+                        ) : (
+                        <p className="text-gray-400">No items in trade-in yet.</p>
+                        )}                 
                   <p className="text-lg">
                     <span className="font-bold">Status:</span> {trade.status}
                   </p>

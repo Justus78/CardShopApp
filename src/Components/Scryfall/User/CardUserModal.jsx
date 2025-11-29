@@ -5,6 +5,8 @@ const CardUserModal = ({
     card, 
     onClose, 
     onSubmit,
+    quantity,
+    setQuantity,
     selectedCondition,
     setSelectedCondition,
 }) => {
@@ -31,14 +33,14 @@ const CardUserModal = ({
                 Market Price: ${card.prices?.usd || "N/A"}
             </p>
 
-            {/* <input
+            <input
                 type="number"
                 placeholder="Stock Quantity"
-                value={inventory}
-                onChange={(e) => setInventory(e.target.value)}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
                 className="w-full p-2 rounded bg-gray-800 border border-purple-500 
                             focus:ring-2 focus:ring-cyan-500"
-            /> */}
+            />
     
             <select
                 value={selectedCondition}

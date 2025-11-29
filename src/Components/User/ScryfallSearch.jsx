@@ -22,7 +22,7 @@ import {
 
 import { DataContext } from '../../Context/DataContext';
 import CardUserModal from '../Scryfall/User/CardUserModal';
-import { createTradeIn } from '../../Services/TradeInService';
+import { submitDraftTradeIn } from '../../Services/TradeInService';
 
 const pageSize = 20;
 /*
@@ -57,7 +57,7 @@ const ScryfallSearch = () => {
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [price, setPrice] = useState("");
-  const [inventory, setInventory] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
@@ -113,7 +113,7 @@ const ScryfallSearch = () => {
     try {
         const formData = buildTradeInFormData(
             selectedCard,
-            inventory,
+            quantity,
             selectedCondition,
         );  
 
@@ -131,7 +131,7 @@ const ScryfallSearch = () => {
         const formData = new FormData();
 
         formData.append("Items", tradeIn);
-        await createTradeIn(formData)
+        await submitDraftTradeIn(formData)
 
         toast.success("Trade In completed, check your email for more instruction.")
     } catch (err) {
@@ -205,6 +205,8 @@ const ScryfallSearch = () => {
                 card={selectedCard}
                 onClose={() => setSelectedCard(null)}
                 onSubmit={handleSubmit}
+                quantity={quantity}
+                setQuantity={setQuantity}
                 selectedCondition={selectedCondition}
                 setSelectedCondition={setSelectedCondition}
             />
