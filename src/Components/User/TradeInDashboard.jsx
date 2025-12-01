@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { DataContext } from "../../Context/DataContext";
 import Navbar from "../../Components/User/Navbar";
 import TableHeader from "../Admin/TableHeader";
-import { getUserTradeIns } from "../../Services/TradeInService";
+import { getOrCreateDraftTradeIn, getUserTradeIns } from "../../Services/TradeInService";
+import { useNavigate } from "react-router-dom";
 
 
 const TradeInDashboard = () => {
@@ -11,38 +12,50 @@ const TradeInDashboard = () => {
   const [pastTradeIns, setPastTradeIns] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(currentTradeIn)
+  const navigate = useNavigate();
+
   console.log(pastTradeIns)
 
   useEffect(() => {
   const fetchTrades = async () => {
+      try {
+        setLoading(true);
+
+        const trades = await getUserTradeIns(); 
+
+        // Find the trade with status Draft
+        const current = trades.find(t => t.status === 0) || null;
+
+        // Everything else becomes past trade-ins
+        const past = trades.filter(t => t.status !== 0);
+
+        setCurrentTradeIn(current);
+        setPastTradeIns(past);
+
+      } catch (err) {
+        toast.error("Failed to load trade-ins."); // lowercase .error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrades();
+  }, []);
+
+  const startTradeDraft = async () => {
+    // this starts a new trade draft
     try {
-      setLoading(true);
-
-      const trades = await getUserTradeIns(); 
-
-      // Find the trade with status Draft
-      const current = trades.find(t => t.status === "Draft") || null;
-
-      // Everything else becomes past trade-ins
-      const past = trades.filter(t => t.status !== "Draft");
-
-      setCurrentTradeIn(current);
-      setPastTradeIns(past);
-
-      console.log("All Trades:", trades);
-      console.log("Current Trade:", current);
-      console.log("Past Trades:", past);
-
-    } catch (err) {
-      toast.error("Failed to load trade-ins."); // lowercase .error
+      setLoading(true)
+      const tradeIn = getOrCreateDraftTradeIn();
+      setCurrentTradeIn(tradeIn);
+    } catch (err){
+      toast.error('Failed to start a new trade in. Please try again later.')
     } finally {
-      setLoading(false);
+      setLoading(false)
+      console.log("current trade in:" + currentTradeIn)
     }
-  };
-
-  fetchTrades();
-}, []);
+    
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -55,10 +68,13 @@ const TradeInDashboard = () => {
             Current Trade-In
           </h2>
 
-          {currentTradeIn ? (
+          {currentTradeIn && currentTradeIn != null ? (
             <div className="bg-gray-800 p-6 rounded-lg shadow-neon border-neon border-2">
               <p className="text-lg mb-2">
                 <span className="font-bold">Trade-In ID:</span> {currentTradeIn.id}
+              </p>
+              <p className="text-lg mb-2">
+                <span className="font-bold">Trade-In Started: </span> {new Date(currentTradeIn.createdAt).toLocaleString()}
               </p>
               <p className="text-lg mb-2">
                 <span className="font-bold">Items:</span>{" "}
@@ -69,7 +85,7 @@ const TradeInDashboard = () => {
                         key={item.id}
                         className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"
                     >
-                        <div className="flex justify-between">
+                      <div className="flex justify-between">
                         <div>
                             <p className="text-cyan-300 font-bold text-lg">{item.cardName}</p>
                             <p className="text-purple-300 text-sm">Set: {item.setCode}</p>
@@ -82,13 +98,32 @@ const TradeInDashboard = () => {
                             Est: ${item.estimatedUnitValue?.toFixed(2)}
                             </p>
                         </div>
-                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+
+                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 neon-button font-bold rounded-lg">
+                          Add Cards
+                        </button>
+
+                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 neon-button font-bold rounded-lg">
+                          Submit Trade In
+                        </button>
+
+                      </div>
                     </div>
                     ))}
                 </div>
                 ) : (
-                <p className="text-gray-400">No items in trade-in yet.</p>
-                )}              </p>
+                  <>
+                    <p className="text-gray-400">No items in trade-in yet.</p>
+                    <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 neon-button font-bold rounded-lg">
+                        Add Cards
+                    </button>
+                  </>
+                )} 
+              </p>
+
               <p className="text-lg mb-2">
                 <span className="font-bold">Status:</span> {currentTradeIn.status}
               </p>
@@ -96,11 +131,16 @@ const TradeInDashboard = () => {
           ) : (
             <div className="text-center">
               <p className="mb-4">You have no active trade-ins.</p>
-              <a href="/userAddTrade">
-                <button className="px-6 py-3 neon-button font-bold rounded-lg">
+
+              {/** this button needs to be changed to create a new trade in draft and display it on the screen
+               * then allows the user to click a button to add new cards to the trade in
+               */}
+
+              {/* <a href="/userAddTrade"> */}
+                <button onClick={() => startTradeDraft()} className="px-6 py-3 neon-button font-bold rounded-lg">
                     Start a Trade-In
                 </button>
-              </a>
+              {/* </a> */}
             </div>
           )}
         </section>

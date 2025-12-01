@@ -22,7 +22,7 @@ import {
 
 import { DataContext } from '../../Context/DataContext';
 import CardUserModal from '../Scryfall/User/CardUserModal';
-import { submitDraftTradeIn } from '../../Services/TradeInService';
+import { addItemToDraft, submitDraftTradeIn } from '../../Services/TradeInService';
 
 const pageSize = 20;
 /*
@@ -58,6 +58,7 @@ const ScryfallSearch = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [selectedFinish, setSelectedFinish] = useState("");
 
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
@@ -110,17 +111,36 @@ const ScryfallSearch = () => {
   }
 
   const handleSubmit = async () => {
+    // add the selected card to the trade in draft
+
+    // validate the form inputs
+    if (!quantity || quantity <= 0) {
+        toast.error("Please enter a valid quantity.");
+        return;
+    }
+    if (!selectedCondition) {
+        toast.error("Please select a card condition.");
+        return;
+    }
+    if (!selectedFinish) {
+        toast.error("Please select foil or non-foil.");
+        return;
+    }
     try {
+
+        // create the form data
         const formData = buildTradeInFormData(
             selectedCard,
             quantity,
             selectedCondition,
         );  
 
-        setTradeIn(...formData);
+        // call the api that adds the trade in item
+        const tradeIn = addItemToDraft(formData);
+        setTradeIn(...tradeIn);
         toast.success(`Added ${selectedCard.name} to your trade in.`)
 
-    } catch (err) {
+    } catch (err) { // catch errors
         console.error(err);
         toast.error("Failed to add card to trade in.");
     } 
@@ -207,6 +227,8 @@ const ScryfallSearch = () => {
                 onSubmit={handleSubmit}
                 quantity={quantity}
                 setQuantity={setQuantity}
+                selectedFinish={selectedFinish}
+                setSelectedFinish={setSelectedFinish}
                 selectedCondition={selectedCondition}
                 setSelectedCondition={setSelectedCondition}
             />

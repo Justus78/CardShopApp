@@ -5,6 +5,9 @@ const CardItemUser = ({ card, handleAddClick }) => {
     card.image_uris?.normal ||
     card.card_faces?.[0]?.image_uris?.normal;
 
+      console.log('made it to card item user')
+
+
   return (
     <div
       onClick={() => handleAddClick(card)}

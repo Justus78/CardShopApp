@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { DataContext } from "../../Context/DataContext";
+import { p } from "framer-motion/client";
 
 const CardItem = ({ card, handleAddClick }) => {
+
+  const { user } = useContext(DataContext);
+  console.log('made it to card item')
+
   const img =
     card.image_uris?.normal ||
     card.card_faces?.[0]?.image_uris?.normal;
@@ -22,6 +28,7 @@ const CardItem = ({ card, handleAddClick }) => {
       <p className="text-sm text-gray-400">{card.set_name}</p>
       <p className="text-cyan-400 text-sm italic capitalize">{card.rarity}</p>
       <p className="text-sm mt-1">${card.prices?.usd || card.prices?.usd_foil || "N/A"}</p>
+    
     </div>
   );
 };

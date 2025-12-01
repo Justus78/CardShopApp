@@ -133,6 +133,7 @@ const ScryfallSearch = () => {
       <CardGrid
         paginatedGroupedCards={paginatedGroupedCards}
         handleAddClick={handleAddClick}
+        handleAddClickUser={null}
       />
 
       {/* 🔄 Pagination */}

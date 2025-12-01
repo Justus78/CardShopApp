@@ -64,7 +64,7 @@ const handleResponse = async (res) => {
 /* -------------------------------------------------------------------------- */
 
 // GET: Get or create draft trade-in
-export const getDraftTradeIn = async () => {
+export const getOrCreateDraftTradeIn = async () => {
   const res = await fetch(`${API_URL}/draft`, {
     method: "GET",
     credentials: "include",
@@ -73,11 +73,10 @@ export const getDraftTradeIn = async () => {
 };
 
 // POST: Add item to draft trade-in
-export const addItemToDraft = async (itemDto) => {
+export const addItemToDraft = async (formData) => {
   const res = await fetch(`${API_URL}/draft/items`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(itemDto),
+    body: formData,
     credentials: "include",
   });
   return handleResponse(res);
