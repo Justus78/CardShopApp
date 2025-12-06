@@ -100,7 +100,6 @@ const ScryfallSearch = () => {
   const handleAddClick = (card) => {
     setSelectedCard(card);
     setPrice("");
-    setInventory("");
     setSelectedCondition("");
     setSelectedRarity("");
     setSelectedType("");
@@ -136,8 +135,8 @@ const ScryfallSearch = () => {
         );  
 
         // call the api that adds the trade in item
-        const tradeIn = addItemToDraft(formData);
-        setTradeIn(...tradeIn);
+        const tradeIn = await addItemToDraft(formData);
+        setTradeIn(tradeIn);
         toast.success(`Added ${selectedCard.name} to your trade in.`)
 
     } catch (err) { // catch errors

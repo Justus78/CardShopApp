@@ -49,6 +49,7 @@ const TradeInDashboard = () => {
       const tradeIn = getOrCreateDraftTradeIn();
       setCurrentTradeIn(tradeIn);
     } catch (err){
+      
       toast.error('Failed to start a new trade in. Please try again later.')
     } finally {
       setLoading(false)
@@ -100,19 +101,25 @@ const TradeInDashboard = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-between">
+                      
+                    </div>
+                    ))}
 
-                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 neon-button font-bold rounded-lg">
+                    <div className="flex justify-between">
+
+                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 bg-blue-600 neon-button font-bold rounded-lg cursor-pointer">
                           Add Cards
                         </button>
 
-                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 neon-button font-bold rounded-lg">
+                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg cursor-pointer">
+                          Cancel Trade In
+                        </button>
+
+                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg cursor-pointer">
                           Submit Trade In
                         </button>
 
                       </div>
-                    </div>
-                    ))}
                 </div>
                 ) : (
                   <>
