@@ -1,53 +1,3 @@
-// const API_URL = "https://localhost:7286/api/tradeins"; // Change as needed
-
-// // Helper to handle fetch errors
-// const handleResponse = async (res) => {
-//   if (!res.ok) {
-//     const errorData = await res.json().catch(() => ({}));
-//     throw errorData || { message: "Something went wrong" };
-//   }
-//   return res.status === 204 ? null : res.json();
-// };
-
-
-// // Get: get all trade ins for user
-// export const getAllTradeInsForUser = async () => {
-//     const url = new URL(API_URL);
-
-//     const res = await fetch(url.toString(), {
-//         method: "GET",
-//         credentials: "include",
-//     });
-
-//     return handleResponse(res);
-// }
-
-// // Post: post a new trade in for user
-// export const createTradeIn = async (formData) => {
-//     const res = await fetch(API_URL, {
-//         method: "POST", 
-//         body: formData,
-//         credentials: "include",
-//     }) ;
-//     return handleResponse(res);
-// };
-
-// // Get: get all trade ins for admin
-
-// // Post: update trade in status (admin)
-// export const updateTradeIn = async (status) => {
-//     const res = await fetch(`${API_URL}/${status}`, {
-//         method: "PUT",
-//         credentials: "include",        
-//     });
-//     return handleResponse(res);
-// }
-
-// // Get: get or create a new trade in draft
-// export const getOrCreateTradeInDraft = async () => {
-
-// }
-
 const API_URL = "https://localhost:7286/api/tradeins";
 
 // Handle fetch + error parsing
@@ -91,15 +41,6 @@ export const removeDraftItem = async (itemId) => {
   return handleResponse(res);
 };
 
-// POST: Submit draft trade-in
-export const submitDraftTradeIn = async () => {
-  const res = await fetch(`${API_URL}/draft/submit`, {
-    method: "POST",
-    credentials: "include",
-  });
-  return handleResponse(res);
-};
-
 /* -------------------------------------------------------------------------- */
 /*                           USER SUBMITTED TRADE-INS                          */
 /* -------------------------------------------------------------------------- */
@@ -122,14 +63,33 @@ export const getTradeInById = async (tradeInId) => {
   return handleResponse(res);
 };
 
+// POST: Update the trade in status to submitted
+export const submitTradeIn = async (tradeInId) => {
+  const res = await fetch(`${API_URL}/draft/submit/${tradeInId}`,{
+    method: "POST",
+    credentials: "include"
+  });
+  return handleResponse(res);
+}
+
 // DELETE: Cancel trade-in
-export const cancelTradeIn = async (tradeInId) => {
+export const returnTradeIn = async (tradeInId) => {
   const res = await fetch(`${API_URL}/${tradeInId}`, {
     method: "DELETE",
     credentials: "include",
   });
+
   return handleResponse(res);
 };
+
+// DELETE: Cancel the trade in
+export const cancelTradeIn = async (tradeInId) => {
+  const res = await fetch(`${API_URL}/draft/deleteDraft/${tradeInId}`, {
+    method: "DELETE",
+    credentials: "include"
+  });
+  return handleResponse(res);
+}
 
 // POST: Accept final offer
 export const acceptFinalOffer = async (tradeInId) => {

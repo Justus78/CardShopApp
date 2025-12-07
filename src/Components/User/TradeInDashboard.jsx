@@ -2,19 +2,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { DataContext } from "../../Context/DataContext";
 import Navbar from "../../Components/User/Navbar";
 import TableHeader from "../Admin/TableHeader";
-import { getOrCreateDraftTradeIn, getUserTradeIns } from "../../Services/TradeInService";
+import { cancelTradeIn, getOrCreateDraftTradeIn, getUserTradeIns, submitTradeIn } from "../../Services/TradeInService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const TradeInDashboard = () => {
-  const { user } = useContext(DataContext);
+  // const { user } = useContext(DataContext);
   const [currentTradeIn, setCurrentTradeIn] = useState(null);
   const [pastTradeIns, setPastTradeIns] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  console.log(pastTradeIns)
 
   useEffect(() => {
   const fetchTrades = async () => {
@@ -42,6 +41,20 @@ const TradeInDashboard = () => {
     fetchTrades();
   }, []);
 
+  const refreshTrades = async () => {
+    try {
+      const trades = await getUserTradeIns();
+
+      const current = trades.find(t => t.status === 0) || null;
+      const past = trades.filter(t => t.status !== 0);
+
+      setCurrentTradeIn(current);
+      setPastTradeIns(past);
+    } catch (err) {
+      toast.error("Failed to refresh trade-ins.");
+    }
+  };
+
   const startTradeDraft = async () => {
     // this starts a new trade draft
     try {
@@ -56,6 +69,44 @@ const TradeInDashboard = () => {
       console.log("current trade in:" + currentTradeIn)
     }
     
+  }
+
+  const CancelTradeIn = async (id) => {
+    // cancel the trade in draft
+    try {
+      setLoading(true);
+      const res = await CancelTradeIn(id);
+      console.log(res);
+      setCurrentTradeIn(null);
+
+    } catch (err) {
+      toast.error(err)
+      console.log(err)
+
+    } finally {
+      setLoading(false)
+
+    }
+  }
+
+  const submitTradeInRequest = async (id) => {
+    // update the status of trade in to submitted
+    try {
+      console.log(id)
+      setLoading(true);
+      const res = await submitTradeIn(id);
+      console.log(res)
+      toast.success("Trade submitted successfully!")
+      setCurrentTradeIn(null);
+      await refreshTrades();
+    } catch (err) {
+      toast.error(err.message)
+      console.log(err.message)
+
+    } finally {
+      setLoading(false);
+      return;
+    }
   }
 
   return (
@@ -111,11 +162,11 @@ const TradeInDashboard = () => {
                           Add Cards
                         </button>
 
-                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg cursor-pointer">
+                        <button onClick={() => cancelTradeIn(currentTradeIn.id)} className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg cursor-pointer">
                           Cancel Trade In
                         </button>
 
-                        <button onClick={() => navigate('/userAddTrade')} className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg cursor-pointer">
+                        <button onClick={() => submitTradeInRequest(currentTradeIn.id)} className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg cursor-pointer">
                           Submit Trade In
                         </button>
 

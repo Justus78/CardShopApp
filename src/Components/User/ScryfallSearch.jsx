@@ -22,25 +22,9 @@ import {
 
 import { DataContext } from '../../Context/DataContext';
 import CardUserModal from '../Scryfall/User/CardUserModal';
-import { addItemToDraft, submitDraftTradeIn } from '../../Services/TradeInService';
+import { addItemToDraft } from '../../Services/TradeInService';
 
 const pageSize = 20;
-/*
-  public class TradeInItemCreateDto
-  {
-      public string CardName { get; set; } = string.Empty;
-      public string SetCode { get; set; } = string.Empty;
-      public int Quantity { get; set; }
-      public CardCondition Condition { get; set; } = CardCondition.NearMint;
-      public decimal? EstimatedPrice { get; set; } // per unit from Scryfall
-  }
-
-    public class TradeInCreateDto
-    {
-        public List<TradeInItemCreateDto> Items { get; set; } = [];
-    }
-*/
-
 
 // need to create a trade in service for trade ins
 // variable to hold a trade in item
@@ -145,19 +129,19 @@ const ScryfallSearch = () => {
     } 
   };
 
-  const handleSubmitTradeIn = async () => {
-    try {
-        const formData = new FormData();
+//   const handleSubmitTradeIn = async () => {
+//     try {
+//         const formData = new FormData();
 
-        formData.append("Items", tradeIn);
-        await submitDraftTradeIn(formData)
+//         formData.append("Items", tradeIn);
+//         await submitDraftTradeIn(formData)
 
-        toast.success("Trade In completed, check your email for more instruction.")
-    } catch (err) {
-        console.error(err);
-        toast.error("Failed to add product.");
-    }
-  }
+//         toast.success("Trade In completed, check your email for more instruction.")
+//     } catch (err) {
+//         console.error(err);
+//         toast.error("Failed to add product.");
+//     }
+//   }
 
   return (
     <>
