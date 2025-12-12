@@ -26,12 +26,6 @@ import { addItemToDraft } from '../../Services/TradeInService';
 
 const pageSize = 20;
 
-// need to create a trade in service for trade ins
-// variable to hold a trade in item
-// object to hold all trade in items
-
-
-
 const ScryfallSearch = () => {
   const [query, setQuery] = useState("");
 
