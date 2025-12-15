@@ -151,12 +151,13 @@ export const buildTradeInFormData = (
 ) => {
   const formData = new FormData();
 
-  // const imageUrl =
-  //   card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal;
+  const imageUrl =
+    card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal;
 
   formData.append("CardName", card.name);
   formData.append("SetCode", card.set_name || "");
   formData.append("Quantity", quantity);
+  formData.append("ImageUrl", imageUrl || "")
 
   if (selectedCondition) formData.append("CardCondition", selectedCondition);
 

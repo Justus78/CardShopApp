@@ -9,15 +9,12 @@ const TradeInMain = () => {
   const [loading, setLoading] = useState(false);
 
   return (
-    
     <>
-    {loading ? "loading trade in dashboard": 
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6">
-
         <Navbar />
-        <TradeInDashboard />
-        <Footer />
-      </div>}
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6">
+          <TradeInDashboard />
+          <Footer />
+        </div>
     </>
       
   );

@@ -43,7 +43,7 @@ function App() {
 
   return (
     <>
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-gradient-to-br from-[#0a0024] via-[#10002b] to-[#001f2d]">
+    <div className="min-h-screen flex flex-col relative bg-gradient-to-br overflow-visible from-[#0a0024] via-[#10002b] to-[#001f2d]">
       {/* Neon grid background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)] pointer-events-none"></div>
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,0,255,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(255,0,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>

@@ -10,7 +10,7 @@ const Navbar = () => {
   const { handleLogout, isAuthenticated, user } = useContext(DataContext);
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-[#0b0130]/80 border-b border-cyan-500/20 shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-[#0b0130]/80 border-b border-cyan-500/20 shadow-[0_0_20px_rgba(0,255,255,0.2)]">
       {/* --- TOP BAR --- */}
       <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
