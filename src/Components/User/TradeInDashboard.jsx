@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TableHeader from "../Admin/TableHeader";
+import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
+import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import {
   getUserTradeIns,
   getOrCreateDraftTradeIn,
@@ -33,6 +35,7 @@ const TradeInDashboard = () => {
 
         setCurrentTradeIn(current);
         setPastTradeIns(past);
+        
       } catch (err) {
         toast.error("Failed to load trade-ins.");
       } finally {
@@ -259,10 +262,11 @@ const TradeInDashboard = () => {
                     )}
                   </p>
 
-                  <p className="text-lg mb-2">
+                  <p className={`text-lg mb-2 ${TradeInStatusColors[currentTradeIn.status]}`}>
                     <span className="font-bold">Status:</span>{" "}
-                    {currentTradeIn.status}
+                    {TradeInStatusLabels[currentTradeIn.status] ?? "Unknown"}
                   </p>
+                
                 </div>
               </div>
             </div>
@@ -281,8 +285,55 @@ const TradeInDashboard = () => {
 
         {/* Past Trade-Ins Section */}
         <section>
-          <h2 className="text-2xl font-semibold neon-text mb-4">Past Trade-Ins</h2>
-          {/* ... Render past trade-ins ... */}
+          <h2 className="text-2xl font-semibold neon-text mb-4">
+            Past Trade-Ins
+          </h2>
+          {pastTradeIns.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {pastTradeIns.map((trade) => (
+                <div
+                  key={trade.id}
+                  className="bg-gray-800 p-4 rounded-lg shadow-neon border-neon border-2"
+                >
+                  <p className="text-lg mb-1">
+                    <span className="font-bold">ID:</span> {trade.id}
+                  </p>
+                  <span className="font-bold">Items:</span>
+                  {trade?.items?.length > 0 ? (
+                    <div className="space-y-3">
+                      {trade.items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"
+                        >
+                          <div className="flex justify-between">
+                            <div>
+                              <p className="text-cyan-300 font-bold text-lg">{item.cardName}</p>
+                              <p className="text-purple-300 text-sm">Set: {item.setCode}</p>
+                              <p className="text-pink-300 text-sm">Condition: {item.condition}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-cyan-200">Qty: {item.quantity}</p>
+                              <p className="text-green-300">
+                                Est: ${item.estimatedUnitValue?.toFixed(2)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-400">No items in trade-in yet.</p>
+                  )}
+                  <p className="text-lg">
+                    <span className="font-bold">Status:</span> {trade.status}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>You have no past trade-ins.</p>
+          )}
         </section>
       </div>
     </div>
