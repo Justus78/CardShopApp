@@ -325,8 +325,9 @@ const TradeInDashboard = () => {
                   ) : (
                     <p className="text-gray-400">No items in trade-in yet.</p>
                   )}
-                  <p className="text-lg">
-                    <span className="font-bold">Status:</span> {trade.status}
+                  <p className={`text-lg mb-2 ${TradeInStatusColors[trade.status]}`}>
+                    <span className="font-bold">Status:</span>{" "}
+                    {TradeInStatusLabels[trade.status] ?? "Unknown"}
                   </p>
                 </div>
               ))}

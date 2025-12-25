@@ -26,6 +26,7 @@ import OrderDetails from "./Pages/Admin/Orders/OrderDetails";
 import UserDetails from "./Pages/Admin/Users/UserDetails";
 import TradeInMain from "./Pages/User/Trades/TradeInMain";
 import AddTradeIn from "./Pages/User/Trades/AddTradeIn";
+import TradeInHome from "./Pages/Admin/TradeIn/TradeInHome";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -176,6 +177,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="Admin">
               <UserDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/ViewTrades"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <TradeInHome />
             </ProtectedRoute>
           }
         />

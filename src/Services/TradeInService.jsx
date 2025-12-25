@@ -1,5 +1,5 @@
 const API_URL = "https://localhost:7286/api/tradeins";
-
+const ADMIN_API_URL = "https://localhost:7286/api/admin/tradeins";
 // Handle fetch + error parsing
 const handleResponse = async (res) => {
   if (!res.ok) {
@@ -108,6 +108,20 @@ export const declineFinalOffer = async (tradeInId) => {
   });
   return handleResponse(res);
 };
+
+/* ---------------------------------------------------------------------------- */
+/*                                Admin                                         */
+/* ---------------------------------------------------------------------------- */
+
+// get all trade ins for admin
+export const getAllTradeInsAdmin = async () => {
+  const res = await fetch(`${ADMIN_API_URL}`, {
+    method: "GET",
+    credentials: "include"    
+  });
+  return handleResponse(res);
+};
+
 
 /* -------------------------------------------------------------------------- */
 /*                                  ESTIMATE                                  */

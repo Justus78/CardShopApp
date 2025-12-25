@@ -20,6 +20,7 @@ const AdminDashboard = () => {
             { to: '/admin/AddProduct', label: 'Add Product' },
             { to: '/admin/ViewOrders', label: 'Orders' },
             { to: '/admin/ViewUsers', label: 'Customers' },
+            { to: '/admin/ViewTrades', label: 'Trade-ins'}
           ].map((item, index) => (
             <Link key={index} to={item.to} className="block">
               <div className="relative group bg-gray-900 bg-opacity-60 border border-gray-800 rounded-2xl p-8 shadow-lg transition-transform duration-300 hover:scale-105 hover:border-purple-500">
