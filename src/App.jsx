@@ -27,6 +27,7 @@ import UserDetails from "./Pages/Admin/Users/UserDetails";
 import TradeInMain from "./Pages/User/Trades/TradeInMain";
 import AddTradeIn from "./Pages/User/Trades/AddTradeIn";
 import TradeInHome from "./Pages/Admin/TradeIn/TradeInHome";
+import { UpdateTradeIn } from "./Pages/Admin/TradeIn/UpdateTradeIn";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -185,6 +186,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="Admin">
               <TradeInHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/UpdateTrade/:id"
+          element={
+            <ProtectedRoute requiredRole="Admin">
+              <UpdateTradeIn />
             </ProtectedRoute>
           }
         />

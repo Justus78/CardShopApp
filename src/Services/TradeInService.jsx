@@ -122,6 +122,35 @@ export const getAllTradeInsAdmin = async () => {
   return handleResponse(res);
 };
 
+export const getTradeInByIdAdmin = async (id) => {
+  const res = await fetch(`${ADMIN_API_URL}/${id}` ,{
+    method: "GET",
+    credentials: "include"
+  });
+  return handleResponse(res);
+}
+
+export const updateTradeInItemFinalValue = async (id, value) => {
+  const res = await fetch(`${ADMIN_API_URL}/items/${id}/finalValue`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ finalUnitValue: parseFloat(value) }),
+  });
+
+  return handleResponse(res);
+};
+
+
+export const submitFinalOfferFromAdmin = async (id) => {
+  const res = await fetch(`${ADMIN_API_URL}/${id}/submit-final-offer`, {
+    method: "POST",
+    credentials: "include"
+  });
+  return handleResponse(res);
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                  ESTIMATE                                  */

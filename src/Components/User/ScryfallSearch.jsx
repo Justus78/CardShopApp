@@ -138,7 +138,7 @@ const ScryfallSearch = () => {
 //   }
 
   return (
-    <>
+    <div className='mt-40'>
         <SearchBar 
             query={query}
             setQuery={setQuery}
@@ -211,7 +211,7 @@ const ScryfallSearch = () => {
             />
         )}
 
-    </>
+    </div>
 )
 }
 
