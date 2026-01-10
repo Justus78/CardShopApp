@@ -92,22 +92,25 @@ export const cancelTradeIn = async (tradeInId) => {
 }
 
 // POST: Accept final offer
-export const acceptFinalOffer = async (tradeInId) => {
-  const res = await fetch(`${API_URL}/${tradeInId}/confirm`, {
+export const acceptTradeInOffer = async (id) => {
+  const res = await fetch(`${API_URL}/${id}/accept-offer`, {
     method: "POST",
     credentials: "include",
   });
+
   return handleResponse(res);
 };
 
 // POST: Decline final offer
-export const declineFinalOffer = async (tradeInId) => {
-  const res = await fetch(`${API_URL}/${tradeInId}/decline`, {
+export const declineTradeInOffer = async (id) => {
+  const res = await fetch(`${API_URL}/${id}/decline-offer`, {
     method: "POST",
     credentials: "include",
   });
+
   return handleResponse(res);
 };
+
 
 /* ---------------------------------------------------------------------------- */
 /*                                Admin                                         */

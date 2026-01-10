@@ -305,43 +305,6 @@ export const UpdateTradeIn = () => {
             )}
         </section>
 
-        {/* <div className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition">
-            <div className="space-y-3">
-                {trade.items.map((item) => (
-                    <div
-                        key={item.id}
-                        className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"                        
-                    >
-                        <div className='flex justify-between'>
-                            <div className='flex'>
-                                <div className='border-4 w-20 h-25 mr-'>
-                                    <img src={item.imageUrl} alt="Card Image" className='w-full'/>
-                                </div>
-                                <div>
-                                  <p className="text-cyan-300 font-bold text-lg">
-                                    {item.cardName}
-                                  </p>
-                                  <p className="text-purple-300 text-sm">
-                                    Set: {item.setCode}
-                                  </p>
-                                  <p className="text-pink-300 text-sm">
-                                    Condition: {item.condition}
-                                  </p>
-                                </div>                                
-                            </div>
-
-                            <div className="text-right">
-                                <p className="text-cyan-200">Qty: {item.quantity}</p>
-                                <p className="text-green-300">
-                                Est: ${item.estimatedUnitValue?.toFixed(2)}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-        </div> */}
     </div>
      </div>
     </div>
