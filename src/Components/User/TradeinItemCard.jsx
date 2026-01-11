@@ -12,7 +12,7 @@ import React from "react";
  * - Admin review
  * - Offer screens
  */
-const TradeInItemCard = ({ item, onHover }) => {
+const TradeInItemCard = ({ item, onHover, renderRightExtra }) => {
   return (
     <div
       className="p-4 rounded-xl bg-black/40 border border-cyan-400/40 shadow-md hover:shadow-cyan-400 transition"
@@ -49,6 +49,9 @@ const TradeInItemCard = ({ item, onHover }) => {
           <p className="text-green-300">
             Est: ${item.estimatedUnitValue?.toFixed(2)}
           </p>
+
+          {/* ADMIN SLOT */}
+          {renderRightExtra && renderRightExtra(item)}
         </div>
       </div>
     </div>

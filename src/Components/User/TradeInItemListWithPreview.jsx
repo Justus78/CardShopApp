@@ -4,7 +4,11 @@ import TradeInItemCard from "./TradeinItemCard";
  * Reusable trade-in list with sticky preview.
  * Buttons are injected by the parent via `children`.
  */
-const TradeInItemListWithPreview = ({ items = [], children }) => {
+const TradeInItemListWithPreview = ({ 
+    items = [],
+    children,
+    renderItemRightExtra 
+}) => {
   const [hoverImage, setHoverImage] = useState(null);
 
   const imageRef = useRef(null);
@@ -68,6 +72,7 @@ const TradeInItemListWithPreview = ({ items = [], children }) => {
             key={item.id}
             item={item}
             onHover={setHoverImage}
+            renderRightExtra={renderItemRightExtra}
           />
         ))}
 
