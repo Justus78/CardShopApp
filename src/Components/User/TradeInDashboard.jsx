@@ -158,10 +158,17 @@ const TradeInDashboard = () => {
                   key={trade.id}
                   className="bg-gray-800 p-4 rounded-lg border-neon border-2"
                 >
-                  <p><strong>ID:</strong> {trade.id}</p>
+                  <p><strong>Trade Id:</strong> {trade.id}</p>
                   <p className={TradeInStatusColors[trade.status]}>
-                    {TradeInStatusLabels[trade.status]}
+                    Status: {TradeInStatusLabels[trade.status]}
                   </p>
+
+                  <button
+                    onClick={() => navigate(`/userViewTrade/${trade.id}`)}
+                    className="px-6 py-3 neon-button font-bold rounded-lg"
+                  >
+                    Review
+                  </button>
                 </div>
               ))}
             </div>

@@ -28,6 +28,7 @@ import TradeInMain from "./Pages/User/Trades/TradeInMain";
 import AddTradeIn from "./Pages/User/Trades/AddTradeIn";
 import TradeInHome from "./Pages/Admin/TradeIn/TradeInHome";
 import { UpdateTradeIn } from "./Pages/Admin/TradeIn/UpdateTradeIn";
+import ViewTrade from "./Pages/User/Trades/ViewTrade";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -96,6 +97,15 @@ function App() {
           element={
           <ProtectedRoute requiredRole="User">
             <AddTradeIn />
+          </ProtectedRoute>
+        }
+        />
+
+         <Route
+          path="/userViewTrade/:id"
+          element={
+          <ProtectedRoute requiredRole="User">
+            <ViewTrade />
           </ProtectedRoute>
         }
         />
