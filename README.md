@@ -1,12 +1,27 @@
-# React + Vite
+# CardShopApp – React Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CardShopApp is a React-based frontend for the CardShop e-commerce platform. It consumes the CardShop ASP.NET Core Web API to provide a complete shopping and checkout experience.
 
-Currently, two official plugins are available:
+## Tech Stack
+- React
+- JavaScript
+- HTML / CSS
+- REST APIs
+- JWT Authentication
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- User registration and login with JWT-based authentication
+- Protected routes for authenticated users and admins
+- Product browsing and search
+- Shopping cart and checkout flow
+- Integration with Stripe-powered backend endpoints
+- Responsive UI for desktop and mobile use
 
-## Expanding the ESLint configuration
+## Architecture & Design
+- Separation of concerns between UI components and API services
+- Centralized API communication layer
+- Protected routes based on authentication state
+- Designed to work with the CardShop backend API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Related Project
+- **Backend API:** [CardShop](https://github.com/Justus78/CardShop)
