@@ -34,7 +34,7 @@ const CartPage = () => {
   return (
     <>
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-10 border border-white mt-3 bg-white/60">
+      <div className="max-w-5xl mx-auto px-4 py-10 border border-white mt-3 bg-white rounded-2xl">
         <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
 
         {/* Cart items */}
@@ -88,7 +88,7 @@ const CartPage = () => {
         <div className="mt-4 text-right">
           <button
             onClick={clear}
-            className="text-gray-500 hover:text-gray-700 underline"
+            className="hover:text-gray-700 underline"
           >
             Clear Cart
           </button>

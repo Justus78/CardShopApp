@@ -68,31 +68,29 @@ const Navbar = () => {
           onMouseEnter={() => setMtgOpen(true)}
           onMouseLeave={() => setMtgOpen(false)}
         >
-          <span className="cursor-pointer text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
-            Magic: The Gathering
-          </span>
+          <a href="user/viewProducts">
+            <span className="cursor-pointer text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">
+              Magic: The Gathering
+            </span>
 
-          <AnimatePresence>
-            {mtgOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute left-0 mt-3 w-56 rounded-xl bg-[#0f022c]/90 border border-cyan-600/40 shadow-[0_0_20px_rgba(255,0,255,0.2)] backdrop-blur-lg"
-              >
-                {["Singles", "Boosters", "Decks", "Accessories"].map((item) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="block px-5 py-2 text-cyan-200 hover:bg-gradient-to-r hover:from-cyan-700/30 hover:to-fuchsia-700/30 hover:text-fuchsia-300 transition-all duration-300"
-                  >
-                    {item}
-                  </a>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <div>
+              {mtgOpen && (
+                <div                
+                  className="absolute left-0 mt-3 w-56 rounded-xl bg-[#0f022c]/90 border border-cyan-600/40 shadow-[0_0_20px_rgba(255,0,255,0.2)] backdrop-blur-lg"
+                >
+                  {["Singles", "Boosters", "Decks", "Accessories"].map((item) => (
+                    <a
+                      key={item}
+                      href="#"
+                      className="block px-5 py-2 text-cyan-200 hover:bg-gradient-to-r hover:from-cyan-700/30 hover:to-fuchsia-700/30 hover:text-fuchsia-300 transition-all duration-300"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </a>
         </div>
 
         <Link to="" className="text-xl text-cyan-300 hover:text-fuchsia-400 transition-all">

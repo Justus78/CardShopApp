@@ -50,167 +50,169 @@ function App() {
       {/* Neon grid background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)] pointer-events-none"></div>
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,0,255,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(255,0,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/user/viewProducts" element={<ViewProducts />} />
-        
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+        <div className="pt-[180px] md:pt-[180px] flex-1">
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/user/viewProducts" element={<ViewProducts />} />
+            
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
 
 
-        {/** User Routes */}
+            {/** User Routes */}
 
-        {/** Cart */}
-        <Route
-          path="/userCart"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <CartPage />
-          </ProtectedRoute>
-        }
-        />      
+            {/** Cart */}
+            <Route
+              path="/userCart"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <CartPage />
+              </ProtectedRoute>
+            }
+            />      
 
-        <Route
-          path="/userCheckout"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <CheckoutPage />
-          </ProtectedRoute>
-        }
-        />
+            <Route
+              path="/userCheckout"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+            />
 
-        {/** user trade in */}
-         <Route
-          path="/userTrade"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <TradeInMain />
-          </ProtectedRoute>
-        }
+            {/** user trade in */}
+            <Route
+              path="/userTrade"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <TradeInMain />
+              </ProtectedRoute>
+            }
 
-        />
-         <Route
-          path="/userAddTrade"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <AddTradeIn />
-          </ProtectedRoute>
-        }
-        />
+            />
+            <Route
+              path="/userAddTrade"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <AddTradeIn />
+              </ProtectedRoute>
+            }
+            />
 
-         <Route
-          path="/userViewTrade/:id"
-          element={
-          <ProtectedRoute requiredRole="User">
-            <ViewTrade />
-          </ProtectedRoute>
-        }
-        />
-
-
-
-        <Route
-          path="/order-success/:id"
-          element={
-            <ProtectedRoute requiredRole="User">
-              <OrderSuccess />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/user/viewOrders"
-          element={
-            <ProtectedRoute requiredRole="User">
-              <ViewOrders />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/userViewTrade/:id"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <ViewTrade />
+              </ProtectedRoute>
+            }
+            />
 
 
 
-       
+            <Route
+              path="/order-success/:id"
+              element={
+                <ProtectedRoute requiredRole="User">
+                  <OrderSuccess />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Admin-only routes */}
-        <Route
-          path="/admin/adminHome"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <AdminHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/viewProducts"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <ViewProductsAdmin />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/addProduct"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <AddProduct />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/viewOrders"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/orders/:id"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <OrderDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/viewUsers"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <Users />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/userDetails/:id"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <UserDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/ViewTrades"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <TradeInHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/UpdateTrade/:id"
-          element={
-            <ProtectedRoute requiredRole="Admin">
-              <UpdateTradeIn />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/user/viewOrders"
+              element={
+                <ProtectedRoute requiredRole="User">
+                  <ViewOrders />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Catch-all fallback */}
-        <Route path="*" element={<div>404 - Not Found</div>} />
-      </Routes>
+
+
+          
+
+            {/* Admin-only routes */}
+            <Route
+              path="/admin/adminHome"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <AdminHome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/viewProducts"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <ViewProductsAdmin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/addProduct"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/viewOrders"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/orders/:id"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <OrderDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/viewUsers"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <Users />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/userDetails/:id"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <UserDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/ViewTrades"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <TradeInHome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/UpdateTrade/:id"
+              element={
+                <ProtectedRoute requiredRole="Admin">
+                  <UpdateTradeIn />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Catch-all fallback */}
+            <Route path="*" element={<div>404 - Not Found</div>} />
+          </Routes>
+        </div>
       </div>
     </>
   );

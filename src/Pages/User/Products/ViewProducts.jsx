@@ -125,7 +125,7 @@ const ViewProducts = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 p-6">
           {/* Left: Filters */}
-          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-32 self-start">
+          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-42 self-start">
             <h2 className="font-semibold mb-4">Filters</h2>
             <input
               type="text"
@@ -179,7 +179,7 @@ const ViewProducts = () => {
                 {filteredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white/50 shadow p-4 rounded-lg gap-4"
+                    className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white shadow p-4 rounded-lg gap-4"
                   >
                     <div className="flex-shrink-0 w-40 h-56">
                       <img
@@ -210,7 +210,7 @@ const ViewProducts = () => {
           </div>
 
           {/* Right: Cart */}
-          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-6 self-start">
+          <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-40 self-start">
             <h2 className="font-semibold mb-3">Your Cart</h2>
             {cart.length === 0 ? (
               <p className="text-sm text-gray-500">Cart is empty</p>
