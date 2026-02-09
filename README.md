@@ -28,11 +28,11 @@ CardShopApp is a React-based frontend for the CardShop e-commerce platform. It c
 
 ## Screenshots
 
-## Products
+## Product Listing
 ![Product Listing](screenshots/frontend-product-listing.png)
 
-## Checkout
+## Shopping Cart
 ![Shopping Cart](screenshots/shopping-cart.png)
 
-## Admin 
+## Admin Dashboard 
 ![Admin Dashboard](screenshots/admin-dashboard.png)
