@@ -51,7 +51,7 @@ function App() {
       {/* Neon grid background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)] pointer-events-none"></div>
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,0,255,0.05)_1px,transparent_1px),linear-gradient(0deg,rgba(255,0,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-        <div className="pt-[180px] md:pt-[180px] flex-1">
+        {/* <div className="pt-[180px] md:pt-[180px] flex-1"> */}
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
@@ -214,7 +214,7 @@ function App() {
             {/* Catch-all fallback */}
             <Route path="*" element={<div>404 - Not Found</div>} />
           </Routes>
-        </div>
+        {/* </div> */}
       </div>
     </>
   );

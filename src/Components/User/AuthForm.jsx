@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import LoadingOverlay from "../LoadingSpinners/LoadingOverlay"
 
 const AuthForm = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -80,7 +81,10 @@ const AuthForm = () => {
       setLoading(false);
     }
   };
-
+ 
+  if(loading) return (
+    <LoadingOverlay />
+  )
   return (
       <motion.div
         initial={{ opacity: 0, y: 40 }}
