@@ -6,6 +6,7 @@ import { DataContext } from "../../../Context/DataContext";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Footer from "../../../Components/User/Footer";
+import LoadingOverlay from "../../../Components/LoadingSpinners/LoadingOverlay";
 
 const ViewProducts = () => {
   // Products state
@@ -33,6 +34,7 @@ const ViewProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const res = await getAllProducts();
         setProducts(Array.isArray(res) ? res : []);
       } catch (err) {
@@ -114,6 +116,10 @@ const ViewProducts = () => {
     if (newQuantity < 1 || newQuantity > item.stockQuantity) return;
     updateItem({ ...item, quantity: newQuantity });
   };
+
+  if(loading) return (
+    <LoadingOverlay />
+  )
 
   return (
     <div>

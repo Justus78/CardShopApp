@@ -5,14 +5,17 @@ import { useNavigate } from 'react-router-dom'
 import { assets } from '../../../assets/assets'
 import { getSets } from '../../../Services/SetService'
 import Footer from '../../../Components/User/Footer'
+import LoadingOverlay from '../../../Components/LoadingSpinners/LoadingOverlay'
 
 const Home = () => {
-  const [latestSets, setLatestSets] = useState([])
-  const navigate = useNavigate()
+  const [latestSets, setLatestSets] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
   const fetchLatestSets = async () => {
     try {
+      setLoading(true);
       const response = await getSets(); // full array of sets
 
       // keywords that indicate a subset
@@ -32,12 +35,17 @@ const Home = () => {
 
     } catch (error) {
       console.error('Error fetching latest sets:', error);
+    } finally {
+      setLoading(false)
     }
   };
 
   fetchLatestSets();
 }, []);
 
+  if(loading) return (
+    <LoadingOverlay />
+  )
 
   return (
     <>

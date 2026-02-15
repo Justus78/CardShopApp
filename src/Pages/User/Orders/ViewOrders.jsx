@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../../Components/User/Navbar";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../../Components/User/Footer";
+import LoadingOverlay from "../../../Components/LoadingSpinners/LoadingOverlay";
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -11,6 +12,7 @@ const ViewOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/api/orders", {
           credentials: "include",
         });
@@ -29,10 +31,7 @@ const ViewOrders = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
-        <div className="text-center py-10">Loading your orders...</div>
-      </>
+      <LoadingOverlay />
     );
   }
 
