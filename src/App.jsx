@@ -30,6 +30,7 @@ import TradeInHome from "./Pages/Admin/TradeIn/TradeInHome";
 import { UpdateTradeIn } from "./Pages/Admin/TradeIn/UpdateTradeIn";
 import ViewTrade from "./Pages/User/Trades/ViewTrade";
 import SpinnerTest from "./Pages/Test/SpinnerTest";
+import { ManaSymbolTest } from "./Pages/Test/ManaSymbolTest";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -62,6 +63,8 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/SpinnerTestPage" element={<SpinnerTest />} />
+            <Route path="/ManaSymbolTest" element={<ManaSymbolTest />} />
+
 
 
             {/** User Routes */}
