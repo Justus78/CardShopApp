@@ -31,25 +31,6 @@ export default function SpinnerMana() {
       {/* Inner rotating ring (reverse) */}
       <div className="absolute inset-6 rounded-full border border-cyan-400/30 animate-[spin_12s_linear_infinite_reverse]"></div>
 
-      {/* Floating runes / particles */}
-      {/* <div className="absolute inset-0">
-        {Array.from({ length: 12 }).map((_, i) => {
-          const angle = (i / 12) * 360;
-          const radius = 60; // distance from center
-          const rad = (angle * Math.PI) / 180;
-          return (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-white/40 rounded-full animate-[ping_2s_linear_infinite]"
-              style={{
-                top: `${50 + radius * Math.sin(rad) * 0.01} %`,
-                left: `${50 + radius * Math.cos(rad) * 0.01} %`,
-              }}
-            />
-          );
-        })}
-      </div> */}
-
       {/* Mana symbols orbit container */}
       <div className="absolute inset-0 animate-[spin_10s_linear_infinite]">
         {[

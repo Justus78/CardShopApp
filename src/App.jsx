@@ -65,10 +65,7 @@ function App() {
             <Route path="/SpinnerTestPage" element={<SpinnerTest />} />
             <Route path="/ManaSymbolTest" element={<ManaSymbolTest />} />
 
-
-
             {/** User Routes */}
-
             {/** Cart */}
             <Route
               path="/userCart"

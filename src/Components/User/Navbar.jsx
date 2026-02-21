@@ -29,10 +29,16 @@ const Navbar = () => {
 
           {/* Auth Display */}
           {isAuthenticated ? (
-            <p className="text-cyan-300 font-semibold text-lg">
-              Welcome,&nbsp;
-              <span className="text-fuchsia-400">{user?.userName || "User"}</span>
-            </p>
+            <div>
+              <p className="text-cyan-300 font-semibold text-lg">
+                Welcome,&nbsp;
+                <span className="text-fuchsia-400">{user?.userName || "User"}</span>
+              </p>
+              <p className="text-cyan-300 font-semibold text-lg">
+                Store Credit: 
+                <span className="text-green-600">  ${user?.storeCredit || "0"}</span>
+              </p>        
+            </div>           
           ) : (
             <a
               href="/login"

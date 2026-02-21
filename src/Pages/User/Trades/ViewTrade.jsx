@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../../../Components/User/Navbar';
 import UserViewTradeDashboard from '../../../Components/User/UserViewTradeDashboard';
 import TableHeader from '../../../Components/Admin/TableHeader';
@@ -17,6 +17,8 @@ const ViewTrade = () => {
   const [trade, setTrade] = useState(null);  
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTrade = async () => {
@@ -66,6 +68,13 @@ const ViewTrade = () => {
         <div className="min-h-screen bg-gray-900 text-white pt-28">
           <div className="max-w-6xl mx-auto p-6">
             <TableHeader title={"View Trade Status"} />
+            <button 
+              onClick={() => navigate("/userTrade")}
+              className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 
+              py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300 m-4 cursor-pointer"
+            >
+              Back to Dashboard
+            </button>
             {trade && (
               <section className="mb-12">
                 <div className="bg-gray-800 p-6 rounded-lg shadow-neon border-neon border-2 mb-6 flex justify-between">
