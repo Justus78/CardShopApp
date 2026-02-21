@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import TableHeader from "../Admin/TableHeader";
+import ConfirmModal from "../ConfirmModal";
 import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
 import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
+
 
 import {
   getUserTradeIns,
@@ -14,6 +16,7 @@ import {
   submitTradeIn,
   cancelTradeIn,
 } from "../../Services/TradeInService";
+import { div } from "framer-motion/client";
 
 /**
  * Dashboard responsibilities:
@@ -29,6 +32,14 @@ const TradeInDashboard = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const [confirmModal, setConfirmModal] = useState({
+  isOpen: false,
+  type: null,
+  tradeId: null,
+});
+
+ 
 
   // Initial fetch
   useEffect(() => {
@@ -86,6 +97,43 @@ const TradeInDashboard = () => {
     }
   };
 
+  // helper methods for confirm modal
+  const openSubmitConfirm = (id) => {
+  setConfirmModal({
+    isOpen: true,
+    type: "submit",
+    tradeId: id,
+  });
+};
+
+const openCancelConfirm = (id) => {
+  setConfirmModal({
+    isOpen: true,
+    type: "cancel",
+    tradeId: id,
+  });
+};
+
+const closeConfirmModal = () => {
+  setConfirmModal({
+    isOpen: false,
+    type: null,
+    tradeId: null,
+  });
+};
+
+const handleConfirm = async () => {
+  const { type, tradeId } = confirmModal;
+
+  if (type === "submit")
+    await submitTrade(tradeId);
+
+  if (type === "cancel")
+    await cancelTrade(tradeId);
+
+  closeConfirmModal();
+};
+
   return (
     <div className="min-h-screen bg-gray-900 text-white pt-28">
       <div className="max-w-6xl mx-auto p-6">
@@ -116,19 +164,23 @@ const TradeInDashboard = () => {
                   Add Cards
                 </button>
 
-                <button
-                  onClick={() => cancelTrade(currentTradeIn.id)}
-                  className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg"
-                >
-                  Cancel Trade In
-                </button>
+                {currentTradeIn.items > 0 ?
+                  <div>
+                    <button
+                      onClick={() => openCancelConfirm(currentTradeIn.id)}
+                      className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg"
+                    >
+                      Cancel Trade In
+                    </button>
 
-                <button
-                  onClick={() => submitTrade(currentTradeIn.id)}
-                  className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg"
-                >
-                  Submit Trade In
-                </button>
+                    <button
+                      onClick={() => openSubmitConfirm(currentTradeIn.id)}
+                      className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg"
+                    >
+                      Submit Trade In
+                    </button> 
+                  </div> : ""
+                }
               </TradeInItemListWithPreview>
 
             </div>
@@ -177,6 +229,28 @@ const TradeInDashboard = () => {
           )}
         </section>
       </div>
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        title={
+          confirmModal.type === "submit"
+            ? "Submit Trade-In"
+            : "Cancel Trade-In"
+        }
+        message={
+          confirmModal.type === "submit"
+            ? "Are you sure you want to submit this trade-in? You won't be able to modify it afterward."
+            : "Are you sure you want to cancel this trade-in?"
+        }
+        confirmText="Yes"
+        cancelText="No"
+        confirmColor={
+          confirmModal.type === "submit"
+            ? "bg-green-600"
+            : "bg-red-600"
+        }
+        onConfirm={handleConfirm}
+        onCancel={closeConfirmModal}
+      />
     </div>
   );
 };
