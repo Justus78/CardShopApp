@@ -8,6 +8,7 @@ import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
 import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
+import { div } from "framer-motion/client";
 
 
 import {
@@ -16,7 +17,6 @@ import {
   submitTradeIn,
   cancelTradeIn,
 } from "../../Services/TradeInService";
-import { div } from "framer-motion/client";
 
 /**
  * Dashboard responsibilities:
@@ -164,8 +164,8 @@ const handleConfirm = async () => {
                   Add Cards
                 </button>
 
-                {currentTradeIn.items > 0 ?
-                  <div>
+                {currentTradeIn.items.length > 0 ?
+                  <div className="flex gap-4">
                     <button
                       onClick={() => openCancelConfirm(currentTradeIn.id)}
                       className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg"
