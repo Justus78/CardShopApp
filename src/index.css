@@ -37,7 +37,7 @@ body {
 }
 
 .neon-button {
-    /* background: linear-gradient(90deg, #0ff, #f0f, #0ff); */
+    background: linear-gradient(rgb(47, 47, 185), rgb(17, 125, 125));
     color: #fff;
     text-shadow: 0 0 5px #fff;
     transition: all 0.3s ease;
