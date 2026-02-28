@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -8,7 +8,7 @@ import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
 import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
-import { div } from "framer-motion/client";
+import { div, option } from "framer-motion/client";
 
 
 import {
@@ -30,6 +30,7 @@ const TradeInDashboard = () => {
   const [currentTradeIn, setCurrentTradeIn] = useState(null);
   const [pastTradeIns, setPastTradeIns] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sortOption, setSortOption] = useState(null);
 
   const navigate = useNavigate();
 
@@ -39,8 +40,7 @@ const TradeInDashboard = () => {
   tradeId: null,
 });
 
- 
-
+toast.error
   // Initial fetch
   useEffect(() => {
     refreshTrades();
@@ -59,6 +59,22 @@ const TradeInDashboard = () => {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   let filtered = [...pastTradeIns];
+
+  //   if (sortOption !== null) {
+  //     filtered = filtered.filter(t => t.status === sortOption);
+  //   }
+
+  //   setFilteredTrades(filtered);
+  // }, [sortOption, pastTradeIns]);
+
+  const filteredTrades = useMemo(() => {
+  if (sortOption === null) return pastTradeIns;
+  return pastTradeIns.filter(t => t.status === sortOption);
+}, [pastTradeIns, sortOption]);
+
 
   const startTradeDraft = async () => {
     try {
@@ -202,10 +218,32 @@ const handleConfirm = async () => {
           <h2 className="text-2xl font-semibold neon-text mb-4">
             Past Trade-Ins
           </h2>
+          {/** filter logic */}
+          <div className="flex justify-between mb-4">
+            <select 
+              value={sortOption ?? ""}
+              onChange={(e) => setSortOption(e.target.value === "" ? null : Number(e.target.value))}
+              className="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              <option className="text-black" value="">All</option>
+              <option className="text-black" value={0}>Draft</option>
+              <option className="text-black" value={1}>Submitted</option>
+              <option className="text-black" value={2}>Estimated</option>
+              <option className="text-black" value={3}>Shipped</option>
+              <option className="text-black" value={4}>Received</option>
+              <option className="text-black" value={5}>Under Review</option>
+              <option className="text-black" value={6}>Offer Sent</option>
+              <option className="text-black" value={7}>Accepted</option>
+              <option className="text-black" value={8}>Credited</option>
+              <option className="text-black" value={9}>Declined</option>
+              <option className="text-black" value={10}>Auto Completed</option>
+              <option className="text-black" value={11}>Returned</option>
+            </select>
+          </div>
 
-          {pastTradeIns.length ? (
+          {filteredTrades.length != 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {pastTradeIns.map(trade => (
+              {filteredTrades.map(trade => (
                 <div
                   key={trade.id}
                   className="bg-gray-800 p-4 rounded-lg border-neon border-2"

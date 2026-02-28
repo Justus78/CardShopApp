@@ -49,7 +49,6 @@ const ViewProducts = () => {
   // Apply filters + sorting whenever dependencies change
   useEffect(() => {
     let filtered = products;
-    console.log(products)
 
     // Filter by set if query param exists
     if (setFilter) {
@@ -129,7 +128,7 @@ const ViewProducts = () => {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 p-6 mt-40">
           {/* Left: Filters */}
           <div className="lg:col-span-1 bg-white shadow rounded-lg p-4 h-fit sticky top-42 self-start">
             <h2 className="font-semibold mb-4">Filters</h2>
@@ -166,7 +165,7 @@ const ViewProducts = () => {
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+                className="bg-white border border-white rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
               >
                 <option value="relevant">Most Relevant</option>
                 <option value="priceLowHigh">Price: Low to High</option>
