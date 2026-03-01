@@ -14,6 +14,7 @@ import SearchBar from "../Scryfall/SearchBar";
 import SortingControls from "../Scryfall/SortingControls";
 import CardGrid from "../Scryfall/CardGrid";
 import CardModalAdmin from "../Scryfall/CardModalAdmin";
+import LoadingOverlay from "../LoadingSpinners/LoadingOverlay";
 
 import {
   handleScryfallSearch,
@@ -61,7 +62,7 @@ const ScryfallSearch = () => {
     });
   };
 
-  // 🎴 Filter, group, and paginate cards using helpers
+  // Filter, group, and paginate cards using helpers
   const filteredCards = filterCards(cards, selectedRarity, selectedType, sortOrder);
   const groupedCards = groupCards(filteredCards, groupBy);
   const paginatedGroupedCards = paginateGroups(groupedCards, currentPage, PAGE_SIZE);
@@ -69,7 +70,7 @@ const ScryfallSearch = () => {
   const totalCardsCount = filteredCards.length;
   const totalPages = Math.ceil(totalCardsCount / PAGE_SIZE);
 
-  // 🧱 Open modal and reset form fields
+  // Open modal and reset form fields
   const handleAddClick = (card) => {
     setSelectedCard(card);
     setPrice("");
@@ -79,7 +80,7 @@ const ScryfallSearch = () => {
     setSelectedType("");
   };
 
-  // 💾 Submit modal form
+  // Submit modal form
   const handleSubmit = async () => {
     if (!price || !inventory || isNaN(price) || isNaN(inventory)) {
       toast.error("Please enter valid price and stock quantity.");
@@ -126,7 +127,9 @@ const ScryfallSearch = () => {
       />
 
       {/* Loading & Errors */}
-      {loading && <p className="text-center text-cyan-300 text-lg">Loading cards...</p>}
+      {loading && 
+        <LoadingOverlay />
+      }
       {error && <p className="text-center text-red-400 font-medium mb-6">{error}</p>}
 
       {/* 🎴 Cards */}

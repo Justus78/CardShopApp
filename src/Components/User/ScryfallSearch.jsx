@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import SearchBar from '../Scryfall/SearchBar';
 import SortingControls from '../Scryfall/SortingControls';
 import CardGrid from '../Scryfall/CardGrid';
+import LoadingOverlay from "../../Components/LoadingSpinners/LoadingOverlay"
 
 import {
   ProductCategory,
@@ -104,7 +105,7 @@ const ScryfallSearch = () => {
         return;
     }
     try {
-
+        setLoading(true);
         // create the form data
         const formData = buildTradeInFormData(
             selectedCard,
@@ -120,22 +121,10 @@ const ScryfallSearch = () => {
     } catch (err) { // catch errors
         console.error(err);
         toast.error("Failed to add card to trade in.");
-    } 
+    } finally {
+        setLoading(false)
+    }
   };
-
-//   const handleSubmitTradeIn = async () => {
-//     try {
-//         const formData = new FormData();
-
-//         formData.append("Items", tradeIn);
-//         await submitDraftTradeIn(formData)
-
-//         toast.success("Trade In completed, check your email for more instruction.")
-//     } catch (err) {
-//         console.error(err);
-//         toast.error("Failed to add product.");
-//     }
-//   }
 
   return (
     <div className='mt-40'>
@@ -154,7 +143,9 @@ const ScryfallSearch = () => {
         />
 
          {/* Loading & Errors */}
-        {loading && <p className="text-center text-cyan-300 text-lg">Loading cards...</p>}
+        {loading && 
+            <LoadingOverlay />
+        }
         {error && <p className="text-center text-red-400 font-medium mb-6">{error}</p>}  
 
         {/* 🎴 Cards */}

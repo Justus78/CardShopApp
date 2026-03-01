@@ -60,16 +60,6 @@ toast.error
     }
   };
 
-  // useEffect(() => {
-  //   let filtered = [...pastTradeIns];
-
-  //   if (sortOption !== null) {
-  //     filtered = filtered.filter(t => t.status === sortOption);
-  //   }
-
-  //   setFilteredTrades(filtered);
-  // }, [sortOption, pastTradeIns]);
-
   const filteredTrades = useMemo(() => {
   if (sortOption === null) return pastTradeIns;
   return pastTradeIns.filter(t => t.status === sortOption);
