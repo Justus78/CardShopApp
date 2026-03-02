@@ -24,6 +24,7 @@ import {
 import { DataContext } from '../../Context/DataContext';
 import CardUserModal from '../Scryfall/User/CardUserModal';
 import { addItemToDraft } from '../../Services/TradeInService';
+import { useNavigate } from 'react-router-dom';
 
 const pageSize = 20;
 
@@ -50,6 +51,7 @@ const ScryfallSearch = () => {
   const [tradeInItem, setTradeInItem] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);   
+  const navigate = useNavigate();
       
   const PAGE_SIZE = 20; // set page size
   
@@ -128,6 +130,13 @@ const ScryfallSearch = () => {
 
   return (
     <div className='mt-40'>
+        
+        <button      
+            onClick={() => navigate("/userTrade")}       
+            className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
+        >
+            Back To Dashboard
+        </button>
         <SearchBar 
             query={query}
             setQuery={setQuery}
