@@ -76,7 +76,7 @@ const TradeInItemListWithPreview = ({
           />
         ))}
 
-        {/* 🔑 Action Slot */}
+        {/* Action Slot */}
         {children && (
           <div className="pt-4 flex gap-4 justify-between">
             {children}

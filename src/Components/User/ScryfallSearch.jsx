@@ -130,13 +130,16 @@ const ScryfallSearch = () => {
 
   return (
     <div className='mt-40'>
-        
-        <button      
-            onClick={() => navigate("/userTrade")}       
-            className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
-        >
-            Back To Dashboard
-        </button>
+        <div className='flex justify-center p-10'>
+            <button      
+                onClick={() => navigate("/userTrade")}       
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold 
+                hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
+            >
+                Back To Dashboard
+            </button>
+        </div>
+
         <SearchBar 
             query={query}
             setQuery={setQuery}
