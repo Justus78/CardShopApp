@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import TradeInItemCard from "./TradeinItemCard";
+import TradeInItemCard from "./TradeInItemCard"
+import TradeInItemActions from "./TradeInItemActions";
+import TradeInItemInfo from "./TradeInItemInfo";
 /**
  * Reusable trade-in list with sticky preview.
  * Buttons are injected by the parent via `children`.
@@ -72,11 +74,20 @@ const TradeInItemListWithPreview = ({
             key={item.id}
             item={item}
             onHover={setHoverImage}
-            renderRightExtra={renderItemRightExtra}
-          />
+          >
+            <TradeInItemInfo item={item} />
+
+            <TradeInItemActions
+              item={item}
+              onIncrease={(item) => console.log("increase", item)}
+              onDecrease={(item) => console.log("decrease", item)}
+              onRemove={(item) => console.log("remove", item)}
+            />
+            
+          </TradeInItemCard>
         ))}
 
-        {/* Action Slot */}
+        {/*  Action Slot */}
         {children && (
           <div className="pt-4 flex gap-4 justify-between">
             {children}
