@@ -6,7 +6,7 @@ const TradeInItemActions = ({
   onDecrease,
   onRemove
 }) => {
-
+  console.log(item)
   const total =
     (item.quantity || 0) * (item.estimatedUnitValue || 0);
 

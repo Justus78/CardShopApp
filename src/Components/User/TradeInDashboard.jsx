@@ -8,6 +8,7 @@ import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
 import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
+import { updateDraftItemQuantity, removeDraftItem } from "../../Services/TradeInService";
 // import { div, option } from "framer-motion/client";
 
 
@@ -75,6 +76,43 @@ const TradeInDashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleIncreaseQty = async (item) => {
+    const newQty = item.quantity + 1;
+
+    await updateDraftItemQuantity(item.id, newQty);
+
+    setCurrentTradeIn(prev => ({
+      ...prev,
+      items: prev.items.map(i =>
+        i.id === item.id ? { ...i, quantity: newQty } : i
+      )
+    }));
+  };
+
+  const handleDecreaseQty = async (item) => {
+    if (item.quantity <= 1) return;
+
+    const newQty = item.quantity - 1;
+
+    await updateDraftItemQuantity(item.id, newQty);
+
+    setCurrentTradeIn(prev => ({
+      ...prev,
+      items: prev.items.map(i =>
+        i.id === item.id ? { ...i, quantity: newQty } : i
+      )
+    }));
+  };
+
+  const handleRemoveItem = async (item) => {
+    await removeDraftItem(item.id);
+
+    setCurrentTradeIn(prev => ({
+      ...prev,
+      items: prev.items.filter(i => i.id !== item.id)
+    }));
   };
 
   const submitTrade = async (id) => {
@@ -161,7 +199,12 @@ const handleConfirm = async () => {
                 {TradeInStatusLabels[currentTradeIn.status]}
               </p>
 
-              <TradeInItemListWithPreview items={currentTradeIn.items}>
+              <TradeInItemListWithPreview 
+                items={currentTradeIn.items}
+                handleDecrease={handleDecreaseQty}
+                handleIncrease={handleIncreaseQty}
+                handleRemoveItem={handleRemoveItem}
+              >
                 <button
                   onClick={() => navigate("/userAddTrade")}
                   className="px-6 py-3 bg-blue-600 neon-button font-bold rounded-lg"

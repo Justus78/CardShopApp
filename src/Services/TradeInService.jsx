@@ -32,6 +32,19 @@ export const addItemToDraft = async (formData) => {
   return handleResponse(res);
 };
 
+export const updateDraftItemQuantity = async (itemId, quantity) => {
+  const res = await fetch(`${API_URL}/draft/items/${itemId}/quantity`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ quantity }),
+  });
+
+  return handleResponse(res);
+};
+
 // DELETE: Remove item from draft
 export const removeDraftItem = async (itemId) => {
   const res = await fetch(`${API_URL}/draft/items/${itemId}`, {

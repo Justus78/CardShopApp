@@ -9,7 +9,9 @@ import TradeInItemInfo from "./TradeInItemInfo";
 const TradeInItemListWithPreview = ({ 
     items = [],
     children,
-    renderItemRightExtra 
+    handleIncrease,
+    handleDecrease,
+    handleRemoveItem
 }) => {
   const [hoverImage, setHoverImage] = useState(null);
 
@@ -79,9 +81,9 @@ const TradeInItemListWithPreview = ({
 
             <TradeInItemActions
               item={item}
-              onIncrease={(item) => console.log("increase", item)}
-              onDecrease={(item) => console.log("decrease", item)}
-              onRemove={(item) => console.log("remove", item)}
+              onIncrease={(item) => handleIncrease(item)}
+              onDecrease={(item) => handleDecrease(item)}
+              onRemove={(item) => handleRemoveItem(item)}
             />
             
           </TradeInItemCard>
