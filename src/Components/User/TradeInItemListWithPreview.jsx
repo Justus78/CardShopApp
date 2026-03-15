@@ -13,7 +13,10 @@ const TradeInItemListWithPreview = ({
     handleDecrease,
     handleRemoveItem
 }) => {
-  const [hoverImage, setHoverImage] = useState(null);
+  // const [hoverImage, setHoverImage] = useState(null);
+  const [hoveredItemId, setHoveredItemId] = useState(null);
+
+  const hoverImage = items.find(i => i.id === hoveredItemId)?.imageUrl || null;
 
   const imageRef = useRef(null);
   const containerRef = useRef(null);
@@ -75,7 +78,8 @@ const TradeInItemListWithPreview = ({
           <TradeInItemCard
             key={item.id}
             item={item}
-            onHover={setHoverImage}
+            onHover={() => setHoveredItemId(item.id)}
+            onLeave={() => setHoveredItemId(null)}
           >
             <TradeInItemInfo item={item} />
 
