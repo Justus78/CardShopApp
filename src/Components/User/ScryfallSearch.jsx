@@ -69,7 +69,7 @@ const ScryfallSearch = () => {
     });
   };
   
-  // 🎴 Filter, group, and paginate cards using helpers
+  // Filter, group, and paginate cards using helpers
   const filteredCards = filterCards(cards, selectedRarity, selectedType, sortOrder);
   const groupedCards = groupCards(filteredCards, groupBy);
   const paginatedGroupedCards = paginateGroups(groupedCards, currentPage, PAGE_SIZE);
@@ -77,7 +77,7 @@ const ScryfallSearch = () => {
   const totalCardsCount = filteredCards.length;
   const totalPages = Math.ceil(totalCardsCount / PAGE_SIZE);
     
-    // 🧱 Open modal and reset form fields
+    //  Open modal and reset form fields
   const handleAddClick = (card) => {
     setSelectedCard(card);
     setPrice("");
