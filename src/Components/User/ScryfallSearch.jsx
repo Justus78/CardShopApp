@@ -38,7 +38,8 @@ const ScryfallSearch = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [selectedFinish, setSelectedFinish] = useState("");
+  const [isFoil, setIsFoil] = useState(false);
+  const [selectedFoilType, setSelectedFoilType] = useState("");
 
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
@@ -102,7 +103,7 @@ const ScryfallSearch = () => {
         toast.error("Please select a card condition.");
         return;
     }
-    if (!selectedFinish) {
+    if (!selectedFoilType) {
         toast.error("Please select foil or non-foil.");
         return;
     }
@@ -113,6 +114,8 @@ const ScryfallSearch = () => {
             selectedCard,
             quantity,
             selectedCondition,
+            selectedFoilType,
+            isFoil
         );  
 
         // call the api that adds the trade in item
@@ -206,9 +209,11 @@ const ScryfallSearch = () => {
                 onClose={() => setSelectedCard(null)}
                 onSubmit={handleSubmit}
                 quantity={quantity}
+                isFoil={isFoil}
+                setIsFoil={setIsFoil}
                 setQuantity={setQuantity}
-                selectedFinish={selectedFinish}
-                setSelectedFinish={setSelectedFinish}
+                selectedFinish={selectedFoilType}
+                setSelectedFinish={setSelectedFoilType}
                 selectedCondition={selectedCondition}
                 setSelectedCondition={setSelectedCondition}
             />

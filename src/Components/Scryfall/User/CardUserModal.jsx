@@ -6,11 +6,13 @@ const CardUserModal = ({
     onClose, 
     onSubmit,
     quantity,
+    isFoil,
+    setIsfoil,
     setQuantity,
     selectedCondition,
     setSelectedCondition,
-    selectedFinish,
-    setSelectedFinish
+    selectedFoilType,
+    setSelectedFoilType
 }) => {
 
     const img =
@@ -66,11 +68,11 @@ const CardUserModal = ({
 
                     {/* Foil or Non-Foil */}
                     <select
-                        value={selectedFinish}
-                        onChange={(e) => setSelectedFinish(e.target.value)}
+                        value={selectedFoilType}
+                        onChange={(e) => setSelectedFoilType(e.target.value)}
                         className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
                     >
-                        <option value="">Select Finish</option>
+                        <option value="">Select Foil Type</option>
                         <option value="nonfoil">Non-Foil</option>
                         <option value="foil">Foil</option>
                     </select>

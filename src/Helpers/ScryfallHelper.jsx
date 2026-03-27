@@ -149,8 +149,7 @@ export const buildTradeInFormData = (
   quantity,
   selectedCondition,
 ) => {
-  console.log(card)
-  console.log(selectedCondition)
+
   const formData = new FormData();
 
   const imageUrl =
@@ -160,9 +159,13 @@ export const buildTradeInFormData = (
   formData.append("SetCode", card.set_name || "");
   formData.append("Quantity", quantity);
   formData.append("ImageUrl", imageUrl || "")
+  formData.append("IsFoil", )
 
   if (selectedCondition) formData.append("CardCondition", selectedCondition);
 
-  console.log(formData)
+    for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
   return formData;
 };

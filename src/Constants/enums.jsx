@@ -30,3 +30,10 @@ export const CardType = {
   Planeswalker: "Planeswalker",
   Land: "Land"
 };
+
+export const FoilType = {
+  Regular: "Regular",
+  Textured: "Textured",
+  Mana: "Mana",
+  Etched: "Etched",
+}
