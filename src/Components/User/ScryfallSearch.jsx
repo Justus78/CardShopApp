@@ -58,7 +58,7 @@ const ScryfallSearch = () => {
   
   const { user } = useContext(DataContext);
 
-    // 🔍 Search handler
+    // Search handler
   const handleSearch = async (e) => {
     e.preventDefault();
 
@@ -93,7 +93,6 @@ const ScryfallSearch = () => {
 
   const handleSubmit = async () => {
     // add the selected card to the trade in draft
-
     // validate the form inputs
     if (!quantity || quantity <= 0) {
         toast.error("Please enter a valid quantity.");
@@ -149,7 +148,7 @@ const ScryfallSearch = () => {
             handleSearch={handleSearch}
         />
 
-           {/* 🔽 Sorting / Grouping */}
+           {/* Sorting / Grouping */}
         <SortingControls
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}
@@ -170,7 +169,7 @@ const ScryfallSearch = () => {
             handleAddClickUser={handleAddClickUser}
         />
 
-        {/* 🔄 Pagination */}
+        {/* Pagination */}
         {totalPages > 1 && (
             <div className="flex justify-center items-center gap-4 mt-8">
             <button
@@ -212,8 +211,8 @@ const ScryfallSearch = () => {
                 isFoil={isFoil}
                 setIsFoil={setIsFoil}
                 setQuantity={setQuantity}
-                selectedFinish={selectedFoilType}
-                setSelectedFinish={setSelectedFoilType}
+                selectedFoilType={selectedFoilType}
+                setSelectedFoilType={setSelectedFoilType}
                 selectedCondition={selectedCondition}
                 setSelectedCondition={setSelectedCondition}
             />

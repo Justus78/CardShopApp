@@ -18,7 +18,6 @@ export const DataProvider = ({ children }) => {
         if (data) {
           setUser(data);
           setIsAuthenticated(true); //  set auth
-          console.log("get from api call returned:" + user); //  log fresh data
         } else {
           setUser(null);
           setIsAuthenticated(false); //  not authenticated

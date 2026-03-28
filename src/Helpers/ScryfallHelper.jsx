@@ -133,21 +133,12 @@ export const buildProductFormData = (
 // FORM DATA BUILDER USER TRADE IN ITEM
 // =====================================
 
-//         public class TradeInItemDto
-// {
-//     public int Id { get; set; }
-//     public string CardName { get; set; } = string.Empty;
-//     public string SetCode { get; set; } = string.Empty;
-//     public string Condition { get; set; } = string.Empty;
-//     public int Quantity { get; set; }
-//     public decimal? EstimatedUnitValue { get; set; }
-//     public decimal? FinalUnitValue { get; set; }
-// }
-
 export const buildTradeInFormData = (
   card,
   quantity,
   selectedCondition,
+  FoilType,
+  IsFoil
 ) => {
 
   const formData = new FormData();
@@ -159,7 +150,9 @@ export const buildTradeInFormData = (
   formData.append("SetCode", card.set_name || "");
   formData.append("Quantity", quantity);
   formData.append("ImageUrl", imageUrl || "")
-  formData.append("IsFoil", )
+  formData.append("FoilType", FoilType)
+
+  if (IsFoil === "Foil") {formData.append("IsFoil", true)} else {formData.append("IsFoil", false)} 
 
   if (selectedCondition) formData.append("CardCondition", selectedCondition);
 

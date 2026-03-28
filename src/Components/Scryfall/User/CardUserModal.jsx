@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardCondition } from "../../../Constants/enums";
+import { CardCondition, FoilType, IsFoil } from "../../../Constants/enums";
 
 const CardUserModal = ({ 
     card, 
@@ -7,7 +7,7 @@ const CardUserModal = ({
     onSubmit,
     quantity,
     isFoil,
-    setIsfoil,
+    setIsFoil,
     setQuantity,
     selectedCondition,
     setSelectedCondition,
@@ -65,16 +65,27 @@ const CardUserModal = ({
                             <option key={value} value={value}>{value}</option>
                         ))}
                     </select>
+                    <select
+                        value={isFoil}
+                        onChange={(e) => setIsFoil(e.target.value)}
+                        className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
+                    >
+                        <option value="">Foil?</option>
+                        {Object.values(IsFoil).map(value => (
+                            <option key={value} value={value}>{value}</option>
+                        ))}
+                    </select>
 
-                    {/* Foil or Non-Foil */}
+                    {/* Foil type */}
                     <select
                         value={selectedFoilType}
                         onChange={(e) => setSelectedFoilType(e.target.value)}
                         className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
                     >
-                        <option value="">Select Foil Type</option>
-                        <option value="nonfoil">Non-Foil</option>
-                        <option value="foil">Foil</option>
+                        <option value="">Select Foiling</option>
+                        {Object.values(FoilType).map(value => (
+                            <option key={value} value={value}>{value}</option>
+                        ))}
                     </select>
                     <div className='flex gap-6'>
                         <button

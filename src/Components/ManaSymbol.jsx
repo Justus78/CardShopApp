@@ -3,7 +3,6 @@ import React from "react";
 
 // Dynamically import all SVGs in the mana-symbols folder
 const svgs = import.meta.glob('../assets/mana_symbols/*.svg', { eager: true, import: "default" });
-console.log("Loaded SVGs:", Object.keys(svgs));
 
 
 const ManaSymbol = ({ symbol, size = 24, alt }) => {

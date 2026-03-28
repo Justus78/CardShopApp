@@ -6,7 +6,7 @@ import { DataContext } from "../../Context/DataContext";
 const CardGrid = ({ paginatedGroupedCards, handleAddClick, handleAddClickUser }) => {
 
   const { user } = useContext(DataContext);
-  console.log("made it to card grid")
+
   return (
     <>
       {Object.entries(paginatedGroupedCards).map(([group, groupCards]) => (
