@@ -13,12 +13,12 @@ export const CardRarity = {
 };
 
 export const CardCondition = {
-  Mint: "Mint",
-  NearMint: "NearMint",
-  LightlyPlayed: "LightlyPlayed",
-  ModeratelyPlayed: "ModeratelyPlayed",
-  HeavilyPlayed: "HeavilyPlayed",
-  Damaged: "Damaged"
+  0: "Mint",
+  1: "Near Mint",
+  2: "Lightly Played",
+  3: "Moderately Played",
+  4: "Heavily Played",
+  5: "Damaged"
 };
 
 export const CardType = {
