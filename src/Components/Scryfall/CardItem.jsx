@@ -5,8 +5,7 @@ import { p } from "framer-motion/client";
 const CardItem = ({ card, handleAddClick }) => {
 
   const { user } = useContext(DataContext);
-  console.log('made it to card item')
-
+  
   const img =
     card.image_uris?.normal ||
     card.card_faces?.[0]?.image_uris?.normal;

@@ -95,7 +95,7 @@ const ScryfallSearch = () => {
         selectedCondition,
         selectedRarity,
         selectedType,
-        ProductCategory
+        ProductCategory.Card
       );
 
       await createProduct(formData);

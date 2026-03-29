@@ -1,6 +1,7 @@
 // ==========================
 // ScryfallHelper.js
 // ==========================
+import { ProductCategory } from "../Constants/enums";
 
 // Scryfall API Search (restored: fetch all printings for all matching cards)
 export const handleScryfallSearch = async (
@@ -97,6 +98,8 @@ export const paginateGroups = (groupedCards, currentPage, pageSize) => {
 // ==========================
 // FORM DATA BUILDER ADMIN
 // ==========================
+// 
+
 export const buildProductFormData = (
   card,
   price,
@@ -104,26 +107,35 @@ export const buildProductFormData = (
   selectedCondition,
   selectedRarity,
   selectedType,
-  ProductCategory
+  Category
 ) => {
   const formData = new FormData();
 
+  // image from card object
   const imageUrl =
     card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal;
 
+  // ---------- PRODUCT FIELDS ----------
   formData.append("Name", card.name);
   formData.append("Description", card.oracle_text || "No description available");
   formData.append("Price", price);
   formData.append("StockQuantity", inventory);
-  formData.append("ProductCategory", ProductCategory.Card);
-  formData.append("SetName", card.set_name || "");
-  formData.append("CollectionNumber", card.collector_number || "");
-  formData.append("IsFoil", card.foil ? "true" : "false");
+  formData.append("ProductCategory", Category);
   formData.append("ProductImage", imageUrl || "");
+  formData.append("BestSeller", "false"); // default
 
-  if (selectedCondition) formData.append("CardCondition", selectedCondition);
-  if (selectedRarity) formData.append("CardRarity", selectedRarity);
-  if (selectedType) formData.append("CardType", selectedType);
+
+
+  // ---------- CARD DETAIL FIELDS ----------
+  if (Category === ProductCategory.Card) {
+    if (card.set_name) formData.append("CardDetails.SetName", card.set_name);
+    if (card.collector_number) formData.append("CardDetails.CollectionNumber", card.collector_number);
+    formData.append("CardDetails.IsFoil", card.foil ? "true" : "false");
+
+    if (selectedCondition) formData.append("CardDetails.CardCondition", selectedCondition);
+    if (selectedRarity) formData.append("CardDetails.CardRarity", selectedRarity);
+    if (selectedType) formData.append("CardDetails.CardType", selectedType);
+  }
 
   return formData;
 };
