@@ -1,7 +1,7 @@
 // ==========================
 // ScryfallHelper.js
 // ==========================
-import { ProductCategory } from "../Constants/enums";
+import { FoilType, ProductCategory } from "../Constants/enums";
 
 // Scryfall API Search (restored: fetch all printings for all matching cards)
 export const handleScryfallSearch = async (
@@ -107,7 +107,9 @@ export const buildProductFormData = (
   selectedCondition,
   selectedRarity,
   selectedType,
-  Category
+  Category,
+  isFoil,
+  foilType
 ) => {
   const formData = new FormData();
 
@@ -130,8 +132,11 @@ export const buildProductFormData = (
   if (Category === ProductCategory.Card) {
     if (card.set_name) formData.append("CardDetails.SetName", card.set_name);
     if (card.collector_number) formData.append("CardDetails.CollectionNumber", card.collector_number);
-    formData.append("CardDetails.IsFoil", card.foil ? "true" : "false");
 
+    if (isFoil) {formData.append("CardDetails.IsFoil", true);}
+     else {(formData.append("CardDetails.IsFoil", false))}
+
+    formData.append("CardDetails.FoilType", foilType)
     if (selectedCondition) formData.append("CardDetails.CardCondition", selectedCondition);
     if (selectedRarity) formData.append("CardDetails.CardRarity", selectedRarity);
     if (selectedType) formData.append("CardDetails.CardType", selectedType);

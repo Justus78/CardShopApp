@@ -108,6 +108,8 @@ const ViewProducts = () => {
     p.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  console.log(filteredProducts)
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white">
       <Navbar />
@@ -169,7 +171,7 @@ const ViewProducts = () => {
                   className="w-full object-cover rounded-xl mb-3"
                 />
                 <h2 className="font-semibold text-lg text-purple-300">{product.name}</h2>
-                <h2 className="text-sm text-gray-400">{product.isFoil ? "Foil" : "Non-Foil"}</h2>
+                {/* <h2 className="text-sm text-gray-400">{product.cardDetails.isFoil ? "Foil" : "Non-Foil"}</h2> */}
                 <p className="text-cyan-400 font-medium">${product.price}</p>
                 <p className="text-gray-400 text-sm">
                   {product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out of stock'}

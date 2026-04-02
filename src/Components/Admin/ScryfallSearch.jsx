@@ -42,6 +42,8 @@ const ScryfallSearch = () => {
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
   const [selectedType, setSelectedType] = useState("");
+  const [isFoil, setIsFoil] = useState(false)
+  const [foilType, setFoilType] = useState("")
 
   const [sortOrder, setSortOrder] = useState("name");
   const [groupBy, setGroupBy] = useState("");
@@ -95,7 +97,9 @@ const ScryfallSearch = () => {
         selectedCondition,
         selectedRarity,
         selectedType,
-        ProductCategory.Card
+        ProductCategory.Card,
+        isFoil,
+        foilType
       );
 
       await createProduct(formData);
@@ -191,6 +195,10 @@ const ScryfallSearch = () => {
           cardConditions={CardCondition}
           cardRarities={CardRarity}
           cardTypes={CardType}
+          isFoil={isFoil}
+          setIsFoil={setIsFoil}
+          foilType={foilType}
+          setFoilType={setFoilType}
         />
       )}
 

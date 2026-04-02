@@ -1,5 +1,5 @@
 import React from "react";
-import { CardCondition, CardRarity, CardType } from "../../Constants/enums";
+import { CardCondition, CardRarity, CardType, FoilType, IsFoil } from "../../Constants/enums";
 
 const CardModalAdmin = ({
   card,
@@ -14,7 +14,11 @@ const CardModalAdmin = ({
   selectedRarity,
   setSelectedRarity,
   selectedType,
-  setSelectedType
+  setSelectedType,
+  isFoil,
+  setIsFoil,
+  foilType,
+  setFoilType
 }) => {
     const img =
     card.image_uris?.normal ||
@@ -95,6 +99,29 @@ const CardModalAdmin = ({
               {Object.values(CardType).map((value) => (
                 <option key={value} value={value}>{value}</option>
               ))}
+            </select>
+
+            <select
+                value={isFoil}
+                onChange={(e) => setIsFoil(e.target.value)}
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
+            >
+                <option value="">Foil?</option>
+                {Object.values(IsFoil).map(value => (
+                    <option key={value} value={value}>{value}</option>
+                ))}
+            </select>
+
+            {/* Foil type */}
+            <select
+                value={foilType}
+                onChange={(e) => setFoilType(e.target.value)}
+                className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
+            >
+                <option value="">Select Foiling</option>
+                {Object.values(FoilType).map(value => (
+                    <option key={value} value={value}>{value}</option>
+                ))}
             </select>
 
             <button
