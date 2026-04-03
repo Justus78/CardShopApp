@@ -21,6 +21,16 @@ export const CardCondition = {
   5: "Damaged"
 };
 
+// mapping object for card condition
+export const CardConditionMap = {
+  "Mint": "Mint",
+  "Near Mint": "NearMint",
+  "Lightly Played": "LightlyPlayed",
+  "Moderately Played": "ModeratelyPlayed",
+  "Heavily Played": "HeavilyPlayed",
+  "Damaged": "Damaged"
+};
+
 export const CardType = {
   Creature: "Creature",
   Instant: "Instant",
