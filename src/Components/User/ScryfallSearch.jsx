@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import SearchBar from '../Scryfall/SearchBar';
 import SortingControls from '../Scryfall/SortingControls';
 import CardGrid from '../Scryfall/CardGrid';
-import LoadingOverlay from "../../Components/LoadingSpinners/LoadingOverlay"
+import LoadingOverlay from "../../Components/LoadingSpinners/LoadingOverlay";
 
 import {
   ProductCategory,

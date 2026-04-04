@@ -1,3 +1,14 @@
+import {
+  FaClock,
+  FaPaperPlane,
+  FaBox,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaTruck,
+  FaSearch,
+  FaDollarSign,
+} from "react-icons/fa";
+
 export const ProductCategory = {
   Card: "Card",
   Sealed: "Sealed",
@@ -55,3 +66,18 @@ export const IsFoil = {
   Foil: "Foil",
   NonFoil: "NonFoil"
 }
+
+export const TradeInStatusIcons = {
+  0: <FaClock />,         // Draft
+  1: <FaPaperPlane />,    // Submitted
+  2: <FaDollarSign />,    // Estimated
+  3: <FaTruck />,         // Shipped
+  4: <FaBox />,           // Received
+  5: <FaSearch />,        // Under Review
+  6: <FaDollarSign />,    // Offer Sent
+  7: <FaCheckCircle />,   // Accepted
+  8: <FaCheckCircle />,   // Credited
+  9: <FaTimesCircle />,   // Declined
+  10: <FaCheckCircle />,  // Auto Completed
+  11: <FaBox />,          // Returned
+};

@@ -9,8 +9,7 @@ import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
 import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
 import { updateDraftItemQuantity, removeDraftItem } from "../../Services/TradeInService";
-// import { div, option } from "framer-motion/client";
-
+import { TradeInStatusIcons } from "../../Constants/enums"
 
 import {
   getUserTradeIns,
@@ -31,7 +30,8 @@ const TradeInDashboard = () => {
   const [currentTradeIn, setCurrentTradeIn] = useState(null);
   const [pastTradeIns, setPastTradeIns] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sortOption, setSortOption] = useState(null);
+  const [statusFilter, setStatusFilter] = useState(null);
+  const [sortOption, setSortOption] = useState("newest");
 
   const navigate = useNavigate();
 
@@ -60,11 +60,41 @@ const TradeInDashboard = () => {
     }
   };
 
-  const filteredTrades = useMemo(() => {
-  if (sortOption === null) return pastTradeIns;
-  return pastTradeIns.filter(t => t.status === sortOption);
-}, [pastTradeIns, sortOption]);
+  const groupedTrades = useMemo(() => {
+    let result = [...pastTradeIns];
 
+    // FILTER
+    if (statusFilter !== null) {
+      result = result.filter(t => t.status === statusFilter);
+    }
+
+    // SORT (within groups)
+    switch (sortOption) {
+      case "newest":
+        result.sort((a, b) => b.id - a.id);
+        break;
+      case "oldest":
+        result.sort((a, b) => a.id - b.id);
+        break;
+      case "status":
+        result.sort((a, b) => a.status - b.status);
+        break;
+      default:
+        break;
+    }
+
+    // GROUP
+    const groups = {};
+
+    result.forEach(trade => {
+      if (!groups[trade.status]) {
+        groups[trade.status] = [];
+      }
+      groups[trade.status].push(trade);
+    });
+
+    return groups;
+  }, [pastTradeIns, statusFilter, sortOption]);
 
   const startTradeDraft = async () => {
     try {
@@ -121,10 +151,13 @@ const TradeInDashboard = () => {
       await submitTradeIn(id);
       toast.success("Trade submitted!");
       refreshTrades();
+      // pop up a window letting the user know that they have 
+      // successfully submitted their trade in, provide next steps
+      // and let them know they have an email with the steps.
     } catch (err) {
       toast.error(err.message);
     } finally {
-      setLoading(false);
+      setLoading(false);      
     }
   };
 
@@ -251,49 +284,83 @@ const handleConfirm = async () => {
             Past Trade-Ins
           </h2>
           {/** filter logic */}
-          <div className="flex justify-between mb-4">
-            <select 
-              value={sortOption ?? ""}
-              onChange={(e) => setSortOption(e.target.value === "" ? null : Number(e.target.value))}
-              className="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-            >
-              <option className="text-black" value="">All</option>
-              <option className="text-black" value={0}>Draft</option>
-              <option className="text-black" value={1}>Submitted</option>
-              <option className="text-black" value={2}>Estimated</option>
-              <option className="text-black" value={3}>Shipped</option>
-              <option className="text-black" value={4}>Received</option>
-              <option className="text-black" value={5}>Under Review</option>
-              <option className="text-black" value={6}>Offer Sent</option>
-              <option className="text-black" value={7}>Accepted</option>
-              <option className="text-black" value={8}>Credited</option>
-              <option className="text-black" value={9}>Declined</option>
-              <option className="text-black" value={10}>Auto Completed</option>
-              <option className="text-black" value={11}>Returned</option>
-            </select>
-          </div>
+          <div className="flex justify-between mb-4 gap-4">
+          {/* FILTER */}
+          <select 
+            value={statusFilter ?? ""}
+            onChange={(e) =>
+              setStatusFilter(e.target.value === "" ? null : Number(e.target.value))
+            }
+            className="border rounded-lg px-3 py-2 text-black bg-white"
+          >
+            <option value="">All Statuses</option>
+            <option value={0}>Draft</option>
+            <option value={1}>Submitted</option>
+            <option value={2}>Estimated</option>
+            <option value={3}>Shipped</option>
+            <option value={4}>Received</option>
+            <option value={5}>Under Review</option>
+            <option value={6}>Offer Sent</option>
+            <option value={7}>Accepted</option>
+            <option value={8}>Credited</option>
+            <option value={9}>Declined</option>
+            <option value={10}>Auto Completed</option>
+            <option value={11}>Returned</option>
+          </select>
 
-          {filteredTrades.length != 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTrades.map(trade => (
-                <div
-                  key={trade.id}
-                  className="bg-gray-800 p-4 rounded-lg border-neon border-2"
-                >
-                  <p><strong>Trade Id:</strong> {trade.id}</p>
-                  <p className={TradeInStatusColors[trade.status]}>
-                    Status: {TradeInStatusLabels[trade.status]}
-                  </p>
+          {/* SORT */}
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="border rounded-lg px-3 py-2 text-black bg-white"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
 
-                  <button
-                    onClick={() => navigate(`/userViewTrade/${trade.id}`)}
-                    className="px-6 py-3 neon-button font-bold rounded-lg"
-                  >
-                    Review
-                  </button>
+          {Object.keys(groupedTrades).length > 0 ? (
+            Object.entries(groupedTrades).map(([status, trades]) => (
+              <div key={status} className="mb-8">
+                
+                {/* GROUP HEADER */}
+                <h3 className={`text-xl font-bold mb-4 ${TradeInStatusColors[status]}`}>
+                  {TradeInStatusLabels[status]}
+                </h3>
+
+                {/* TRADE CARDS */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {trades.map(trade => (
+                    <div
+                      key={trade.id}
+                      className="bg-gray-800 p-4 rounded-lg border-neon border-2"
+                    >
+                      <p><strong>Trade Id:</strong> {trade.id}</p>
+
+                      {/* STATUS BADGE */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-lg">
+                          {TradeInStatusIcons[trade.status]}
+                        </span>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-bold ${TradeInStatusColors[trade.status]}`}
+                        >
+                          {TradeInStatusLabels[trade.status]}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => navigate(`/userViewTrade/${trade.id}`)}
+                        className="mt-4 px-6 py-3 neon-button font-bold rounded-lg"
+                      >
+                        Review
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           ) : (
             <p>You have no past trade-ins.</p>
           )}
