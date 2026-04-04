@@ -36,10 +36,16 @@ const TradeInDashboard = () => {
   const navigate = useNavigate();
 
   const [confirmModal, setConfirmModal] = useState({
-  isOpen: false,
-  type: null,
-  tradeId: null,
-});
+    isOpen: false,
+    type: null,
+    tradeId: null,
+  });
+  const tradeSteps = [
+    { status: 1, label: "Submitted" },
+    { status: 3, label: "Shipped" },
+    { status: 4, label: "Received" },
+    { status: 8, label: "Completed" },
+  ];
 
   // Initial fetch
   useEffect(() => {
@@ -321,46 +327,87 @@ const handleConfirm = async () => {
         </div>
 
           {Object.keys(groupedTrades).length > 0 ? (
-            Object.entries(groupedTrades).map(([status, trades]) => (
-              <div key={status} className="mb-8">
-                
-                {/* GROUP HEADER */}
-                <h3 className={`text-xl font-bold mb-4 ${TradeInStatusColors[status]}`}>
-                  {TradeInStatusLabels[status]}
-                </h3>
+            (() => {
+              const statusOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-                {/* TRADE CARDS */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {trades.map(trade => (
-                    <div
-                      key={trade.id}
-                      className="bg-gray-800 p-4 rounded-lg border-neon border-2"
-                    >
-                      <p><strong>Trade Id:</strong> {trade.id}</p>
+              return statusOrder
+                .filter(status => groupedTrades[status])
+                .map(status => {
+                  const trades = groupedTrades[status];
 
-                      {/* STATUS BADGE */}
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-lg">
-                          {TradeInStatusIcons[trade.status]}
-                        </span>
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm font-bold ${TradeInStatusColors[trade.status]}`}
-                        >
-                          {TradeInStatusLabels[trade.status]}
-                        </span>
+                  return (
+                    <div key={status} className="mb-8">
+                      
+                      {/* GROUP HEADER */}
+                      <h3 className={`text-xl font-bold mb-4 ${TradeInStatusColors[status]}`}>
+                        {TradeInStatusLabels[status]} ({trades.length})
+                      </h3>
+
+                      {/* TRADE CARDS */}
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {trades.map(trade => (
+                          <div
+                            key={trade.id}
+                            className="bg-gray-800 p-4 rounded-lg border-neon border-2 hover:scale-105 transition-transform"
+                          >
+                            <p><strong>Trade Id:</strong> {trade.id}</p>
+
+                            {/* STATUS BADGE */}
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className="text-lg">
+                                {TradeInStatusIcons[trade.status]}
+                              </span>
+                              <span
+                                className={`px-3 py-1 rounded-full text-sm font-bold ${TradeInStatusColors[trade.status]}`}
+                              >
+                                {TradeInStatusLabels[trade.status]}
+                              </span>
+                            </div>
+
+                            {/* PROGRESS STEPPER */}
+                            <div className="flex items-center justify-between mt-4 text-xs">
+                              {tradeSteps.map((step, index) => {
+                                const isActive = trade.status >= step.status;
+
+                                return (
+                                  <div key={step.status} className="flex items-center w-full">
+                                    
+                                    {/* STEP */}
+                                    <div className="flex flex-col items-center">
+                                      <div
+                                        className={`w-4 h-4 rounded-full ${
+                                          isActive ? "bg-green-500" : "bg-gray-600"
+                                        }`}
+                                      />
+                                      <span className="mt-1 text-center">{step.label}</span>
+                                    </div>
+
+                                    {/* LINE */}
+                                    {index < tradeSteps.length - 1 && (
+                                      <div
+                                        className={`flex-1 h-1 mx-2 ${
+                                          trade.status > step.status ? "bg-green-500" : "bg-gray-600"
+                                        }`}
+                                      />
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            <button
+                              onClick={() => navigate(`/userViewTrade/${trade.id}`)}
+                              className="mt-4 px-6 py-3 neon-button font-bold rounded-lg"
+                            >
+                              Review
+                            </button>
+                          </div>
+                        ))}
                       </div>
-
-                      <button
-                        onClick={() => navigate(`/userViewTrade/${trade.id}`)}
-                        className="mt-4 px-6 py-3 neon-button font-bold rounded-lg"
-                      >
-                        Review
-                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))
+                  );
+                });
+            })()
           ) : (
             <p>You have no past trade-ins.</p>
           )}
