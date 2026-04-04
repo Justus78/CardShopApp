@@ -40,12 +40,25 @@ const TradeInDashboard = () => {
     type: null,
     tradeId: null,
   });
+
   const tradeSteps = [
     { status: 1, label: "Submitted" },
     { status: 3, label: "Shipped" },
     { status: 4, label: "Received" },
     { status: 8, label: "Completed" },
   ];
+
+  const getProgressPercent = (status) => {
+    let currentIndex = 0;
+
+    for (let i = 0; i < tradeSteps.length; i++) {
+      if (status >= tradeSteps[i].status) {
+        currentIndex = i;
+      }
+    }
+
+    return (currentIndex / (tradeSteps.length - 1)) * 100;
+  };
 
   // Initial fetch
   useEffect(() => {
@@ -364,35 +377,22 @@ const handleConfirm = async () => {
                               </span>
                             </div>
 
-                            {/* PROGRESS STEPPER */}
-                            <div className="flex items-center justify-between mt-4 text-xs">
-                              {tradeSteps.map((step, index) => {
-                                const isActive = trade.status >= step.status;
+                            {/* PROGRESS BAR */}
+                            <div className="mt-4">
+                              {/* BAR */}
+                              <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-green-500 transition-all duration-700 ease-in-out"
+                                  style={{ width: `${getProgressPercent(trade.status)}%` }}
+                                />
+                              </div>
 
-                                return (
-                                  <div key={step.status} className="flex items-center w-full">
-                                    
-                                    {/* STEP */}
-                                    <div className="flex flex-col items-center">
-                                      <div
-                                        className={`w-4 h-4 rounded-full ${
-                                          isActive ? "bg-green-500" : "bg-gray-600"
-                                        }`}
-                                      />
-                                      <span className="mt-1 text-center">{step.label}</span>
-                                    </div>
-
-                                    {/* LINE */}
-                                    {index < tradeSteps.length - 1 && (
-                                      <div
-                                        className={`flex-1 h-1 mx-2 ${
-                                          trade.status > step.status ? "bg-green-500" : "bg-gray-600"
-                                        }`}
-                                      />
-                                    )}
-                                  </div>
-                                );
-                              })}
+                              {/* LABELS */}
+                              <div className="flex justify-between text-xs mt-2 text-gray-400">
+                                {tradeSteps.map(step => (
+                                  <span key={step.status}>{step.label}</span>
+                                ))}
+                              </div>
                             </div>
 
                             <button
