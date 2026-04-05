@@ -170,9 +170,7 @@ const TradeInDashboard = () => {
       await submitTradeIn(id);
       toast.success("Trade submitted!");
       refreshTrades();
-      // pop up a window letting the user know that they have 
-      // successfully submitted their trade in, provide next steps
-      // and let them know they have an email with the steps.
+      navigate(`/userTradeSubmitted/${id}`)
     } catch (err) {
       toast.error(err.message);
     } finally {

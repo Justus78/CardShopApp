@@ -32,6 +32,7 @@ import ViewTrade from "./Pages/User/Trades/ViewTrade";
 import SpinnerTest from "./Pages/Test/SpinnerTest";
 import { ManaSymbolTest } from "./Pages/Test/ManaSymbolTest";
 import TradeInstructions from "./Pages/User/Trades/TradeInstructions";
+import TradeSubmitted from "./Pages/User/Trades/TradeSubmitted";
 
 function App() {
   const { isAuthenticated, user, loading } = useContext(DataContext);
@@ -119,6 +120,15 @@ function App() {
               element={
               <ProtectedRoute requiredRole="User">
                 <TradeInstructions />
+              </ProtectedRoute>
+            }
+            />
+
+            <Route
+              path="/userTradeSubmitted/:id"
+              element={
+              <ProtectedRoute requiredRole="User">
+                <TradeSubmitted />
               </ProtectedRoute>
             }
             />
