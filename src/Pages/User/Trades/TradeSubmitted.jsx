@@ -8,6 +8,8 @@ const TradeSubmitted = () => {
     window.print();
   };
 
+  console.log(tradeId)
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Title */}
@@ -17,8 +19,8 @@ const TradeSubmitted = () => {
 
       {/* Trade ID Banner */}
       <div className="text-center text-lg mb-6">
-        <span className="text-gray-600">Trade ID:</span>{" "}
-        <span className="font-semibold">{tradeId}</span>
+        <span className="text-gray-600">Trade ID: </span>
+        <span className="font-semibold text-white">{tradeId}</span>
       </div>
 
       {/* Progress Bar */}
