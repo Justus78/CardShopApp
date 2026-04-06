@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import Navbar from '../../../Components/User/Navbar'
+import Footer from '../../../Components/User/Footer'
 
 const TradeSubmitted = () => {
 
@@ -11,7 +13,10 @@ const TradeSubmitted = () => {
   console.log(tradeId)
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <>
+    <Navbar />
+    <div className="max-w-3xl mx-auto px-4 py-8 bg-gray-300 border-white rounded-2xl mt-40">
+
       {/* Title */}
       <h1 className="text-3xl font-bold text-center mb-2">
         Trade Submitted Successfully
@@ -140,9 +145,13 @@ const TradeSubmitted = () => {
           <li>We evaluate your cards</li>
           <li>You receive an offer</li>
           <li>You accept or decline the offer</li>
+          <li>If you accept, we add the trade credit to your account</li>
+          <li>If you decline, we ship the cards back to you</li>
         </ul>
       </section>
     </div>
+    <Footer />
+    </>
   );
 };
 
