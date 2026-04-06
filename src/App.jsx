@@ -125,7 +125,7 @@ function App() {
             />
 
             <Route
-              path="/userTradeSubmitted/:tradeId"
+              path="/userTradeSubmitted/:tradeCode"
               element={
               <ProtectedRoute requiredRole="User">
                 <TradeSubmitted />

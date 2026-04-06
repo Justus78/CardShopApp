@@ -5,12 +5,12 @@ import Footer from '../../../Components/User/Footer'
 
 const TradeSubmitted = () => {
 
-    const { tradeId } = useParams();
-  const handlePrint = () => {
+    const { tradeCode } = useParams();
+    const handlePrint = () => {
     window.print();
   };
 
-  console.log(tradeId)
+  console.log(tradeCode)
 
   return (
     <>
@@ -25,7 +25,7 @@ const TradeSubmitted = () => {
       {/* Trade ID Banner */}
       <div className="text-center text-lg mb-6">
         <span className="text-gray-600">Trade ID: </span>
-        <span className="font-semibold text-white">{tradeId}</span>
+        <span className="font-semibold text-white">{tradeCode}</span>
       </div>
 
       {/* Progress Bar */}
@@ -72,7 +72,7 @@ const TradeSubmitted = () => {
         </p>
 
         <div className="border-2 border-dashed border-gray-400 text-center py-3 mb-4 text-lg font-semibold bg-white">
-          {tradeId}
+          {tradeCode}
         </div>
 
         <ul className="list-disc pl-5 text-gray-700 space-y-1">
