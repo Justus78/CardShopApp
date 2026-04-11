@@ -27,7 +27,6 @@ const TradeInDashboard = () => {
 
   const navigate = useNavigate();
 
-  // ✅ store full trade instead of just id
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     type: null,
@@ -150,7 +149,6 @@ const TradeInDashboard = () => {
     }));
   };
 
-  // ✅ FIXED: uses both id + tradeCode
   const submitTrade = async (trade) => {
     try {
       setLoading(true);
@@ -180,29 +178,16 @@ const TradeInDashboard = () => {
     }
   };
 
-  // ✅ Modal handlers now pass full trade
   const openSubmitConfirm = (trade) => {
-    setConfirmModal({
-      isOpen: true,
-      type: "submit",
-      trade,
-    });
+    setConfirmModal({ isOpen: true, type: "submit", trade });
   };
 
   const openCancelConfirm = (trade) => {
-    setConfirmModal({
-      isOpen: true,
-      type: "cancel",
-      trade,
-    });
+    setConfirmModal({ isOpen: true, type: "cancel", trade });
   };
 
   const closeConfirmModal = () => {
-    setConfirmModal({
-      isOpen: false,
-      type: null,
-      trade: null,
-    });
+    setConfirmModal({ isOpen: false, type: null, trade: null });
   };
 
   const handleConfirm = async () => {
@@ -281,29 +266,93 @@ const TradeInDashboard = () => {
           )}
         </section>
 
-        {/* (rest of your past trades section unchanged) */}
+        {/* PAST TRADES */}
+        <section>
+          <h2 className="text-2xl font-semibold neon-text mb-4">
+            Past Trade-Ins
+          </h2>
 
+          <div className="flex justify-between mb-4 gap-4">
+            <select
+              value={statusFilter ?? ""}
+              onChange={(e) =>
+                setStatusFilter(e.target.value === "" ? null : Number(e.target.value))
+              }
+              className="border rounded-lg px-3 py-2 text-black bg-white"
+            >
+              <option value="">All Statuses</option>
+              {Object.entries(TradeInStatusLabels).map(([key, label]) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="border rounded-lg px-3 py-2 text-black bg-white"
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="status">Status</option>
+            </select>
+          </div>
+
+          {Object.keys(groupedTrades).length > 0 ? (
+            Object.entries(groupedTrades).map(([status, trades]) => (
+              <div key={status} className="mb-8">
+                <h3 className={`text-xl font-bold mb-4 ${TradeInStatusColors[status]}`}>
+                  {TradeInStatusLabels[status]} ({trades.length})
+                </h3>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {trades.map(trade => (
+                    <div key={trade.id} className="bg-gray-800 p-4 rounded-lg border-neon border-2">
+                      <p><strong>Trade Code:</strong> {trade.tradeCode}</p>
+
+                      <div className="flex items-center gap-2 mt-2">
+                        <span>{TradeInStatusIcons[trade.status]}</span>
+                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${TradeInStatusColors[trade.status]}`}>
+                          {TradeInStatusLabels[trade.status]}
+                        </span>
+                      </div>
+
+                      <div className="mt-4">
+                        <div className="w-full h-3 bg-gray-700 rounded-full">
+                          <div
+                            className="h-full bg-green-500"
+                            style={{ width: `${getProgressPercent(trade.status)}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => navigate(`/userViewTrade/${trade.id}`)}
+                        className="mt-4 px-6 py-3 neon-button font-bold rounded-lg"
+                      >
+                        Review
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>You have no past trade-ins.</p>
+          )}
+        </section>
       </div>
 
       <ConfirmModal
         isOpen={confirmModal.isOpen}
-        title={
-          confirmModal.type === "submit"
-            ? "Submit Trade-In"
-            : "Cancel Trade-In"
-        }
+        title={confirmModal.type === "submit" ? "Submit Trade-In" : "Cancel Trade-In"}
         message={
           confirmModal.type === "submit"
-            ? "Are you sure you want to submit this trade-in? You won't be able to modify it afterward."
+            ? "Are you sure you want to submit this trade-in?"
             : "Are you sure you want to cancel this trade-in?"
         }
         confirmText="Yes"
         cancelText="No"
-        confirmColor={
-          confirmModal.type === "submit"
-            ? "bg-green-600"
-            : "bg-red-600"
-        }
+        confirmColor={confirmModal.type === "submit" ? "bg-green-600" : "bg-red-600"}
         onConfirm={handleConfirm}
         onCancel={closeConfirmModal}
       />

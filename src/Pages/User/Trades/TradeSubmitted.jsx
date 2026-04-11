@@ -10,7 +10,18 @@ const TradeSubmitted = () => {
     window.print();
   };
 
-  console.log(tradeCode)
+  const statusSteps = {
+  Submitted: 20,
+  Shipped: 40,
+  Received: 60,
+  Evaluating: 80,
+  Offer: 100,
+};
+
+// for now hardcode
+const currentStatus = "Submitted";
+
+const progressWidth = statusSteps[currentStatus];
 
   return (
     <>
@@ -25,13 +36,15 @@ const TradeSubmitted = () => {
       {/* Trade ID Banner */}
       <div className="text-center text-lg mb-6">
         <span className="text-gray-600">Trade ID: </span>
-        <span className="font-semibold text-white">{tradeCode}</span>
+        <span className="font-semibold text-white">{tradeCode || "N/A"}</span>
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full h-2 bg-gray-200 rounded-full mb-2 overflow-hidden">
-        <div className="h-full bg-green-500 w-1/5"></div>
-      </div>
+      <div
+        className="h-full bg-green-500 transition-all duration-500"
+        style={{ width: `${progressWidth}%` }}
+      ></div>
+
       <div className="flex justify-between text-xs text-gray-500 mb-8">
         <span>Submitted</span>
         <span>Shipped</span>
@@ -71,8 +84,8 @@ const TradeSubmitted = () => {
           inside your package.
         </p>
 
-        <div className="border-2 border-dashed border-gray-400 text-center py-3 mb-4 text-lg font-semibold bg-white">
-          {tradeCode}
+        <div className="border-2 border-dashed text-green-400 border-gray-400 text-center py-3 mb-4 text-xl font-bold bg-white">
+          {tradeCode || "Missing Trade Code"}
         </div>
 
         <ul className="list-disc pl-5 text-gray-700 space-y-1">
@@ -87,7 +100,7 @@ const TradeSubmitted = () => {
 
         <button
           onClick={handlePrint}
-          className="mt-4 px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 transition"
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
           Print This Page
         </button>
