@@ -37,7 +37,7 @@ const TradeInItemActions = ({
 
       {/* Pricing */}
       <p className="text-green-300">
-        Unit: ${item.estimatedUnitValue?.toFixed(2) ?? "0.00"}
+        Trade Credit: ${item.estimatedUnitValue?.toFixed(2) ?? "0.00"}
       </p>
 
       <p className="text-green-400 font-semibold">

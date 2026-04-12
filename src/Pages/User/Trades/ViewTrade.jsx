@@ -68,6 +68,7 @@ const ViewTrade = () => {
         <div className="min-h-screen bg-gray-900 text-white pt-28">
           <div className="max-w-6xl mx-auto p-6">
             <TableHeader title={"View Trade Status"} />
+
             <button 
               onClick={() => navigate("/userTrade")}
               className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 
@@ -75,11 +76,20 @@ const ViewTrade = () => {
             >
               Back to Dashboard
             </button>
+
+            <button 
+              onClick={() => navigate(`/userTradeSubmitted/${trade.tradeCode}`)}
+              className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 
+              py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300 m-4 cursor-pointer"
+            >
+              View Instructions
+            </button>
+
             {trade && (
               <section className="mb-12">
                 <div className="bg-gray-800 p-6 rounded-lg shadow-neon border-neon border-2 mb-6 flex justify-between">
                   <div>
-                    <p><strong>ID:</strong> {trade.id}</p>
+                    <p><strong>ID:</strong> {trade.tradeCode}</p>
                     <p>
                       <strong>Started:</strong>{" "}
                       {new Date(trade.createdAt).toLocaleString()}
@@ -91,18 +101,17 @@ const ViewTrade = () => {
                     </p>
                   </div>
 
-                  <div>
-                    <p><strong>ID:</strong> {trade.id}</p>
+                   <div>
+            
                     <p>
-                      <strong>Started:</strong>{" "}
-                      {new Date(trade.createdAt).toLocaleString()}
-                    </p>
-    
-                    <p>
-                      <strong>Offer Amount:</strong>{" "}
-                      <span className='font-bold text-green-400'>${trade.finalValue} </span>
                       
+                      {trade.finalValue ? 
+                        <span className='font-bold text-green-400'><strong>Offer Amount:</strong>{" "}{trade.finalValue} </span>
+                        :
+                        <span className='text-white' ><strong>Offer: </strong>Still Processing</span>
+                     }                     
                     </p>
+
                     {trade.status && trade.status == 6 ? 
                     <div className='pt-4 flex gap-4 justify-betweens'>
                         <button 
