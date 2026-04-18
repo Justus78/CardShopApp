@@ -5,6 +5,7 @@ import TableHeader from '../../../Components/Admin/TableHeader';
 import { TradeInStatusLabels } from "../../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusColors";
 import { useNavigate } from 'react-router-dom';
+import TradeIn from '../../../Components/Admin/TradeIn';
 const TradeInHome = () => {
     const [loading, setLoading] = useState(false);
     const [trades, setTrades] = useState([]);
@@ -38,23 +39,8 @@ const TradeInHome = () => {
                 <section>
                     {trades.length > 0 ? (
                         <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                            {trades.map((item) => (
-                                <div
-                                    onClick={() => navigate(`/admin/UpdateTrade/${item.id}`)}
-                                    key={item.id}
-                                    className=' "bg-gray-800 p-4 rounded-lg shadow-neon border-neon border-2'
-                                >
-                                 
-                                    <div>
-                                        <p className='text-lg mb-1'><span></span>id: {item.id}</p>
-                                        <p>User: {item.userEmail}</p>
-                                        <p>Items: {item.items?.length ?? 0}</p>                                        <p className={`text-lg mb-2 ${TradeInStatusColors[item.status]}`}>
-                                            <span className="font-bold">Status:</span>{" "}
-                                            {TradeInStatusLabels[item.status] ?? "Unknown"}
-                                        </p>
-
-                                    </div>
-                                </div>
+                            {trades.map((trade) => (
+                                <TradeIn key={trade.id} trade={trade} /> 
                             ))}
                         </div>
                     ) : (<div>
