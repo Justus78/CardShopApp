@@ -1,25 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
-import TradeInItemCard from "./TradeInItemCard"
+import TradeInItemCard from "./TradeInItemCard";
 import TradeInItemActions from "./TradeInItemActions";
 import TradeInItemInfo from "./TradeInItemInfo";
-/**
- * Reusable trade-in list with sticky preview.
- * Buttons are injected by the parent via `children`.
- */
-const TradeInItemListWithPreview = ({ 
-    items = [],
-    children,
-    handleIncrease,
-    handleDecrease,
-    handleRemoveItem
+
+const TradeInItemListWithPreview = ({
+  items = [],
+  children,
+  mode = "user", // "user" | "admin"
+
+  // user actions
+  handleIncrease,
+  handleDecrease,
+  handleRemoveItem,
+
+  // admin pricing
+  finalValues = {},
+  onFinalValueChange,
+  onFinalValueBlur,
+  isLocked = false
 }) => {
-  // const [hoverImage, setHoverImage] = useState(null);
   const [hoveredItemId, setHoveredItemId] = useState(null);
 
-  const hoverImage = items.find(i => i.id === hoveredItemId)?.imageUrl || null;
+  const hoverImage =
+    items.find(i => i.id === hoveredItemId)?.imageUrl || null;
 
   const imageRef = useRef(null);
   const containerRef = useRef(null);
+
+  const isAdmin = mode === "admin";
 
   useEffect(() => {
     if (!imageRef.current || !containerRef.current) return;
@@ -55,7 +63,7 @@ const TradeInItemListWithPreview = ({
 
   return (
     <div className="flex gap-10 items-start" ref={containerRef}>
-      {/* Sticky Preview */}
+      {/* Preview */}
       <div className="flex-shrink-0 w-56" ref={imageRef}>
         <div className="w-56 h-80 border-4 border-cyan-400 rounded-lg bg-black/40 flex items-center justify-center">
           {hoverImage ? (
@@ -72,7 +80,7 @@ const TradeInItemListWithPreview = ({
         </div>
       </div>
 
-      {/* Items + injected actions */}
+      {/* Items */}
       <div className="flex-1 space-y-3">
         {items.map(item => (
           <TradeInItemCard
@@ -81,19 +89,50 @@ const TradeInItemListWithPreview = ({
             onHover={() => setHoveredItemId(item.id)}
             onLeave={() => setHoveredItemId(null)}
           >
-            <TradeInItemInfo item={item} />
+            <div className="flex justify-between items-center w-full">
 
-            <TradeInItemActions
-              item={item}
-              onIncrease={(item) => handleIncrease(item)}
-              onDecrease={(item) => handleDecrease(item)}
-              onRemove={(item) => handleRemoveItem(item)}
-            />
-            
+              {/* LEFT */}
+              <TradeInItemInfo item={item} />
+
+              {/* RIGHT */}
+              <div className="flex items-center gap-4">
+
+                {/* ADMIN MODE */}
+                {isAdmin && (
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={finalValues[item.id] ?? ""}
+                    disabled={isLocked}
+                    onChange={(e) =>
+                      onFinalValueChange?.(item.id, e.target.value)
+                    }
+                    onBlur={() => onFinalValueBlur?.(item.id)}
+                    className={`w-24 px-2 py-1 rounded
+                      ${isLocked
+                        ? "bg-black border-gray-600 text-gray-500 cursor-not-allowed"
+                        : "bg-black border-cyan-400 text-cyan-200"}`}
+                  />
+                )}
+
+                {/* USER MODE */}
+                {!isAdmin && (
+                  <TradeInItemActions
+                    item={item}
+                    onIncrease={handleIncrease}
+                    onDecrease={handleDecrease}
+                    onRemove={handleRemoveItem}
+                  />
+                )}
+
+              </div>
+
+            </div>
           </TradeInItemCard>
         ))}
 
-        {/*  Action Slot */}
+        {/* Bottom Actions */}
         {children && (
           <div className="pt-4 flex gap-4 justify-between">
             {children}

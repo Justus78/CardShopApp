@@ -138,31 +138,19 @@ export const UpdateTradeIn = () => {
                 </p>
               </div>
 
-              {/* 🔥 Reusable Component Here */}
               <TradeInItemListWithPreview
                 items={trade.items}
-                renderItemRightExtra={(item) => (
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={finalValues[item.id]}
-                    disabled={isOfferSent}
-                    onChange={(e) =>
-                      setFinalValues(prev => ({
-                        ...prev,
-                        [item.id]: e.target.value,
-                      }))
-                    }
-                    onBlur={() => handleFinalValueBlur(item.id)}
-                    className={`w-24 px-2 py-1 rounded ml-4
-                      ${isOfferSent
-                        ? "bg-black border-gray-600 text-gray-500 cursor-not-allowed"
-                        : "bg-black border-cyan-400 text-cyan-200"}`}
-                  />
-                )}
+                mode="admin"
+                finalValues={finalValues}
+                isLocked={isOfferSent}
+                onFinalValueChange={(itemId, value) =>
+                  setFinalValues(prev => ({
+                    ...prev,
+                    [itemId]: value,
+                  }))
+                }
+                onFinalValueBlur={handleFinalValueBlur}
               >
-                {/* 🔑 Action Slot Buttons */}
                 <button
                   disabled={isOfferSent || hasUnsetPrices || loading}
                   onClick={submitFinalOffer}

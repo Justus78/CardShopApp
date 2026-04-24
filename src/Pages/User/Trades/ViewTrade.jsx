@@ -131,15 +131,13 @@ const ViewTrade = () => {
                     
                 </div>
 
-                <TradeInItemListWithPreview items={trade.items} renderItemRightExtra={null} />
-                
+                <TradeInItemListWithPreview
+                  items={trade.items}
+                  mode="user"
+                />                       
                 
             </section>
-            )}
-              
-
-
-
+            )}          
           </div>
         </div>
       </div>
