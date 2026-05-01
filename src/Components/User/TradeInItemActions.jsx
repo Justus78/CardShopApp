@@ -14,24 +14,33 @@ const TradeInItemActions = ({
 
       {/* Quantity Controls */}
       <div className="flex items-center justify-end gap-2 mb-2">
+        {onIncrease ? 
+          <button
+            onClick={() => onDecrease?.(item)}
+            className="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600">
+                -
+          </button>        
+        : 
+          null}
 
-        <button
-          onClick={() => onDecrease?.(item)}
-          className="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600"
-        >
-          -
-        </button>
+     
 
         <span className="text-cyan-200">
           {item.quantity}
         </span>
 
-        <button
-          onClick={() => onIncrease?.(item)}
-          className="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600"
-        >
-          +
-        </button>
+          {onDecrease ? 
+            <button
+              onClick={() => onIncrease?.(item)}
+              className="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600"
+            >
+              +
+            </button>
+            
+            :
+             null
+          }
+
 
       </div>
 
@@ -45,12 +54,15 @@ const TradeInItemActions = ({
       </p>
 
       {/* Delete */}
-      <button
-        onClick={() => onRemove?.(item)}
-        className="mt-2 text-red-400 hover:text-red-300 text-sm"
-      >
-        Remove
-      </button>
+      {onRemove ?       
+        <button
+          onClick={() => onRemove?.(item)}
+          className="mt-2 text-red-400 hover:text-red-300 text-sm"
+        >
+          Remove
+        </button> : null
+      }
+
 
     </div>
   );

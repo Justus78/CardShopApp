@@ -9,6 +9,7 @@ import { TradeInStatus } from '../../../Context/Constants/TradeInStatus';
 import { TradeInStatusColors } from '../../../Context/Constants/TradeInStatusColors';
 import { TradeInStatusLabels } from '../../../Context/Constants/TradeInStatusLabels';
 import { toast } from 'react-toastify';
+import LoadingOverlay from '../../../Components/LoadingSpinners/LoadingOverlay';
 
 const ViewTrade = () => {
 
@@ -59,9 +60,9 @@ const ViewTrade = () => {
       setLoading(false)
     }
   }
-
-
-  return (
+  if (loading) return <LoadingOverlay />
+    
+    return (
     <>
       <Navbar />
       <div className='min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6'>
@@ -112,7 +113,7 @@ const ViewTrade = () => {
                      }                     
                     </p>
 
-                    {trade.status && trade.status == 6 ? 
+                    {trade.status && trade.status == 6 && trade.finalValue > 0 ? 
                     <div className='pt-4 flex gap-4 justify-betweens'>
                         <button 
                         onClick={() => AcceptOffer()}
@@ -134,7 +135,8 @@ const ViewTrade = () => {
                 <TradeInItemListWithPreview
                   items={trade.items}
                   mode="user"
-                />                       
+                >
+                  </TradeInItemListWithPreview>                       
                 
             </section>
             )}          
