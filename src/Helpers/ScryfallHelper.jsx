@@ -113,6 +113,8 @@ export const buildProductFormData = (
 ) => {
   const formData = new FormData();
 
+  console.log(card)
+
   // image from card object
   const imageUrl =
     card.image_uris?.normal || card.card_faces?.[0]?.image_uris?.normal;

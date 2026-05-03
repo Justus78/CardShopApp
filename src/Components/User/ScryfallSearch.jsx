@@ -127,6 +127,7 @@ const ScryfallSearch = () => {
         toast.error("Failed to add card to trade in.");
     } finally {
         setLoading(false)
+        setSelectedCard(null)
     }
   };
 

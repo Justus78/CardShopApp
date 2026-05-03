@@ -21,26 +21,28 @@ const ViewTrade = () => {
 
   const navigate = useNavigate();
 
+    const LoadTrade = async () => {
+    try {
+      setLoading(true)
+      const res = await getTradeInById(id);
+      setTrade(res);
+    } catch (err) {
+      console.log(err)
+      setError(err.message || "failed to load trade.")
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadTrade = async () => {
-      try {
-        setLoading(true)
-        const res = await getTradeInById(id);
-        setTrade(res);
-      } catch (err) {
-        console.log(err)
-        setError(err.message || "failed to load trade.")
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadTrade();
+    LoadTrade();
   },[]);
 
   const AcceptOffer = async () => {
     try {
       setLoading(true);
       const res = await acceptTradeInOffer(id);
+      LoadTrade();
     } catch (err) {
       console.log(err.message)
       toast.error(err.message)
@@ -53,6 +55,7 @@ const ViewTrade = () => {
     try {
       setLoading(true)
       const res = await declineTradeInOffer(id);
+      LoadTrade();
     } catch (err) {
       console.log(err.message)
       toast.error(err.message)
@@ -107,7 +110,7 @@ const ViewTrade = () => {
                     <p>
                       
                       {trade.finalValue ? 
-                        <span className='font-bold text-green-400'><strong>Offer Amount:</strong>{" "}{trade.finalValue} </span>
+                        <span className='font-bold text-green-400'><strong>Offer Amount:</strong>{" "}${trade.finalValue} </span>
                         :
                         <span className='text-white' ><strong>Offer: </strong>Still Processing</span>
                      }                     
@@ -134,6 +137,7 @@ const ViewTrade = () => {
 
                 <TradeInItemListWithPreview
                   items={trade.items}
+                  status={trade.status}
                   mode="user"
                 >
                   </TradeInItemListWithPreview>                       

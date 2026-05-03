@@ -7,6 +7,7 @@ const TradeInItemListWithPreview = ({
   items = [],
   children,
   mode = "user", // "user" | "admin"
+  status,
 
   // user actions
   handleIncrease,
@@ -114,11 +115,13 @@ const TradeInItemListWithPreview = ({
                         ? "bg-black border-gray-600 text-gray-500 cursor-not-allowed"
                         : "bg-black border-cyan-400 text-cyan-200"}`}
                   />
+                  
                 )}
 
                 {/* USER MODE */}
                 {!isAdmin && (
                   <TradeInItemActions
+                    status={status}
                     item={item}
                     onIncrease={handleIncrease}
                     onDecrease={handleDecrease}

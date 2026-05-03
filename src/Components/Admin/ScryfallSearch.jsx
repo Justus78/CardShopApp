@@ -115,14 +115,14 @@ const ScryfallSearch = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6">
 
-      {/* 🔍 Search */}
+      {/* Search */}
       <SearchBar
         query={query}
         setQuery={setQuery}
         handleSearch={handleSearch}
       />
 
-      {/* 🔽 Sorting / Grouping */}
+      {/* Sorting / Grouping */}
       <SortingControls
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
@@ -136,14 +136,14 @@ const ScryfallSearch = () => {
       }
       {error && <p className="text-center text-red-400 font-medium mb-6">{error}</p>}
 
-      {/* 🎴 Cards */}
+      {/* Cards */}
       <CardGrid
         paginatedGroupedCards={paginatedGroupedCards}
         handleAddClick={handleAddClick}
         handleAddClickUser={null}
       />
 
-      {/* 🔄 Pagination */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
@@ -176,7 +176,7 @@ const ScryfallSearch = () => {
         </div>
       )}
 
-      {/* 🧱 Add to Inventory Modal */}
+      {/* Add to Inventory Modal */}
       {selectedCard && (
         <CardModalAdmin
           card={selectedCard}

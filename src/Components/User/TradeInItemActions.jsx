@@ -1,13 +1,19 @@
 import React from "react";
+import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
 
 const TradeInItemActions = ({
+  status,
   item,
   onIncrease,
   onDecrease,
   onRemove
 }) => {
   const total =
-    (item.quantity || 0) * (item.estimatedUnitValue || 0);
+    (item.quantity || 0) * (item.finalUnitValue || 0);
+
+  const showAmounts = status === TradeInStatus.OfferSent || 
+    status === TradeInStatus.Accepted || 
+    status === TradeInStatus.Declined;
 
   return (
     <div className="text-right">
@@ -22,7 +28,6 @@ const TradeInItemActions = ({
           </button>        
         : 
           null}
-
      
 
         <span className="text-cyan-200">
@@ -45,14 +50,18 @@ const TradeInItemActions = ({
       </div>
 
       {/* Pricing */}
-      <p className="text-green-300">
-        Trade Credit: ${item.estimatedUnitValue?.toFixed(2) ?? "0.00"}
-      </p>
+      { showAmounts ?
+      <>
+       <p className="text-green-300">
+          Trade Credit: ${item.finalUnitValue?.toFixed(2) ?? "0.00"}
+        </p>
 
-      <p className="text-green-400 font-semibold">
-        Total: ${total.toFixed(2)}
-      </p>
-
+        <p className="text-green-400 font-semibold">
+          Total: ${total.toFixed(2)}
+        </p>
+      </>
+: null}
+  
       {/* Delete */}
       {onRemove ?       
         <button

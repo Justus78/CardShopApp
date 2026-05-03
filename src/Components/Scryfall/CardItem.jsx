@@ -26,7 +26,8 @@ const CardItem = ({ card, handleAddClick }) => {
       <h2 className="font-semibold text-lg text-purple-300">{card.name}</h2>
       <p className="text-sm text-gray-400">{card.set_name}</p>
       <p className="text-cyan-400 text-sm italic capitalize">{card.rarity}</p>
-      <p className="text-sm mt-1">${card.prices?.usd || card.prices?.usd_foil || "N/A"}</p>
+      <p className="text-sm mt-1">Non-foil: ${card.prices?.usd || "N/A"}</p>
+      <p className="text-sm mt-1">Foil: ${card.prices?.usd_foil || "N/A"}</p>
     
     </div>
   );

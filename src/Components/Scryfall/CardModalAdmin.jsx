@@ -45,6 +45,9 @@ const CardModalAdmin = ({
           <p className="text-center text-gray-400 mb-4">
             Market Price: ${card.prices?.usd || "N/A"}
           </p>
+          <p className="text-center text-gray-400 mb-4">
+            Foil Price: ${card.prices?.usd_foil || "N/A"}
+          </p>
         </div>
 
         <div>

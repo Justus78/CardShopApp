@@ -23,10 +23,6 @@ export const UpdateTradeIn = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // -----------------------------------
-  // Fetch trade on load
-  // -----------------------------------
-  useEffect(() => {
     const loadTrade = async () => {
       try {
         setLoading(true);
@@ -39,12 +35,13 @@ export const UpdateTradeIn = () => {
       }
     };
 
+
+  // Fetch trade on load
+  useEffect(() => {
     loadTrade();
   }, [id]);
 
-  // -----------------------------------
   // Map initial final values for inputs
-  // -----------------------------------
   useEffect(() => {
     if (!trade) return;
 
@@ -56,9 +53,7 @@ export const UpdateTradeIn = () => {
     setFinalValues(map);
   }, [trade]);
 
-  // -----------------------------------
   // Save individual item final value
-  // -----------------------------------
   const handleFinalValueBlur = async (itemId) => {
     const raw = finalValues[itemId];
 
@@ -82,13 +77,13 @@ export const UpdateTradeIn = () => {
     }
   };
 
-  // -----------------------------------
   // Submit final offer
-  // -----------------------------------
   const submitFinalOffer = async () => {
     try {
+      if(isOfferSent) return;
       setLoading(true);
       await submitFinalOfferFromAdmin(trade.id);
+      loadTrade();
     } catch (err) {
       console.error(err);
     } finally {
@@ -96,17 +91,12 @@ export const UpdateTradeIn = () => {
     }
   };
 
-  // -----------------------------------
   // Status helpers
-  // -----------------------------------
   const isOfferSent = trade?.status === TradeInStatus.OfferSent;
 
   const hasUnsetPrices =
     trade?.items?.some(i => i.finalUnitValue == null);
 
-  // -----------------------------------
-  // Render
-  // -----------------------------------
   return (
     <>
       <Navbar />

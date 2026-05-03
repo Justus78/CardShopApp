@@ -2,7 +2,6 @@ import React from "react";
 import { CardCondition } from "../../Constants/enums";
 
 const TradeInItemInfo = ({ item }) => {
-  console.log(item)
   return (
     <div className="flex">
       <div className="border-4 w-20 h-28 mr-5">
