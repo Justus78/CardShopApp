@@ -61,8 +61,8 @@ const CardUserModal = ({
                         className="w-full p-2 rounded bg-gray-800 border border-purple-500 mb-3"
                     >
                         <option value="">Select Condition</option>
-                        {Object.values(CardCondition).map(value => (
-                            <option key={value} value={value}>{value}</option>
+                        {Object.entries(CardCondition).map(([key, label]) => (
+                            <option key={key} value={key}>{label}</option>
                         ))}
                     </select>
                     <select
