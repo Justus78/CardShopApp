@@ -1,5 +1,6 @@
 import React from "react";
 import { CardCondition } from "../../Constants/enums";
+import { FoilType } from "../../Constants/enums";
 
 const TradeInItemInfo = ({ item }) => {
   return (
@@ -14,7 +15,7 @@ const TradeInItemInfo = ({ item }) => {
 
       <div>
         <p className="text-cyan-300 font-bold text-lg">
-          {item.cardName} ({item.isFoil ? "Foil" : "Non-Foil"})
+          {item.cardName} ({item.foilType ?`${FoilType[item.foilType]} Foil` : "Non-Foil"})
         </p>
 
         <p className="text-purple-300 text-sm">

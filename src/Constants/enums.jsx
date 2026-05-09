@@ -53,13 +53,13 @@ export const CardType = {
 };
 
 export const FoilType = {
-  NonFoil: "NonFoil",
-  Regular: "Regular",
-  Textured: "Textured",
-  Mana: "Mana",
-  Etched: "Etched",
-  Surge: "Surge",
-  Other: "Other"
+  0: "NonFoil",
+  1: "Regular",
+  2: "Textured",
+  3: "Mana",
+  4: "Etched",
+  5: "Surge",
+  6: "Other"
 }
 
 export const IsFoil = {
