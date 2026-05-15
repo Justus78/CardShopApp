@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CardCondition } from "../../Constants/enums";
+import { CardCondition, CardConditionMap } from "../../Constants/enums";
 import { FoilType } from "../../Constants/enums";
 import { GetScryfallCard } from "../../Helpers/ScryfallHelper";
 import { toast } from "react-toastify";
@@ -64,7 +64,7 @@ const TradeInItemInfo = ({ item }) => {
         </p>
 
         <p className="text-pink-300 text-sm">
-          Condition: {CardCondition[item.condition]}
+          Condition: {CardConditionMap[item.condition]}
         </p>
 
         {scryfallCard ?

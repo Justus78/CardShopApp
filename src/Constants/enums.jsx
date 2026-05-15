@@ -35,10 +35,10 @@ export const CardCondition = {
 // mapping object for card condition
 export const CardConditionMap = {
   "Mint": "Mint",
-  "Near Mint": "NearMint",
-  "Lightly Played": "LightlyPlayed",
-  "Moderately Played": "ModeratelyPlayed",
-  "Heavily Played": "HeavilyPlayed",
+  "NearMint": "Near Mint",
+  "LightlyPlayed": "Lightly Played",
+  "ModeratelyPlayed": "Moderately Played",
+  "HeavilyPlayed": "Heavily Played",
   "Damaged": "Damaged"
 };
 
