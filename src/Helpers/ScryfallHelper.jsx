@@ -3,7 +3,27 @@
 // ==========================
 import { FoilType, ProductCategory, CardConditionMap } from "../Constants/enums";
 
-// Scryfall API Search (restored: fetch all printings for all matching cards)
+const GetScryfallCardById = 'https://api.scryfall.com/cards/';
+
+export const GetScryfallCard = async (scryfallId, setScryfallCard, setError) => {
+  // console.log("made it to helper method")
+  // console.log(scryfallId)
+  if (!scryfallId) return;
+
+  try {
+
+    const res = await fetch(`${GetScryfallCardById}${scryfallId}`);
+    const data = await res.json();
+    console.log(data);
+    setScryfallCard(data);
+    return;
+  } catch {
+    setError("Card not found or Scryfall Id not valid.")
+    return;
+  }
+}
+
+// Scryfall API Search fetch all printings for all matching cards
 export const handleScryfallSearch = async (
   query,
   { setLoading, setError, setCards, setCurrentPage }

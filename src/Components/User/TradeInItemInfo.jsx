@@ -1,8 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CardCondition } from "../../Constants/enums";
 import { FoilType } from "../../Constants/enums";
+import { GetScryfallCard } from "../../Helpers/ScryfallHelper";
+import { toast } from "react-toastify";
 
 const TradeInItemInfo = ({ item }) => {
+
+  const [error, setError] = useState(null);
+  const [scryfallCard, setScryfallCard] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [cardPrice, setCardPrice] = useState(null);
+
+  useEffect(() => {
+    const getScryId = async () => {
+      if(item.scryfallId){
+        try{
+          setLoading(true)
+          await GetScryfallCard(item.scryfallId, setScryfallCard, setError)
+
+        }catch (err) {
+          setError(err.message)
+          toast.error(err.message)
+          console.log(err.message)
+        } finally {
+          setLoading(false)
+        }
+      }
+    }
+    getScryId();
+  },[])
+
+    useEffect(() => {
+      if (!scryfallCard) return; //  bail out until data arrives
+
+      if (item.foilType === 0) {
+        setCardPrice(scryfallCard.prices.usd)
+      } else if (item.foilType === 4) {
+        setCardPrice(scryfallCard.prices.usd_etched ?? scryfallCard.prices.usd_foil)
+      } else {
+        setCardPrice(scryfallCard.prices.usd_foil)
+      }
+    }, [scryfallCard]) // runs whenever scryfallCard is set
+
+  // console.log(scryfallCard)
+  
   return (
     <div className="flex">
       <div className="border-4 w-20 h-28 mr-5">
@@ -25,6 +66,11 @@ const TradeInItemInfo = ({ item }) => {
         <p className="text-pink-300 text-sm">
           Condition: {CardCondition[item.condition]}
         </p>
+
+        {scryfallCard ?
+        <p className="text-pink-300 text-sm">
+         Price: {cardPrice || "no price found."}
+        </p> : "No Price found."}
 
       </div>
     </div>
