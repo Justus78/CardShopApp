@@ -14,7 +14,6 @@ export const GetScryfallCard = async (scryfallId, setScryfallCard, setError) => 
 
     const res = await fetch(`${GetScryfallCardById}${scryfallId}`);
     const data = await res.json();
-    console.log(data);
     setScryfallCard(data);
     return;
   } catch {

@@ -111,7 +111,7 @@ const TradeInDashboard = () => {
               </TradeInItemListWithPreview>
             </div>
           ) : (
-            <div className="text-center">
+            <div className="text-center bg-gray-800 p-6 rounded-lg shadow-neon border-neon border-2">
               <p className="mb-4">You have no active trade-ins.</p>
               <button
                 onClick={startTradeDraft}
