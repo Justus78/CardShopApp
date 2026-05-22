@@ -91,23 +91,27 @@ const TradeInDashboard = () => {
                   Add Cards
                 </button>
 
-                {currentTradeIn.items.length > 0 && (
+              
                   <div className="flex gap-4">
+                    { currentTradeIn ?
                     <button
                       onClick={() => openCancelConfirm(currentTradeIn)}
                       className="px-6 py-3 bg-red-700 neon-button font-bold rounded-lg"
                     >
                       Cancel Trade In
-                    </button>
-
+                    </button> :""}
+                  
+                    { currentTradeIn.items.length > 0 &&
                     <button
                       onClick={() => openSubmitConfirm(currentTradeIn)}
                       className="px-6 py-3 bg-green-600 neon-button font-bold rounded-lg"
                     >
                       Submit Trade In
-                    </button> 
-                  </div>
-                )}
+                    </button> }
+
+                  </div> 
+      
+
               </TradeInItemListWithPreview>
             </div>
           ) : (
