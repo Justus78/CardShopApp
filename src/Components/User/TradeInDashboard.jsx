@@ -7,6 +7,7 @@ import ConfirmModal from "../ConfirmModal";
 import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
 import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
+import { TradeInStatusDotColors } from "../../Context/Constants/TradeInStatusDotColors";
 import { TradeInStatusIcons } from "../../Constants/enums";
 import { useTradeIns } from "../../Hooks/User/UserTradeIns";
 
@@ -83,6 +84,7 @@ const TradeInDashboard = () => {
                 handleDecrease={handleDecreaseQty}
                 handleIncrease={handleIncreaseQty}
                 handleRemoveItem={handleRemoveItem}
+                mode={"user"}
               >
                 <button
                   onClick={() => navigate("/userAddTrade")}
@@ -108,9 +110,7 @@ const TradeInDashboard = () => {
                     >
                       Submit Trade In
                     </button> }
-
-                  </div> 
-      
+                  </div>      
 
               </TradeInItemListWithPreview>
             </div>
@@ -133,29 +133,31 @@ const TradeInDashboard = () => {
             Past Trade-Ins
           </h2>
 
-          <div className="flex justify-between mb-4 gap-4">
-            <select
-              value={statusFilter ?? ""}
-              onChange={(e) =>
-                setStatusFilter(e.target.value === "" ? null : Number(e.target.value))
-              }
-              className="border rounded-lg px-3 py-2 text-black bg-white"
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setStatusFilter(null)}
+              className={`px-4 py-1.5 rounded-full text-sm border transition-all ${
+                statusFilter === null
+                  ? "border-purple-500 bg-gray-900 text-purple-300 font-medium"
+                  : "border-gray-600 text-gray-400 hover:border-gray-400"
+              }`}
             >
-              <option value="">All Statuses</option>
-              {Object.entries(TradeInStatusLabels).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
-              ))}
-            </select>
-
-            <select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              className="border rounded-lg px-3 py-2 text-black bg-white"
-            >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="status">Status</option>
-            </select>
+              All statuses
+            </button>
+            {Object.entries(TradeInStatusLabels).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setStatusFilter(Number(key))}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm border transition-all ${
+                  statusFilter === Number(key)
+                    ? "border-purple-500 bg-gray-900 text-purple-300 font-medium"
+                    : "border-gray-600 text-gray-400 hover:border-gray-400"
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full ${TradeInStatusDotColors[key]}`} />
+                {label}
+              </button>
+            ))}
           </div>
 
           {Object.keys(groupedTrades).length > 0 ? (

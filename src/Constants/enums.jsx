@@ -81,3 +81,4 @@ export const TradeInStatusIcons = {
   10: <FaCheckCircle />,  // Auto Completed
   11: <FaBox />,          // Returned
 };
+

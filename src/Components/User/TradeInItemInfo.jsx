@@ -4,7 +4,7 @@ import { FoilType } from "../../Constants/enums";
 import { GetScryfallCard } from "../../Helpers/ScryfallHelper";
 import { toast } from "react-toastify";
 
-const TradeInItemInfo = ({ item }) => {
+const TradeInItemInfo = ({ item, isAdmin }) => {
 
   const [error, setError] = useState(null);
   const [scryfallCard, setScryfallCard] = useState(null);
@@ -55,22 +55,22 @@ const TradeInItemInfo = ({ item }) => {
       </div>
 
       <div>
-        <p className="text-cyan-300 font-bold text-lg">
+        <p className="text-cyan-300 font-bold text-lg mb-1">
           {item.cardName} ({item.foilType ?`${FoilType[item.foilType]} Foil` : "Non-Foil"})
         </p>
 
-        <p className="text-purple-300 text-sm">
+        <p className="text-purple-300 text-sm mb-1">
           Set: {item.setCode}
         </p>
 
-        <p className="text-pink-300 text-sm">
-          Condition: {CardConditionMap[item.condition]}
+        <p className="text-pink-300 text-sm mb-1">
+          Condition: {CardCondition[item.condition]}
         </p>
 
-        {scryfallCard ?
+        {scryfallCard && isAdmin ?
         <p className="text-pink-300 text-sm">
          Price: {cardPrice || "no price found."}
-        </p> : "No Price found."}
+        </p> : null}
 
       </div>
     </div>
