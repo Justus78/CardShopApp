@@ -93,7 +93,7 @@ const TradeInItemListWithPreview = ({
             <div className="flex justify-between items-center w-full">
 
               {/* LEFT */}
-              <TradeInItemInfo item={item} />
+              <TradeInItemInfo item={item} isAdmin={isAdmin} />
 
               {/* RIGHT */}
               <div className="flex items-center gap-4">
