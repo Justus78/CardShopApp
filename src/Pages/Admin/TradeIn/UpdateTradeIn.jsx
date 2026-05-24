@@ -10,7 +10,7 @@ import {
 import Navbar from "../../../Components/Admin/Navbar";
 import TableHeader from "../../../Components/Admin/TableHeader";
 
-import TradeInItemListWithPreview from "../../../Components/User/TradeInItemListWithPreview";
+import TradeInItemListWithPreview from "../../../Components/User/TradeIn/TradeInItemListWithPreview";
 import { TradeInStatus } from "../../../Context/Constants/TradeInStatus";
 import { TradeInStatusLabels } from "../../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusColors";

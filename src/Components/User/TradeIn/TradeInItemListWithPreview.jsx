@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import TradeInItemCard from "./TradeInItemCard";
+import TradeInItemCard from "./TradeinItemCard";
 import TradeInItemActions from "./TradeInItemActions";
 import TradeInItemInfo from "./TradeInItemInfo";
 

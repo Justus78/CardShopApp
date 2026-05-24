@@ -4,7 +4,7 @@ import Navbar from '../../../Components/User/Navbar';
 import UserViewTradeDashboard from '../../../Components/User/UserViewTradeDashboard';
 import TableHeader from '../../../Components/Admin/TableHeader';
 import { acceptTradeInOffer, declineTradeInOffer, getTradeInById } from '../../../Services/TradeInService';
-import TradeInItemListWithPreview from '../../../Components/User/TradeInItemListWithPreview';
+import TradeInItemListWithPreview from '../../../Components/User/TradeIn/TradeInItemListWithPreview';
 import { TradeInStatus } from '../../../Context/Constants/TradeInStatus';
 import { TradeInStatusColors } from '../../../Context/Constants/TradeInStatusColors';
 import { TradeInStatusLabels } from '../../../Context/Constants/TradeInStatusLabels';

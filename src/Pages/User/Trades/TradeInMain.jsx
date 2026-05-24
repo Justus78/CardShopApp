@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../../Components/User/Navbar";
-import ScryfallSearch from "../../../Components/User/ScryfallSearch";
-import SearchBar from "../../../Components/Scryfall/SearchBar";
-import TradeInDashboard from "../../../Components/User/TradeInDashboard";
+import TradeInDashboard from "../../../Components/User/TradeIn/TradeInDashboard";
 import Footer from '../../../Components/User/Footer'
 
 const TradeInMain = () => {
