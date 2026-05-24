@@ -1,69 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import TableHeader from "../Admin/TableHeader";
-import ConfirmModal from "../ConfirmModal";
+import TableHeader from "../../Admin/TableHeader";
+import ConfirmModal from "../../ConfirmModal";
 import TradeInItemListWithPreview from "./TradeInItemListWithPreview";
-import { TradeInStatusLabels } from "../../Context/Constants/TradeInStatusLabels";
-import { TradeInStatusColors } from "../../Context/Constants/TradeInStatusColors";
-import { TradeInStatusDotColors } from "../../Context/Constants/TradeInStatusDotColors";
-import { TradeInStatusIcons } from "../../Constants/enums";
-import { useTradeIns } from "../../Hooks/User/UserTradeIns";
+import { TradeInStatusLabels } from "../../../Context/Constants/TradeInStatusLabels";
+import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusColors";
+import { TradeInStatusDotColors } from "../../../Context/Constants/TradeInStatusDotColors";
+import { TradeInStatusIcons } from "../../../Constants/enums";
+import { useTradeIns } from "../../../Hooks/User/UserTradeIns";
+import { ArrowDown, ArrowUp, AlignJustify } from "lucide-react";
+import StatusPill from "./StatusPill";
+import TradeCodeBadge from "./TradeCodeBadge";
+import ProgressBar from "./ProgressBar";
+import MetaSummaryPill from "./MetaSummaryPill";
 
 const SORT_OPTIONS = [
-  { value: "newest", label: "Newest", icon: "↓" },
-  { value: "oldest", label: "Oldest", icon: "↑" },
-  { value: "status", label: "Status",  icon: "≡" },
+  { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
+  { value: "oldest", label: "Oldest", icon: <ArrowUp size={12} /> },
+  { value: "status", label: "Status",  icon: <AlignJustify size={12} /> },
 ];
-
-const StatusPill = ({ status }) => (
-  <span
-    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${TradeInStatusColors[status]}`}
-  >
-    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${TradeInStatusDotColors[status]}`} />
-    {TradeInStatusLabels[status]}
-  </span>
-);
-
-const TradeCodeBadge = ({ code }) => (
-  <span className="inline-flex items-center gap-1.5 font-mono text-xs text-purple-400 bg-purple-950/40 border border-purple-900/60 rounded-md px-2.5 py-1">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-    </svg>
-    {code}
-  </span>
-);
-
-const ProgressBar = ({ status, percent }) => {
-  const barColor =
-    percent === 100 ? "bg-emerald-500" :
-    percent >= 60   ? "bg-amber-400" :
-    percent >= 30   ? "bg-blue-400"  : "bg-gray-500";
-
-  return (
-    <div>
-      <div className="w-full h-1 bg-gray-700/60 rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-500 ${barColor}`}
-          style={{ width: `${percent}%` }}
-        />
-      </div>
-      <div className="flex justify-between mt-1">
-        <span className="text-[10px] text-gray-600">Submitted</span>
-        <span className={`text-[10px] ${barColor.replace("bg-", "text-")}`}>
-          {TradeInStatusLabels[status]}
-        </span>
-      </div>
-    </div>
-  );
-};
-
-const MetaSummaryPill = ({ color, label }) => (
-  <span className="inline-flex items-center gap-1.5 text-xs text-gray-400 bg-gray-800/60 border border-gray-700/50 rounded-full px-3 py-1">
-    <span className={`w-1.5 h-1.5 rounded-full ${color}`} />
-    {label}
-  </span>
-);
 
 const TradeInDashboard = () => {
   const {
@@ -105,12 +61,12 @@ const TradeInDashboard = () => {
   };
 
   const totalTrades = Object.values(groupedTrades).flat().length;
-
+  
   return (
-    <div className="min-h-screen bg-[#0c0e14] text-white pt-28">
+    <div className="min-h-screen text-white pt-28">
       <div className="max-w-6xl mx-auto p-6">
 
-        {/* ── PAGE HEADER ── */}
+        {/* PAGE HEADER */}
         <div className="mb-10">
           <TableHeader title="Trade-in dashboard" />
           <p className="text-sm text-gray-500 mt-1">
@@ -130,14 +86,14 @@ const TradeInDashboard = () => {
           </div>
         </div>
 
-        {/* ── CURRENT TRADE ── */}
+        {/*  CURRENT TRADE  */}
         <section className="mb-12">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Current trade-in
           </p>
 
           {currentTradeIn ? (
-            <div className="bg-[#10121a] border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
+            <div className="bg-white/5 backdrop-blur-sm border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
                 <TradeCodeBadge code={currentTradeIn.tradeCode} />
                 <StatusPill status={currentTradeIn.status} />
@@ -151,7 +107,6 @@ const TradeInDashboard = () => {
                 mode="user"
               >
                 <div className="flex flex-wrap items-center gap-3 mt-5 pt-5 border-t border-gray-800">
-                  {/* Primary CTA */}
                   <button
                     onClick={() => navigate("/userAddTrade")}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"
@@ -159,8 +114,7 @@ const TradeInDashboard = () => {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     Add cards
                   </button>
-
-                  {/* Secondary CTA */}
+                 
                   {currentTradeIn.items.length > 0 && (
                     <button
                       onClick={() => openSubmitConfirm(currentTradeIn)}
@@ -171,7 +125,6 @@ const TradeInDashboard = () => {
                     </button>
                   )}
 
-                  {/* Danger — visually de-emphasised */}
                   <button
                     onClick={() => openCancelConfirm(currentTradeIn)}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent hover:bg-red-950/40 border border-red-900/60 text-red-400 text-sm font-semibold rounded-lg transition-colors ml-auto"
@@ -183,7 +136,7 @@ const TradeInDashboard = () => {
               </TradeInItemListWithPreview>
             </div>
           ) : (
-            <div className="text-center bg-[#10121a] border border-gray-800 border-dashed rounded-xl p-10">
+            <div className="text-center bg-white/5 backdrop-blur-sm border border-gray-800 border-dashed rounded-xl p-10">
               <p className="text-gray-500 mb-4 text-sm">You have no active trade-ins.</p>
               <button
                 onClick={startTradeDraft}
@@ -196,14 +149,14 @@ const TradeInDashboard = () => {
           )}
         </section>
 
-        {/* ── PAST TRADES ── */}
+        {/* PAST TRADES  */}
         <section>
           <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Past trade-ins
           </p>
 
           {/* Filter + Sort bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-[#10121a] border border-gray-800 rounded-lg px-4 py-3 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-white/5 backdrop-blur-sm border border-gray-800 rounded-lg px-4 py-3 mb-6">
             {/* Status pills */}
             <div className="flex flex-wrap gap-2">
               <button
@@ -268,7 +221,7 @@ const TradeInDashboard = () => {
                   {trades.map((trade) => (
                     <div
                       key={trade.id}
-                      className="bg-[#10121a] border border-gray-800 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-700 transition-colors"
+                      className="bg-white/5 backdrop-blur-sm border border-gray-800 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-700 transition-colors"
                     >
                       <TradeCodeBadge code={trade.tradeCode} />
                       <StatusPill status={trade.status} />

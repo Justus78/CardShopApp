@@ -1,5 +1,5 @@
 import React from "react";
-import { TradeInStatus } from "../../Context/Constants/TradeInStatus";
+import { TradeInStatus } from "../../../Context/Constants/TradeInStatus";
 
 const TradeInItemActions = ({
   status,

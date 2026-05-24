@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { CardCondition, CardConditionMap } from "../../Constants/enums";
-import { FoilType } from "../../Constants/enums";
-import { GetScryfallCard } from "../../Helpers/ScryfallHelper";
+import { CardCondition, CardConditionMap } from "../../../Constants/enums";
+import { FoilType } from "../../../Constants/enums";
+import { GetScryfallCard } from "../../../Helpers/ScryfallHelper";
 import { toast } from "react-toastify";
 
 const TradeInItemInfo = ({ item, isAdmin }) => {
