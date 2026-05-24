@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../../Components/User/Navbar";
-import TradeInDashboard from "../../../Components/User/TradeInDashboard";
+import TradeInDashboard from "../../../Components/User/TradeIn/TradeInDashboard";
 import Footer from '../../../Components/User/Footer'
 
 const TradeInMain = () => {
