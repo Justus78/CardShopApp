@@ -10,7 +10,7 @@ const TradeInItemInfo = ({ item, isAdmin }) => {
   const [scryfallCard, setScryfallCard] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cardPrice, setCardPrice] = useState(null);
-
+  console.log(item.condition)
   useEffect(() => {
     const getScryId = async () => {
       if(item.scryfallId){
