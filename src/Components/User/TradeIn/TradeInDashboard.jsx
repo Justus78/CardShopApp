@@ -14,6 +14,7 @@ import StatusPill from "./StatusPill";
 import TradeCodeBadge from "./TradeCodeBadge";
 import ProgressBar from "./ProgressBar";
 import MetaSummaryPill from "./MetaSummaryPill";
+import TradeStatusGroup from "./TradeStatusGroup";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
@@ -210,39 +211,10 @@ const TradeInDashboard = () => {
           {/* Trade cards grid */}
           {Object.keys(groupedTrades).length > 0 ? (
             Object.entries(groupedTrades).map(([status, trades]) => (
-              <div key={status} className="mb-8">
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-400 mb-3">
-                  <span className={`w-2 h-2 rounded-full ${TradeInStatusDotColors[status]}`} />
-                  {TradeInStatusLabels[status]}
-                  <span className="text-gray-600 font-normal">({trades.length})</span>
-                </h3>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {trades.map((trade) => (
-                    <div
-                      key={trade.id}
-                      className="bg-white/5 backdrop-blur-sm border border-gray-800 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-700 transition-colors"
-                    >
-                      <TradeCodeBadge code={trade.tradeCode} />
-                      <StatusPill status={trade.status} />
-                      <ProgressBar
-                        status={trade.status}
-                        percent={getProgressPercent(trade.status)}
-                      />
-                      <button
-                        onClick={() => navigate(`/userViewTrade/${trade.id}`)}
-                        className="mt-1 self-start inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-400 border border-purple-900/50 rounded-md hover:bg-purple-950/40 transition-colors"
-                      >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        Review
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-gray-600">You have no past trade-ins.</p>
+            <TradeStatusGroup key={status} status={status} trades={trades} getProgressPercent={getProgressPercent} />
+              ))
+            ) : (
+             <p className="text-sm text-gray-600">You have no past trade-ins.</p>
           )}
         </section>
       </div>
