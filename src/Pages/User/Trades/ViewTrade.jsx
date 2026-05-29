@@ -10,6 +10,8 @@ import { TradeInStatusColors } from '../../../Context/Constants/TradeInStatusCol
 import { TradeInStatusLabels } from '../../../Context/Constants/TradeInStatusLabels';
 import { toast } from 'react-toastify';
 import LoadingOverlay from '../../../Components/LoadingSpinners/LoadingOverlay';
+import TradeCodeBadge from '../../../Components/User/TradeIn/TradeCodeBadge';
+import StatusPill from '../../../Components/User/TradeIn/StatusPill';
 
 const ViewTrade = () => {
 
@@ -69,46 +71,50 @@ const ViewTrade = () => {
     <>
       <Navbar />
       <div className='min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-950 text-white p-6'>
-        <div className="min-h-screen bg-gray-900 text-white pt-28">
+        <div className="min-h-screen text-white pt-28">
           <div className="max-w-6xl mx-auto p-6">
             <TableHeader title={"View Trade Status"} />
+            <div className='flex gap-4 m-4'>
+              <button 
+                onClick={() => navigate("/userTrade")}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 hover:bg-purple-600 border
+                border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"
 
-            <button 
-              onClick={() => navigate("/userTrade")}
-              className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 
-              py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300 m-4 cursor-pointer"
-            >
-              Back to Dashboard
-            </button>
+              >
+                Back to Dashboard
+              </button>
 
-            <button 
-              onClick={() => navigate(`/userTradeSubmitted/${trade.tradeCode}`)}
-              className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 
-              py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300 m-4 cursor-pointer"
-            >
-              View Instructions
-            </button>
+              <button 
+                onClick={() => navigate(`/userTradeSubmitted/${trade.tradeCode}`)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-700 hover:bg-orange-500 border 
+                border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"
+
+              >
+                View Instructions
+              </button>
+            </div>
+           
 
             {trade && (
               <section className="mb-12">
-                <div className="bg-gray-800 p-6 rounded-lg shadow-neon border-neon border-2 mb-6 flex justify-between">
+                <div className="bg-white/5 backdrop-blur-sm border border-gray-800 border-t-2 mb-3 border-t-purple-600 rounded-xl p-6">
                   <div>
-                    <p><strong>ID:</strong> {trade.tradeCode}</p>
+                    <div className='flex gap-4 mb-2'>
+                      <TradeCodeBadge code={trade.tradeCode}/>
+                      <StatusPill status={trade.status}/>
+                    </div>
+                    
+
                     <p>
                       <strong>Started:</strong>{" "}
                       {new Date(trade.createdAt).toLocaleString()}
                     </p>
-    
-                    <p className={`${TradeInStatusColors[trade.status]} mt-2`}>
-                      <strong>Status:</strong>{" "}
-                      {TradeInStatusLabels[trade.status]}
-                    </p>
+                      
+                   
                   </div>
 
-                   <div>
-            
-                    <p>
-                      
+                   <div>            
+                    <p>                      
                       {trade.finalValue ? 
                         <span className='font-bold text-green-400'><strong>Offer Amount:</strong>{" "}${trade.finalValue} </span>
                         :
@@ -119,15 +125,17 @@ const ViewTrade = () => {
                     {trade.status && trade.status == 6 && trade.finalValue > 0 ? 
                     <div className='pt-4 flex gap-4 justify-betweens'>
                         <button 
-                        onClick={() => AcceptOffer()}
-                          className='px-6 py-3 bg-blue-600 neon-button font-bold rounded-l'>
-                            Accept Offer
+                          onClick={() => AcceptOffer()}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent hover:bg-gray-800 border border-gray-600 text-gray-300 text-sm font-semibold rounded-lg transition-colors"
+                        >
+                          Accept Offer
                         </button>
 
                         <button 
                           onClick={() => DeclineOffer()}
-                          className='px-6 py-3 bg-red-800 neon-button font-bold rounded-l'>
-                            Decline Offer
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent hover:bg-red-950/40 border border-red-900/60 text-red-400 text-sm font-semibold rounded-lg transition-colors ml-auto"
+                        >
+                          Decline Offer
                         </button>
                     </div>
                      :"" }
@@ -135,12 +143,15 @@ const ViewTrade = () => {
                     
                 </div>
 
-                <TradeInItemListWithPreview
-                  items={trade.items}
-                  status={trade.status}
-                  mode="user"
-                >
-                  </TradeInItemListWithPreview>                       
+                <div className="bg-white/5 backdrop-blur-sm border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
+                  <TradeInItemListWithPreview
+                    items={trade.items}
+                    status={trade.status}
+                    mode="user"
+                  >
+                    </TradeInItemListWithPreview>
+                </div>
+                       
                 
             </section>
             )}          

@@ -97,7 +97,7 @@ const TradeInDashboard = () => {
             <div className="bg-white/5 backdrop-blur-sm border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
                 <TradeCodeBadge code={currentTradeIn.tradeCode} />
-                <StatusPill status={currentTradeIn.status} />
+                <StatusPill status={currentTradeIn.status} width={'w-1/11'} />
               </div>
 
               <TradeInItemListWithPreview

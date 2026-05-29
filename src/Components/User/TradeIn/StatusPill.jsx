@@ -2,9 +2,9 @@ import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusCol
 import { TradeInStatusDotColors } from "../../../Context/Constants/TradeInStatusDotColors";
 import { TradeInStatusLabels } from "../../../Context/Constants/TradeInStatusLabels";
 
-const StatusPill = ({ status }) => (
+const StatusPill = ({ status, width }) => (
   <span
-    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${TradeInStatusColors[status]}`}
+    className={`inline-flex ${width} items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${TradeInStatusColors[status]}`}
   >
     <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${TradeInStatusDotColors[status]}`} />
     {TradeInStatusLabels[status]}
