@@ -9,12 +9,13 @@ import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusCol
 import { TradeInStatusDotColors } from "../../../Context/Constants/TradeInStatusDotColors";
 import { TradeInStatusIcons } from "../../../Constants/enums";
 import { useTradeIns } from "../../../Hooks/User/UserTradeIns";
-import { ArrowDown, ArrowUp, AlignJustify } from "lucide-react";
+import { ArrowDown, ArrowUp, AlignJustify, Folder } from "lucide-react";
 import StatusPill from "./StatusPill";
 import TradeCodeBadge from "./TradeCodeBadge";
 import ProgressBar from "./ProgressBar";
 import MetaSummaryPill from "./MetaSummaryPill";
 import TradeStatusGroup from "./TradeStatusGroup";
+import FolderCard from "../../../Components/FolderCard"
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
@@ -89,7 +90,7 @@ const TradeInDashboard = () => {
 
         {/*  CURRENT TRADE  */}
         <section className="mb-12">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
+          <p className="text-lg font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Current trade-in
           </p>
 
@@ -149,10 +150,10 @@ const TradeInDashboard = () => {
             </div>
           )}
         </section>
-
+        
         {/* PAST TRADES  */}
         <section>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
+          <p className="text-lg font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Past trade-ins
           </p>
 
