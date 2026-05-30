@@ -15,14 +15,12 @@ const ConfirmModal = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-
-      <div className="bg-gray-800 border-neon border-2 p-6 rounded-lg shadow-neon max-w-md w-full animate-fadeIn">
-
-        <h3 className="text-xl font-bold mb-4 neon-text">
+      <div className="bg-white/10 backdrop-blur-sm border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
+        <h3 className="text-xl font-bold mb-4 text-white">
           {title}
         </h3>
 
-        <p className="mb-6">
+        <p className="mb-6 text-fuchsia-600 font-bold text-lg text-wrap">
           {message}
         </p>
 
@@ -41,11 +39,8 @@ const ConfirmModal = ({
           >
             {confirmText}
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 };

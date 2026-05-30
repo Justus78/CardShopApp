@@ -9,11 +9,13 @@ import { TradeInStatusColors } from "../../../Context/Constants/TradeInStatusCol
 import { TradeInStatusDotColors } from "../../../Context/Constants/TradeInStatusDotColors";
 import { TradeInStatusIcons } from "../../../Constants/enums";
 import { useTradeIns } from "../../../Hooks/User/UserTradeIns";
-import { ArrowDown, ArrowUp, AlignJustify } from "lucide-react";
+import { ArrowDown, ArrowUp, AlignJustify, Folder } from "lucide-react";
 import StatusPill from "./StatusPill";
 import TradeCodeBadge from "./TradeCodeBadge";
 import ProgressBar from "./ProgressBar";
 import MetaSummaryPill from "./MetaSummaryPill";
+import TradeStatusGroup from "./TradeStatusGroup";
+import FolderCard from "../../../Components/FolderCard"
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
@@ -88,7 +90,7 @@ const TradeInDashboard = () => {
 
         {/*  CURRENT TRADE  */}
         <section className="mb-12">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
+          <p className="text-lg font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Current trade-in
           </p>
 
@@ -96,7 +98,7 @@ const TradeInDashboard = () => {
             <div className="bg-white/5 backdrop-blur-sm border border-gray-800 border-t-2 border-t-purple-600 rounded-xl p-6">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
                 <TradeCodeBadge code={currentTradeIn.tradeCode} />
-                <StatusPill status={currentTradeIn.status} />
+                <StatusPill status={currentTradeIn.status} width={'w-1/11'} />
               </div>
 
               <TradeInItemListWithPreview
@@ -148,10 +150,10 @@ const TradeInDashboard = () => {
             </div>
           )}
         </section>
-
+        
         {/* PAST TRADES  */}
         <section>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-3">
+          <p className="text-lg font-semibold uppercase tracking-widest text-gray-600 mb-3">
             Past trade-ins
           </p>
 
@@ -210,39 +212,10 @@ const TradeInDashboard = () => {
           {/* Trade cards grid */}
           {Object.keys(groupedTrades).length > 0 ? (
             Object.entries(groupedTrades).map(([status, trades]) => (
-              <div key={status} className="mb-8">
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-400 mb-3">
-                  <span className={`w-2 h-2 rounded-full ${TradeInStatusDotColors[status]}`} />
-                  {TradeInStatusLabels[status]}
-                  <span className="text-gray-600 font-normal">({trades.length})</span>
-                </h3>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {trades.map((trade) => (
-                    <div
-                      key={trade.id}
-                      className="bg-white/5 backdrop-blur-sm border border-gray-800 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-700 transition-colors"
-                    >
-                      <TradeCodeBadge code={trade.tradeCode} />
-                      <StatusPill status={trade.status} />
-                      <ProgressBar
-                        status={trade.status}
-                        percent={getProgressPercent(trade.status)}
-                      />
-                      <button
-                        onClick={() => navigate(`/userViewTrade/${trade.id}`)}
-                        className="mt-1 self-start inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-purple-400 border border-purple-900/50 rounded-md hover:bg-purple-950/40 transition-colors"
-                      >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        Review
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-gray-600">You have no past trade-ins.</p>
+            <TradeStatusGroup key={status} status={status} trades={trades} getProgressPercent={getProgressPercent} />
+              ))
+            ) : (
+             <p className="text-sm text-gray-600">You have no past trade-ins.</p>
           )}
         </section>
       </div>
