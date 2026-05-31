@@ -15,7 +15,8 @@ import TradeCodeBadge from "./TradeCodeBadge";
 import ProgressBar from "./ProgressBar";
 import MetaSummaryPill from "./MetaSummaryPill";
 import TradeStatusGroup from "./TradeStatusGroup";
-import FolderCard from "../../../Components/FolderCard"
+import TradeProcessModal from "./TradeProcessModal";
+import { HelpCircle } from "lucide-react";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
@@ -42,6 +43,7 @@ const TradeInDashboard = () => {
 
   const navigate = useNavigate();
 
+  const [showHowItWorks ,setShowHowItWorks] = useState(null)
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     type: null,
@@ -87,6 +89,18 @@ const TradeInDashboard = () => {
             ))}
           </div>
         </div>
+
+        <button
+          onClick={() => setShowHowItWorks(true)}
+          className="animate-pulse-ring fixed top-50 left-15 z-40 inline-flex items-center gap-2 px-5 py-3 
+                    bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 
+                    text-sm font-semibold rounded-full shadow-lg transition-all hover:-translate-y-0.5"
+        >
+          <HelpCircle size={16} />
+          How it works
+        </button>
+
+        <TradeProcessModal isOpen={showHowItWorks} onClose={() => setShowHowItWorks(false)} />
 
         {/*  CURRENT TRADE  */}
         <section className="mb-12">
