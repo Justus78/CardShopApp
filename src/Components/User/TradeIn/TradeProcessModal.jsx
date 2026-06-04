@@ -26,7 +26,7 @@ const TradeProcessModal = ({ isOpen, onClose }) => {
           </div>
           <button
             onClick={handleClose}
-            className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-700 text-gray-500 hover:bg-gray-800 hover:text-gray-300 transition-colors"
+            className="w-7 h-7 bg-red-800 flex items-center justify-center rounded-md border border-gray-700 text-gray-500 hover:bg-gray-800 hover:text-gray-300 transition-colors"
             aria-label="Close"
           >
             <X size={14} />
