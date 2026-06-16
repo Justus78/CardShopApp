@@ -153,7 +153,7 @@ const TradeInDashboard = () => {
             </div>
           ) : (
             <div className="text-center bg-white/5 backdrop-blur-sm border border-gray-800 border-dashed rounded-xl p-10">
-              <p className="text-gray-500 mb-4 text-sm">You have no active trade-ins.</p>
+              <p className="text-gray-400 mb-4 text-lg">You have no active trade-ins. Click below to start.</p>
               <button
                 onClick={startTradeDraft}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"

@@ -76,6 +76,15 @@ export const getTradeInById = async (tradeInId) => {
   return handleResponse(res);
 };
 
+//GET: get single trade by trade code
+export const getTradeByTradeCode = async (tradeCode) => {
+  const res = await fetch(`${API_URL}/tradeCode/${tradeCode}`,{
+    method: "GET",
+    credentials: "include",
+  });  
+  return handleResponse(res);
+}
+
 // POST: Update the trade in status to submitted
 export const submitTradeIn = async (tradeInId) => {
   const res = await fetch(`${API_URL}/draft/submit/${tradeInId}`,{
@@ -123,6 +132,14 @@ export const declineTradeInOffer = async (id) => {
 
   return handleResponse(res);
 };
+
+export const updateTradeStatusUser = async (id) => {
+  const res = await fetch(`${API_URL}/draft/updateStatusUser/${id}`, {
+    method: "PATCH",
+    credentials: "include"
+  })
+  return handleResponse(res);
+}
 
 
 /* ---------------------------------------------------------------------------- */
