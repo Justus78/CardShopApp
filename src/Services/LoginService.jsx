@@ -13,23 +13,33 @@ export async function postToApi(endpoint, data) {
     const result = await response.json();
 
     if (!response.ok) {
-      let errorMessage = "Something went wrong";
+      // Handles your LoginErrorDto: { error: "..." }
+      if (result.error) return { error: result.error };
 
-      if (Array.isArray(result)) {
-        errorMessage = result.map(err => err.description).join(" ");
-      } else if (result.message) {
-        errorMessage = result.message;
-      } else if (result.errors) {
-        errorMessage = Object.values(result.errors).flat().join(" ");
+      // Handles ASP.NET ModelState / validation errors
+      if (result.errors) {
+        const message = Object.values(result.errors).flat().join(" ");
+        return { error: message };
       }
 
-      return { error: errorMessage };
+      // Handles { message: "..." } shape
+      if (result.message) return { error: result.message };
+
+      return { error: "Something went wrong. Please try again." };
     }
 
     return { data: result };
-  } catch (error) {
-    console.error("API Error:", error);
-    return { error: "Network error. Please try again." };
+
+  } catch (err) {
+    // Only reaches here if the server is unreachable
+    const isNetworkError =
+      err instanceof TypeError && err.message === "Failed to fetch";
+
+    return {
+      error: isNetworkError
+        ? "Unable to reach the server. Please check your connection and try again."
+        : "An unexpected error occurred. Please try again.",
+    };
   }
 }
 

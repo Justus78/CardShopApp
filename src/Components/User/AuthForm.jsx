@@ -26,32 +26,34 @@ const AuthForm = () => {
     if (error) toast.error(error);
   }, [error]);
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+const handleLoginSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const loginData = { Username: userName, Password: password };
-      const { error: loginError } = await loginUser(loginData);
+  try {
+    const loginData = { Username: userName, Password: password };
 
-      if (loginError) return setError("Incorrect Username or Password");
+    const { error: loginError } = await loginUser(loginData);
+    if (loginError) return setError(loginError); // ← from your backend's LoginErrorDto
 
-      const { data: userData } = await getFromApi("status");
-      if (!userData) return setError("Failed to retrieve user info");
+    const { data: userData } = await getFromApi("status");
+    if (!userData) return setError("Could not load your profile. Please try again.");
+    //                              ^ not a credential error — login already succeeded
 
-      setUser(userData);
-      setIsAuthenticated(true);
-      toast.success("Login Successful");
+    setUser(userData);
+    setIsAuthenticated(true);
+    toast.success("Login Successful");
 
-      const userRole = userData.roles?.[0];
-      navigate(userRole === "Admin" ? "/admin/adminHome" : "/");
-    } catch {
-      setError("Unexpected error during login");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const userRole = userData.roles?.[0];
+    navigate(userRole === "Admin" ? "/admin/adminHome" : "/");
+  } catch {
+    setError("Unexpected error during login. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+  
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
