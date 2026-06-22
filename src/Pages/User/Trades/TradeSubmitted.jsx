@@ -15,7 +15,25 @@ const TradeSubmitted = () => {
   const [tradeIn, setTradeIn] = useState(null);
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const handlePrint = () => window.print();
+  const handlePrint = () => {
+    const style = document.createElement("style");
+    style.id = "print-only-style";
+    style.innerHTML = `
+      @media print {
+        body * { visibility: hidden; }
+        #print-section, #print-section * { visibility: visible; }
+        #print-section {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    window.print();
+    document.head.removeChild(style);
+  };
 
   const GetTrade = async (tradeCode) => {
     try {
@@ -109,7 +127,7 @@ const TradeSubmitted = () => {
           </div>
         </section>
 
-        <section className="mb-8 bg-blue-50 p-4 rounded-md border border-blue-200">
+        <section className="mb-8 bg-blue-50 p-4 rounded-md border border-blue-200" id="print-section">
           <h2 className="text-xl font-semibold mb-2">
             Include Your Trade ID in the Package
           </h2>
