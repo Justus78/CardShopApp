@@ -2,12 +2,15 @@ import React, { useState, useContext } from "react";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { DataContext } from "../../Context/DataContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from "../Button";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mtgOpen, setMtgOpen] = useState(false);
   const { handleLogout, isAuthenticated, user } = useContext(DataContext);
+
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-[#0b0130]/80 border-b border-cyan-500/20 shadow-[0_0_20px_rgba(0,255,255,0.2)]">
@@ -40,12 +43,13 @@ const Navbar = () => {
               </p>        
             </div>           
           ) : (
-            <a
-              href="/login"
-              className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300"
-            >
-              Login
-            </a>
+            // <a
+            //   href="/login"
+            //   className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300"
+            // >
+            //   Login
+            // </a>
+            <Button type={"none"} text={"Login"} onClickFunction={() => navigate("/login")} />
           )}
 
           {/* Cart */}
@@ -119,12 +123,7 @@ const Navbar = () => {
 
         {/* Logout */}
         {isAuthenticated && (
-          <button
-            onClick={handleLogout}
-            className="bg-gradient-to-r from-cyan-500 to-fuchsia-600 text-white px-4 py-2 rounded-lg hover:shadow-[0_0_15px_#0ff] transition-all duration-300"
-          >
-            Logout
-          </button>
+          <Button type={"none"} text={"Logout"} onClickFunction={handleLogout}/>
         )}
       </div>
 
