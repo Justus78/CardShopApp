@@ -17,6 +17,7 @@ import MetaSummaryPill from "./MetaSummaryPill";
 import TradeStatusGroup from "./TradeStatusGroup";
 import TradeProcessModal from "./TradeProcessModal";
 import { HelpCircle } from "lucide-react";
+import Button from "../../Button";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest", icon: <ArrowDown size={12} /> },
@@ -90,15 +91,7 @@ const TradeInDashboard = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => setShowHowItWorks(true)}
-          className="animate-pulse-ring fixed top-50 left-15 z-40 inline-flex items-center gap-2 px-5 py-3 
-                    bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 
-                    text-sm font-semibold rounded-full shadow-lg transition-all hover:-translate-y-0.5"
-        >
-          <HelpCircle size={16} />
-          How it works
-        </button>
+        <Button type={"tutorial"} text={"How It Works"} onClickFunction={() => setShowHowItWorks(true)}/>
 
         <TradeProcessModal isOpen={showHowItWorks} onClose={() => setShowHowItWorks(false)} />
 
@@ -123,31 +116,15 @@ const TradeInDashboard = () => {
                 mode="user"
               >
                 <div className="flex flex-wrap items-center gap-3 mt-5 pt-5 border-t border-gray-800">
-                  <button
-                    onClick={() => navigate("/userAddTrade")}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Add cards
-                  </button>
+
+                  <Button type = {"add"} text = {"Add Cards"} onClickFunction = {() => navigate("/userAddTrade")} /> 
                  
                   {currentTradeIn.items.length > 0 && (
-                    <button
-                      onClick={() => openSubmitConfirm(currentTradeIn)}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent hover:bg-gray-800 border border-gray-600 text-gray-300 text-sm font-semibold rounded-lg transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                      Submit trade-in
-                    </button>
+                     <Button type={"submit"} text={"Submit trade-in"} onClickFunction={() => openSubmitConfirm(currentTradeIn)}/>
                   )}
 
-                  <button
-                    onClick={() => openCancelConfirm(currentTradeIn)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-transparent hover:bg-red-950/40 border border-red-900/60 text-red-400 text-sm font-semibold rounded-lg transition-colors ml-auto"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    Cancel
-                  </button>
+                  <Button type={"cancel"} text={"Cancel"} onClickFunction={() => openCancelConfirm(currentTradeIn)} />
+
                 </div>
               </TradeInItemListWithPreview>
             </div>
