@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 const ConfirmModal = ({
   isOpen,
@@ -25,20 +26,8 @@ const ConfirmModal = ({
         </p>
 
         <div className="flex justify-end gap-4">
-
-          <button
-            onClick={onCancel}
-            className={`px-4 py-2 rounded neon-button font-bold ${cancelColor}`}
-          >
-            {cancelText}
-          </button>
-
-          <button
-            onClick={onConfirm}
-            className={`px-4 py-2 rounded neon-button font-bold ${confirmColor}`}
-          >
-            {confirmText}
-          </button>
+          <Button type={"cancel"} text={cancelText} onClickFunction={onCancel} />
+          <Button type={"submit"} text={confirmText} onClickFunction={onConfirm} />
         </div>
       </div>
     </div>

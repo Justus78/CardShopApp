@@ -25,6 +25,7 @@ import { DataContext } from '../../Context/DataContext';
 import CardUserModal from '../Scryfall/User/CardUserModal';
 import { addItemToDraft } from '../../Services/TradeInService';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button';
 
 const pageSize = 20;
 
@@ -134,13 +135,7 @@ const ScryfallSearch = () => {
   return (
     <div className='mt-40'>
         <div className='flex justify-center p-10'>
-            <button      
-                onClick={() => navigate("/userTrade")}       
-                className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold 
-                hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
-            >
-                Back To Dashboard
-            </button>
+            <Button type={"none"} text={"Back To Dashboard"} onClickFunction={() => navigate("/userTrade")}/>
         </div>
 
         <SearchBar 
@@ -218,7 +213,6 @@ const ScryfallSearch = () => {
                 setSelectedCondition={setSelectedCondition}
             />
         )}
-
     </div>
 )
 }

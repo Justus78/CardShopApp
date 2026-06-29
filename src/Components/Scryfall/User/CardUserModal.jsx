@@ -1,5 +1,6 @@
 import React from 'react'
 import { CardCondition, FoilType, IsFoil } from "../../../Constants/enums";
+import Button from '../../Button';
 
 const CardUserModal = ({ 
     card, 
@@ -25,14 +26,17 @@ const CardUserModal = ({
                          w-[600px] max-h-[90vh] relative flex gap-12">
 
 
-                <button
+                {/* <button
                 onClick={onClose}
                 className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center 
                             rounded-full bg-gray-800 hover:bg-red-600 
                             transition duration-200 text-white text-xl"
                 >
                 X
-                </button>
+                </button> */}
+                <div className='absolute top-4 right-6 flex items-center justify-center rounded-xl'>
+                    <Button type={"cancel"} onClickFunction={onClose}/>
+                </div>
 
                 <div className=''>
                     <img src={img} alt={card.name} className="w-full rounded-lg mb-4" />
@@ -88,23 +92,8 @@ const CardUserModal = ({
                         ))}
                     </select>
                     <div className='flex gap-6'>
-                        <button
-                            onClick={onSubmit}
-                            className="w-full mt-4 bg-gradient-to-r from-purple-500 to-cyan-500 
-                                    text-white py-2 rounded-xl font-semibold hover:scale-105 
-                                    transition-all duration-300"
-                        >
-                            Add Card
-                        </button>
-
-                        <button 
-                            onClick={onClose}
-                            className="w-full mt-4 bg-gradient-to-r from-purple-500 to-cyan-500 
-                                    text-white py-2 rounded-xl font-semibold hover:scale-105 
-                                    transition-all duration-300" 
-                        >
-                            Cancel
-                        </button>
+                        <Button type={"submit"} text={"Add"}  onClickFunction={onSubmit}/>
+                        <Button type={"cancel"} text={"Cancel"} onClickFunction={onClose} />
                     </div>
                 </div>
                 

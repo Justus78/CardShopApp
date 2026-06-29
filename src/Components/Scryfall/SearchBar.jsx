@@ -2,14 +2,11 @@ import React from "react";
 import { useState } from "react";
 
 const SearchBar = ({ query, setQuery, handleSearch}) => {
-    
-    
-
   return (
     <>
-      <h1 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 drop-shadow-lg">
-        ✨ Scryfall Search ✨
-      </h1>
+        <h1 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 drop-shadow-lg">
+          Scryfall Search
+        </h1>
 
       {/* Search bar */}
       <form
@@ -25,7 +22,7 @@ const SearchBar = ({ query, setQuery, handleSearch}) => {
         />
         <button
           type="submit"
-          className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-5 py-3 rounded-xl font-semibold hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-700 hover:bg-purple-600 border border-purple-500 text-purple-100 text-sm font-semibold rounded-lg transition-colors"
         >
           Search
         </button>
