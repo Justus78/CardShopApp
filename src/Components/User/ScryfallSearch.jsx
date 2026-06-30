@@ -39,8 +39,8 @@ const ScryfallSearch = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [isFoil, setIsFoil] = useState(false);
-  const [selectedFoilType, setSelectedFoilType] = useState("");
+  const [isFoil, setIsFoil] = useState("NonFoil");
+  const [selectedFoilType, setSelectedFoilType] = useState(0);
 
   const [selectedCondition, setSelectedCondition] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
@@ -95,6 +95,8 @@ const ScryfallSearch = () => {
   const handleSubmit = async () => {
     // add the selected card to the trade in draft
     // validate the form inputs
+    console.log(selectedFoilType)
+    console.log(isFoil)
     if (!quantity || quantity <= 0) {
         toast.error("Please enter a valid quantity.");
         return;
@@ -103,10 +105,7 @@ const ScryfallSearch = () => {
         toast.error("Please select a card condition.");
         return;
     }
-    if (!selectedFoilType) {
-        toast.error("Please select foil or non-foil.");
-        return;
-    }
+
     try {
         setLoading(true);
         // create the form data
@@ -131,6 +130,14 @@ const ScryfallSearch = () => {
         setSelectedCard(null)
     }
   };
+
+  const handleModalClose = () => {
+    setQuantity("")
+    setSelectedCard(null);
+    setSelectedCondition("")
+    setIsFoil("NonFoil")
+    setSelectedFoilType(null)
+  }
 
   return (
     <div className='mt-40'>
@@ -201,7 +208,7 @@ const ScryfallSearch = () => {
         {selectedCard && (
             <CardUserModal 
                 card={selectedCard}
-                onClose={() => setSelectedCard(null)}
+                onClose={handleModalClose}
                 onSubmit={handleSubmit}
                 quantity={quantity}
                 isFoil={isFoil}

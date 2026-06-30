@@ -5,6 +5,7 @@ import StatusPill from "./StatusPill";
 import ProgressBar from "./ProgressBar";
 import { TradeInStatusLabels } from "../../../Context/Constants/TradeInStatusLabels";
 import { TradeInStatusTabColors } from "../../../Context/Constants/TradeInStatusTabColors";
+import Button from "../../Button";
 
 const TradeCard = ({ trade, getProgressPercent }) => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const TradeCard = ({ trade, getProgressPercent }) => {
           status={trade.status}
           percent={getProgressPercent(trade.status)}
         />
-        <ReviewButton onClick={() => navigate(`/userViewTrade/${trade.id}`)} />
+        <Button onClickFunction={() => navigate(`/userViewTrade/${trade.id}`)}  type="review" text={"Review"}/>
       </div>
     </div>
   );

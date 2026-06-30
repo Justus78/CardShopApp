@@ -53,18 +53,17 @@ export const CardType = {
 };
 
 export const FoilType = {
-  0: "NonFoil",
-  1: "Regular",
-  2: "Textured",
-  3: "Mana",
-  4: "Etched",
-  5: "Surge",
-  6: "Other"
+  0: "Regular",
+  1: "Textured",
+  2: "Mana",
+  3: "Etched",
+  4: "Surge",
+  5: "Other"
 }
 
 export const IsFoil = {
-  Foil: "Foil",
-  NonFoil: "NonFoil"
+  NonFoil: "NonFoil",
+  Foil: "Foil"
 }
 
 export const TradeInStatusIcons = {

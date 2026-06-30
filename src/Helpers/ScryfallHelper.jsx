@@ -197,9 +197,9 @@ export const buildTradeInFormData = (
   formData.append("ScryfallId", card.id)
   formData.append("Quantity", quantity);
   formData.append("ImageUrl", imageUrl || "")
-  formData.append("FoilType", FoilType)
+  formData.append("FoilType", FoilType || 0)
 
-  if (IsFoil === "Foil") {formData.append("IsFoil", true)} else {formData.append("IsFoil", false)} 
+  if (IsFoil === "Foil") {formData.append("IsFoil", true)} else {formData.append("IsFoil", false)}
 
   if (selectedCondition) formData.append("Condition", selectedCondition);
 
